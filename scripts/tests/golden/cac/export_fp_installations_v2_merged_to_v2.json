@@ -1,0 +1,67 @@
+{
+  "coordinates": {
+    "SEMHIER_INST_BARE_POLY_V2": "39c72d3751d2e896",
+    "SEMHIER_INST_CLASS_BALCONY_POLY_V2": "bb1f5787b4d16394",
+    "SEMHIER_INST_CONFLICT_POLY_V2": "ada8419ca7346b84",
+    "SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V2": "bff529033d842cd2",
+    "SEMHIER_INST_NAME_BALCONY_POLY_V2": "50e5769598af83f8",
+    "SEMHIER_WALL_POLY_V2": "1ca7a53a3513a9cc"
+  },
+  "element_counts": {
+    "Appearance": 6,
+    "Building": 1,
+    "BuildingInstallation": 5,
+    "CityModel": 1,
+    "Envelope": 6,
+    "LinearRing": 6,
+    "MultiSurface": 6,
+    "Polygon": 6,
+    "WallSurface": 1,
+    "X3DMaterial": 6,
+    "appearanceMember": 6,
+    "boundedBy": 7,
+    "cityObjectMember": 1,
+    "class": 1,
+    "diffuseColor": 6,
+    "emissiveColor": 6,
+    "exterior": 6,
+    "function": 2,
+    "lod3Geometry": 5,
+    "lod3MultiSurface": 1,
+    "lowerCorner": 6,
+    "name": 4,
+    "outerBuildingInstallation": 5,
+    "posList": 6,
+    "shininess": 6,
+    "specularColor": 6,
+    "surfaceDataMember": 6,
+    "surfaceMember": 6,
+    "target": 6,
+    "theme": 6,
+    "transparency": 6,
+    "upperCorner": 6
+  },
+  "feature_ids": [
+    "Building:SEMHIER_BUILDING_V2",
+    "BuildingInstallation:SEMHIER_INST_BARE_V2",
+    "BuildingInstallation:SEMHIER_INST_CLASS_BALCONY_V2",
+    "BuildingInstallation:SEMHIER_INST_CONFLICT_FUNCTION_BEATS_NAME_V2",
+    "BuildingInstallation:SEMHIER_INST_FUNCTION_CHIMNEY_V2",
+    "BuildingInstallation:SEMHIER_INST_NAME_BALCONY_V2",
+    "WallSurface:SEMHIER_WALL_V2"
+  ],
+  "interior_rings": {},
+  "opening_nesting": [],
+  "polygon_ids": [
+    "SEMHIER_INST_BARE_POLY_V2",
+    "SEMHIER_INST_CLASS_BALCONY_POLY_V2",
+    "SEMHIER_INST_CONFLICT_POLY_V2",
+    "SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V2",
+    "SEMHIER_INST_NAME_BALCONY_POLY_V2",
+    "SEMHIER_WALL_POLY_V2"
+  ],
+  "xmllint": {
+    "errors": 0,
+    "exit": 0
+  }
+}

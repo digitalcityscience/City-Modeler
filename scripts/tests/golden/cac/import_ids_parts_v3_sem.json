@@ -1,0 +1,89 @@
+{
+  "objects": [
+    {
+      "materials": [
+        {
+          "name": "WallSurface_B_PARENT_WALL_POLY_V3",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "B_PARENT_WALL_SURFACE_V3",
+            "gml_polygon_id": "B_PARENT_WALL_POLY_V3",
+            "gml_ring_id": "B_PARENT_WALL_POLY_V3_0_",
+            "lod": 2
+          }
+        }
+      ],
+      "name": "Building with inline part",
+      "parent": null,
+      "props": {
+        "cgml3_feature": "Building",
+        "gml_id": "B_PART_TEST_PARENT_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "WallSurface_B_PART_WALL_POLY_V3",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "B_PART_WALL_SURFACE_V3",
+            "gml_polygon_id": "B_PART_WALL_POLY_V3",
+            "gml_ring_id": "B_PART_WALL_POLY_V3_0_",
+            "lod": 2
+          }
+        }
+      ],
+      "name": "Inline building part",
+      "parent": "Building with inline part",
+      "props": {
+        "cgml3_feature": "BuildingPart",
+        "cgml_parent_id": "B_PART_TEST_PARENT_V3",
+        "gml_id": "B_PART_TEST_CHILD_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "WallSurface_B_PARENT_WALL_POLY_V3",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "B_PARENT_WALL_SURFACE_V3",
+            "gml_polygon_id": "B_PARENT_WALL_POLY_V3",
+            "gml_ring_id": "B_PARENT_WALL_POLY_V3_0_",
+            "lod": 2
+          }
+        }
+      ],
+      "name": "WallSurface_B_PARENT_WALL_SURFACE_V3",
+      "parent": "Building with inline part",
+      "props": {
+        "cgml3_feature": "WallSurface",
+        "gml_id": "B_PARENT_WALL_SURFACE_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "WallSurface_B_PART_WALL_POLY_V3",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "B_PART_WALL_SURFACE_V3",
+            "gml_polygon_id": "B_PART_WALL_POLY_V3",
+            "gml_ring_id": "B_PART_WALL_POLY_V3_0_",
+            "lod": 2
+          }
+        }
+      ],
+      "name": "WallSurface_B_PART_WALL_SURFACE_V3",
+      "parent": "Inline building part",
+      "props": {
+        "cgml3_feature": "WallSurface",
+        "gml_id": "B_PART_WALL_SURFACE_V3"
+      },
+      "type": "MESH"
+    }
+  ]
+}

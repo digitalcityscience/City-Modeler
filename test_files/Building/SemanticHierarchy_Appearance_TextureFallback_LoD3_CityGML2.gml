@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CityModel
+  xmlns="http://www.opengis.net/citygml/2.0"
+  xmlns:gml="http://www.opengis.net/gml"
+  xmlns:bldg="http://www.opengis.net/citygml/building/2.0"
+  xmlns:app="http://www.opengis.net/citygml/appearance/2.0"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.opengis.net/citygml/2.0 http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd http://www.opengis.net/citygml/building/2.0 http://schemas.opengis.net/citygml/building/2.0/building.xsd http://www.opengis.net/citygml/appearance/2.0 http://schemas.opengis.net/citygml/appearance/2.0/appearance.xsd">
+  <gml:boundedBy>
+    <gml:Envelope srsName="urn:ogc:def:crs:EPSG::25832" srsDimension="3">
+      <gml:lowerCorner>0 0 0</gml:lowerCorner>
+      <gml:upperCorner>11 1 3</gml:upperCorner>
+    </gml:Envelope>
+  </gml:boundedBy>
+  <cityObjectMember>
+    <bldg:Building gml:id="SEMHIER_APP_TEXFB_BUILDING_V2">
+      <gml:name>Semantic Hierarchy Appearance Fixture - Texture Fallback</gml:name>
+
+<bldg:outerBuildingInstallation><bldg:BuildingInstallation gml:id="SEMHIER_APP_TEXFB_INST_GENERIC_V2"><gml:name>Installation (no appearance)</gml:name><bldg:lod3Geometry><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_INST_GENERIC_V2_MS_L3"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_INST_GENERIC_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_INST_GENERIC_POLY_V2_0_"><gml:posList srsDimension="3">6 0 0 6 1 0 6 1 1 6 0 1 6 0 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3Geometry></bldg:BuildingInstallation></bldg:outerBuildingInstallation>
+<bldg:outerBuildingInstallation><bldg:BuildingInstallation gml:id="SEMHIER_APP_TEXFB_BALCONY_V2"><gml:name>Roof Accessory 1 (broken texture, valid material)</gml:name><bldg:class>5010</bldg:class><bldg:lod3Geometry><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_BALCONY_V2_MS_L3"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_BALCONY_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_BALCONY_POLY_V2_0_"><gml:posList srsDimension="3">8 0 0 8 1 0 8 1 1 8 0 1 8 0 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3Geometry></bldg:BuildingInstallation></bldg:outerBuildingInstallation>
+<bldg:outerBuildingInstallation><bldg:BuildingInstallation gml:id="SEMHIER_APP_TEXFB_CHIMNEY_V2"><gml:name>Roof Accessory 2 (no appearance)</gml:name><bldg:function>5030</bldg:function><bldg:lod3Geometry><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_CHIMNEY_V2_MS_L3"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_CHIMNEY_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_CHIMNEY_POLY_V2_0_"><gml:posList srsDimension="3">10 0 0 10 1 0 10 1 1 10 0 1 10 0 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3Geometry></bldg:BuildingInstallation></bldg:outerBuildingInstallation>
+
+<bldg:boundedBy><bldg:WallSurface gml:id="SEMHIER_APP_TEXFB_WALL_V2"><gml:name>Wall (broken texture, valid material)</gml:name><bldg:lod3MultiSurface><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_WALL_V2_MS"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_WALL_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_WALL_POLY_V2_0_"><gml:posList srsDimension="3">0 0 0 0 1 0 0 1 2 0 0 2 0 0 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3MultiSurface><bldg:opening><bldg:Window gml:id="SEMHIER_APP_TEXFB_WINDOW_V2"><gml:name>Window</gml:name><bldg:lod3MultiSurface><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_WINDOW_V2_MS"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_WINDOW_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_WINDOW_POLY_V2_0_"><gml:posList srsDimension="3">0 0.3 0.3 0 0.7 0.3 0 0.7 1.3 0 0.3 1.3 0 0.3 0.3</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3MultiSurface></bldg:Window></bldg:opening><bldg:opening><bldg:Door gml:id="SEMHIER_APP_TEXFB_DOOR_V2"><gml:name>Door</gml:name><bldg:lod3MultiSurface><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_DOOR_V2_MS"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_DOOR_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_DOOR_POLY_V2_0_"><gml:posList srsDimension="3">0 0.75 0 0 0.95 0 0 0.95 1 0 0.75 1 0 0.75 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3MultiSurface></bldg:Door></bldg:opening></bldg:WallSurface></bldg:boundedBy>
+<bldg:boundedBy><bldg:RoofSurface gml:id="SEMHIER_APP_TEXFB_ROOF_V2"><gml:name>Roof (no appearance)</gml:name><bldg:lod3MultiSurface><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_ROOF_V2_MS"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_ROOF_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_ROOF_POLY_V2_0_"><gml:posList srsDimension="3">2 0 0 2 1 0 2 1 1 2 0 1 2 0 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod3MultiSurface></bldg:RoofSurface></bldg:boundedBy>
+<bldg:boundedBy><bldg:GroundSurface gml:id="SEMHIER_APP_TEXFB_GROUND_V2"><gml:name>Ground (no appearance)</gml:name><bldg:lod2MultiSurface><gml:MultiSurface gml:id="SEMHIER_APP_TEXFB_GROUND_V2_MS"><gml:surfaceMember><gml:Polygon gml:id="SEMHIER_APP_TEXFB_GROUND_POLY_V2"><gml:exterior><gml:LinearRing gml:id="SEMHIER_APP_TEXFB_GROUND_POLY_V2_0_"><gml:posList srsDimension="3">4 0 0 4 1 0 4 1 1 4 0 1 4 0 0</gml:posList></gml:LinearRing></gml:exterior></gml:Polygon></gml:surfaceMember></gml:MultiSurface></bldg:lod2MultiSurface></bldg:GroundSurface></bldg:boundedBy>
+    </bldg:Building>
+  </cityObjectMember>
+
+  <app:appearanceMember>
+    <app:Appearance gml:id="SEMHIER_APP_TEXFB_BUILDING_V2_APPEARANCE">
+      <app:theme>Default</app:theme>
+      <app:surfaceDataMember><app:ParameterizedTexture gml:id="SEMHIER_APP_TEXFB_WALL_TEX_V2"><app:isFront>true</app:isFront><app:imageURI>SemanticHierarchy_Appearance_missing.png</app:imageURI><app:target uri="#SEMHIER_APP_TEXFB_WALL_POLY_V2"><app:TexCoordList gml:id="SEMHIER_APP_TEXFB_WALL_TEX_V2_TCL"><app:textureCoordinates ring="#SEMHIER_APP_TEXFB_WALL_POLY_V2_0_">0 0 1 0 1 1 0 1 0 0</app:textureCoordinates></app:TexCoordList></app:target></app:ParameterizedTexture></app:surfaceDataMember>
+      <app:surfaceDataMember><app:X3DMaterial gml:id="SEMHIER_APP_TEXFB_WALL_MAT_V2"><app:isFront>true</app:isFront><app:diffuseColor>0.6 0.4 0.3</app:diffuseColor><app:target>#SEMHIER_APP_TEXFB_WALL_POLY_V2</app:target></app:X3DMaterial></app:surfaceDataMember>
+      <app:surfaceDataMember><app:ParameterizedTexture gml:id="SEMHIER_APP_TEXFB_BALCONY_TEX_V2"><app:isFront>true</app:isFront><app:imageURI>SemanticHierarchy_Appearance_missing.png</app:imageURI><app:target uri="#SEMHIER_APP_TEXFB_BALCONY_POLY_V2"><app:TexCoordList gml:id="SEMHIER_APP_TEXFB_BALCONY_TEX_V2_TCL"><app:textureCoordinates ring="#SEMHIER_APP_TEXFB_BALCONY_POLY_V2_0_">0 0 1 0 1 1 0 1 0 0</app:textureCoordinates></app:TexCoordList></app:target></app:ParameterizedTexture></app:surfaceDataMember>
+      <app:surfaceDataMember><app:X3DMaterial gml:id="SEMHIER_APP_TEXFB_BALCONY_MAT_V2"><app:isFront>true</app:isFront><app:diffuseColor>0.8 0.6 0.1</app:diffuseColor><app:target>#SEMHIER_APP_TEXFB_BALCONY_POLY_V2</app:target></app:X3DMaterial></app:surfaceDataMember>
+    </app:Appearance>
+  </app:appearanceMember>
+
+</CityModel>

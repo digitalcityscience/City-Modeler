@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+  OASIS XML catalog for CityGML 3 real-XSD validation.
+
+  core.xsd imports the xAL 3.0 address schema via namespace
+  "urn:oasis:names:tc:ciq:xal:3" with a schemaLocation relative to wherever
+  core.xsd itself was loaded from. Since core.xsd is fetched transitively
+  over http (see wrapper_v3.xsd), that relative xAL import resolves against
+  an OGC-hosted URL that may not always be reachable. Redirect both the
+  namespace URN and the plausible fetched URL to the vendored copy at
+  Schema/citygml_3/xAL/3.0/xAL.xsd (path relative to this catalog file).
+
+  Use by exporting XML_CATALOG_FILES=(abs path to this file) before invoking
+  xmllint with wrapper_v3.xsd as the schema.
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="urn:oasis:names:tc:ciq:xal:3"
+       uri="../../../Schema/citygml_3/xAL/3.0/xAL.xsd"/>
+  <uri name="http://schemas.opengis.net/citygml/xAL/3.0/xAL.xsd"
+       uri="../../../Schema/citygml_3/xAL/3.0/xAL.xsd"/>
+</catalog>

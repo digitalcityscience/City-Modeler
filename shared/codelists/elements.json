@@ -1,0 +1,128 @@
+{
+ "note": "B88: fields of single building elements on the attribute card. BuildingInstallation class / function / usage are CityGML attributes; codes copied from sig3d.org/codelists/standard/building/2.0/BuildingInstallation_{class,function,usage}.xml on 2026-11-10. Boundary surfaces (2.0, 3.0), 2.0 openings and 3.0 DoorSurface / WindowSurface have no class / function / usage and no material attribute: their fields are written as generic attributes. (3.0 con:Door / con:Window do have class / function / usage, construction.xsd, but OGC publishes no normative list for them; B94 2026-11-12.) 'facade' and 'roof': value names of the INSPIRE Buildings (extended) code lists MaterialOfFacadeValue / MaterialOfRoofValue, written from model knowledge 2026-11-10, needs review against the INSPIRE registry. 'radio': ITU-R P.2040 material names as Sionna RT lists them (nvlabs.github.io/sionna/rt/api/radio_materials.html, read 2026-11-10). 'glazing', 'frame' and 'door': project lists, no standard behind them. A value not in a list is kept and written back.",
+ "features": {
+  "WallSurface": "wall",
+  "OuterCeilingSurface": "wall",
+  "OuterFloorSurface": "wall",
+  "RoofSurface": "roof",
+  "WindowSurface": "window",
+  "Window": "window",
+  "DoorSurface": "door",
+  "Door": "door",
+  "BuildingInstallation": "installation"
+ },
+ "elements": {
+  "wall": [
+   {"name": "material", "label": "Material", "list": "facade"},
+   {"name": "radioMaterial", "label": "Radio material", "list": "radio"}
+  ],
+  "roof": [
+   {"name": "material", "label": "Material", "list": "roof"},
+   {"name": "radioMaterial", "label": "Radio material", "list": "radio"}
+  ],
+  "window": [
+   {"name": "glazing", "label": "Glazing", "list": "glazing"},
+   {"name": "frameMaterial", "label": "Frame", "list": "frame"},
+   {"name": "radioMaterial", "label": "Radio material", "list": "radio"}
+  ],
+  "door": [
+   {"name": "material", "label": "Material", "list": "door"},
+   {"name": "radioMaterial", "label": "Radio material", "list": "radio"}
+  ],
+  "installation": [
+   {"attr": "bldg:class", "label": "Class", "list": "installation_class",
+    "codeSpace": "http://www.sig3d.org/codelists/standard/building/2.0/BuildingInstallation_class.xml"},
+   {"attr": "bldg:function", "label": "Function", "list": "installation_function",
+    "codeSpace": "http://www.sig3d.org/codelists/standard/building/2.0/BuildingInstallation_function.xml"},
+   {"attr": "bldg:usage", "label": "Usage", "list": "installation_function",
+    "codeSpace": "http://www.sig3d.org/codelists/standard/building/2.0/BuildingInstallation_usage.xml"}
+  ]
+ },
+ "lists": {
+  "installation_class": {
+   "1000": "outer characteristics",
+   "1010": "inner characteristics",
+   "1020": "waste management",
+   "1030": "maintenance",
+   "1040": "communicating",
+   "1050": "security",
+   "1060": "others"
+  },
+  "installation_function": {
+   "1000": "balcony",
+   "1010": "winter garden",
+   "1020": "arcade",
+   "1030": "chimney (part of a building)",
+   "1040": "tower (part of a building)",
+   "1050": "column",
+   "1060": "stairs",
+   "1070": "others"
+  },
+  "facade": {
+   "adobe": "Adobe",
+   "asbestos": "Asbestos",
+   "ceramicTiles": "Ceramic tiles",
+   "composite": "Composite",
+   "concrete": "Concrete",
+   "glass": "Glass",
+   "limestone": "Limestone",
+   "masonry": "Masonry",
+   "metal": "Metal",
+   "naturalStone": "Natural stone",
+   "vegetated": "Vegetated",
+   "wood": "Wood"
+  },
+  "roof": {
+   "asbestos": "Asbestos",
+   "ceramicTile": "Ceramic tile",
+   "clayTile": "Clay tile",
+   "composition": "Composition",
+   "concreteTile": "Concrete tile",
+   "corrugatedSheet": "Corrugated sheet",
+   "glass": "Glass",
+   "hotMoppedAsphalt": "Hot mopped asphalt",
+   "metal": "Metal",
+   "reinforcedConcrete": "Reinforced concrete",
+   "slate": "Slate",
+   "thatch": "Thatch",
+   "vegetatedGreenRoof": "Vegetated green roof",
+   "woodShinglesOrShakes": "Wood shingles or shakes"
+  },
+  "radio": {
+   "concrete": "Concrete",
+   "brick": "Brick",
+   "plasterboard": "Plasterboard",
+   "wood": "Wood",
+   "glass": "Glass",
+   "ceiling_board": "Ceiling board",
+   "chipboard": "Chipboard",
+   "plywood": "Plywood",
+   "marble": "Marble",
+   "floorboard": "Floorboard",
+   "metal": "Metal",
+   "clear_acrylic": "Clear acrylic",
+   "asphalt_concrete": "Asphalt concrete"
+  },
+  "glazing": {
+   "single": "Single glazing",
+   "double": "Double glazing",
+   "triple": "Triple glazing",
+   "doubleLowE": "Double glazing, low-E coated",
+   "tripleLowE": "Triple glazing, low-E coated"
+  },
+  "frame": {
+   "wood": "Wood",
+   "pvc": "PVC",
+   "aluminium": "Aluminium",
+   "steel": "Steel",
+   "woodAluminium": "Wood-aluminium"
+  },
+  "door": {
+   "wood": "Wood",
+   "metal": "Metal",
+   "glass": "Glass",
+   "pvc": "PVC",
+   "composite": "Composite"
+  }
+ }
+}

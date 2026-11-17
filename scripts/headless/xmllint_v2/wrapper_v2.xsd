@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Real-XSD validation entry point for CityGML 2.0 exporter output.
+
+  A CityGML 2 file emitted by this add-on always carries thematic content from
+  several modules at once: bldg:* features, app:appearanceMember, and
+  gen:*Attribute. Validating against building.xsd alone makes xmllint 404 /
+  reject those foreign-namespace elements. This wrapper imports the three
+  modules the exporter actually uses (building, appearance, generics) so a
+  single schema argument covers real output.
+
+  cityGMLBase.xsd (which declares core:CityModel, the document root) and the
+  GML 3.1.1 base schema are pulled in transitively by building.xsd over plain
+  http (this add-on does not vendor them). The OASIS xAL import inside
+  cityGMLBase points at an unreachable https URL; catalog.xml redirects it to
+  the vendored Schema/citygml_2/xAL/xAL.xsd. Pass it via XML_CATALOG_FILES.
+
+  schemaLocations are relative to THIS file, so xmllint resolves them the same
+  way regardless of the working directory it is invoked from. This file lives
+  at scripts/headless/xmllint_v2/, i.e. three levels below the repo root.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:bldg="http://www.opengis.net/citygml/building/2.0"
+           xmlns:app="http://www.opengis.net/citygml/appearance/2.0"
+           xmlns:gen="http://www.opengis.net/citygml/generics/2.0">
+  <xs:import namespace="http://www.opengis.net/citygml/building/2.0"
+             schemaLocation="../../../Schema/citygml_2/building/2.0/building.xsd"/>
+  <xs:import namespace="http://www.opengis.net/citygml/appearance/2.0"
+             schemaLocation="../../../Schema/citygml_2/appearance/2.0/appearance.xsd"/>
+  <xs:import namespace="http://www.opengis.net/citygml/generics/2.0"
+             schemaLocation="../../../Schema/citygml_2/generics/2.0/generics.xsd"/>
+</xs:schema>

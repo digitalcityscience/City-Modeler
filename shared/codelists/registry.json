@@ -1,0 +1,25 @@
+{
+ "note": "B22 code lists. A new country = one data file here + one row below; no code change.",
+ "lists": [
+  {
+   "id": "OGC",
+   "label": "OGC CityGML (SIG3D)",
+   "file": "ogc.json",
+   "default": true,
+   "code_space_hints": [
+    "sig3d"
+   ],
+   "value_pattern": ""
+  },
+  {
+   "id": "ADV",
+   "label": "AdV / ALKIS (Germany)",
+   "file": "adv.json",
+   "code_space_hints": [
+    "adv",
+    "gdi-de"
+   ],
+   "value_pattern": "^\\d{5}_\\d{4}$"
+  }
+ ]
+}

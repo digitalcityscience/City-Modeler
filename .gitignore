@@ -1,0 +1,60 @@
+# =============================================================================
+# .gitignore - CityGML Importer/Exporter Blender Add-on
+# =============================================================================
+# The CitySmith generator project itself is not part of this add-on. Anchored
+# to the repository root on purpose: an unanchored pattern also swallows
+# test_files/Building/CitySmith/, where its output is tracked as fixtures.
+/CitySmith/
+
+agent-output
+# --- Build artifacts ---
+build/
+*.zip
+
+# --- Local Blender test artifacts ---
+.tmp_blender_*/
+test_files/*/Appearance/
+
+# --- DevOps documentation (not part of add-on) ---
+devops-how-to-master/
+docs/development/
+
+# --- Local workspace symlink ---
+city_modeler
+
+# --- Downloaded Python wheels (fetched by CI via scripts/fetch_deps.py) ---
+wheels/
+
+# --- Local cp313 pyproj/lxml shim for headless export testing (see
+# docs/agent/2026-07-16-semantic-hierarchy-investigation.md) ---
+scripts/headless/pydeps/
+
+# --- Python bytecode ---
+__pycache__/
+*.pyc
+*.pyo
+
+# --- Version markers from fetch_deps.py ---
+.dep_version
+
+# --- IDE / Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- OS files ---
+Thumbs.db
+.DS_Store
+
+# --- Presets ---
+presets/
+
+# --- Python Umgebung 3.13 ---
+.venv_off/
+
+# Rebuildable Blender extension profile used by scripts/headless/setup_cac_verification.ps1.
+.cac-verification/
+
+# Default output of scripts/headless/cac_harness.py out_dir() when run without an argument.
+/cac-out/

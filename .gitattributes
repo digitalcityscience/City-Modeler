@@ -1,0 +1,11 @@
+# Git stores text with LF; checkouts follow each platform, except where the format needs one style.
+* text=auto
+
+# Unix scripts must keep LF everywhere, also inside the extension ZIP built on Windows.
+*.sh text eol=lf
+.githooks/* text eol=lf
+citydb-tool-*/citydb text eol=lf
+
+# Windows batch files want CRLF.
+*.bat text eol=crlf
+*.cmd text eol=crlf

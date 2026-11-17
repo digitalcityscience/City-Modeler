@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+  OASIS XML catalog for CityGML 2 real-XSD validation.
+
+  cityGMLBase.xsd imports the xAL 2.0 address schema from
+  http://docs.oasis-open.org/election/external/xAL.xsd, which is unreachable.
+  Redirect both that URL and the xAL target namespace URN to the copy vendored
+  at Schema/citygml_2/xAL/xAL.xsd (path relative to this catalog file).
+
+  Use by exporting XML_CATALOG_FILES=(abs path to this file) before invoking
+  xmllint with wrapper_v2.xsd as the schema.
+-->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri name="http://docs.oasis-open.org/election/external/xAL.xsd"
+       uri="../../../Schema/citygml_2/xAL/xAL.xsd"/>
+  <system systemId="http://docs.oasis-open.org/election/external/xAL.xsd"
+          uri="../../../Schema/citygml_2/xAL/xAL.xsd"/>
+  <uri name="urn:oasis:names:tc:ciq:xsdschema:xAL:2.0"
+       uri="../../../Schema/citygml_2/xAL/xAL.xsd"/>
+</catalog>

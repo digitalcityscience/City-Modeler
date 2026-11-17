@@ -1,0 +1,2960 @@
+{
+  "altopening_v3": {
+    "objects": [
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "Poly_wall_1",
+            "name": "WallSurface_Poly_wall_1",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "Poly_window_1",
+            "name": "Window_Opening_Exterior_Polywindow1",
+            "type": "Window"
+          },
+          {
+            "gml_id": "Poly_door_1",
+            "name": "Door_Opening_Exterior_Polydoor1",
+            "type": "Door"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "Building",
+        "gml_id": "GMLID_BUI_ALTSPELLING_1",
+        "lod_level": null,
+        "name": "Alt Opening Spelling Building",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "Poly_door_1",
+            "name": "Door_Opening_Exterior_Polydoor1",
+            "type": "Door"
+          },
+          {
+            "gml_id": "ID_FRESH0",
+            "name": "Door_Opening_Exterior_Polydoor1_Prism_1",
+            "type": "Door"
+          },
+          {
+            "gml_id": "ID_FRESH1",
+            "name": "Door_Opening_Exterior_Polydoor1_Prism_2",
+            "type": "Door"
+          },
+          {
+            "gml_id": "ID_FRESH2",
+            "name": "Door_Opening_Exterior_Polydoor1_Prism_3",
+            "type": "Door"
+          },
+          {
+            "gml_id": "ID_FRESH3",
+            "name": "Door_Opening_Exterior_Polydoor1_Prism_4",
+            "type": "Door"
+          },
+          {
+            "gml_id": "ID_FRESH4",
+            "name": "Door_Opening_Exterior_Polydoor1_Prism_5",
+            "type": "Door"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "Door",
+        "gml_id": "UUID_door_altspelling_1",
+        "lod_level": null,
+        "name": "Door_UUID_door_altspelling_1",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "Poly_wall_1",
+            "name": "WallSurface_Poly_wall_1",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_wall_altspelling_1",
+        "lod_level": null,
+        "name": "WallSurface_UUID_wall_altspelling_1",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "Poly_window_1",
+            "name": "CGML_Authored_Window_Glass",
+            "type": "Window"
+          },
+          {
+            "gml_id": "ID_FRESH5",
+            "name": "CGML_Authored_Window_Glass_Prism_1",
+            "type": "Window"
+          },
+          {
+            "gml_id": "ID_FRESH6",
+            "name": "CGML_Authored_Window_Glass_Prism_2",
+            "type": "Window"
+          },
+          {
+            "gml_id": "ID_FRESH7",
+            "name": "CGML_Authored_Window_Glass_Prism_3",
+            "type": "Window"
+          },
+          {
+            "gml_id": "ID_FRESH8",
+            "name": "CGML_Authored_Window_Glass_Prism_4",
+            "type": "Window"
+          },
+          {
+            "gml_id": "ID_FRESH9",
+            "name": "CGML_Authored_Window_Glass_Prism_5",
+            "type": "Window"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "Window",
+        "gml_id": "UUID_window_altspelling_1",
+        "lod_level": null,
+        "name": "Window_UUID_window_altspelling_1",
+        "semantic_origin": null,
+        "semantic_type": null
+      }
+    ]
+  },
+  "installations_v3": {
+    "objects": [
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_INST_NAME_BALCONY_POLY_V3",
+            "name": "BuildingInstallation_SEMHIER_INST_NAME_BALCONY_POLY_V3",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "SEMHIER_INST_NAME_BALCONY_V3",
+        "lod_level": null,
+        "name": "Balcony 1",
+        "semantic_origin": "generic",
+        "semantic_type": "BuildingInstallation"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_INST_CONFLICT_POLY_V3",
+            "name": "BuildingInstallation_SEMHIER_INST_CONFLICT_POLY_V3",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "SEMHIER_INST_CONFLICT_FUNCTION_BEATS_NAME_V3",
+        "lod_level": null,
+        "name": "Balcony 1.001",
+        "semantic_origin": "function",
+        "semantic_type": "Chimney"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_INST_CLASS_BALCONY_POLY_V3",
+            "name": "BuildingInstallation_SEMHIER_INST_CLASS_BALCONY_POLY_V3",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "SEMHIER_INST_CLASS_BALCONY_V3",
+        "lod_level": null,
+        "name": "Installation A",
+        "semantic_origin": "class",
+        "semantic_type": "Balcony"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V3",
+            "name": "BuildingInstallation_SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V3",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "SEMHIER_INST_FUNCTION_CHIMNEY_V3",
+        "lod_level": null,
+        "name": "Installation B",
+        "semantic_origin": "function",
+        "semantic_type": "Chimney"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_INST_BARE_POLY_V3",
+            "name": "BuildingInstallation_SEMHIER_INST_BARE_POLY_V3",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "SEMHIER_INST_BARE_V3",
+        "lod_level": null,
+        "name": "SEMHIER_INST_BARE_V3",
+        "semantic_origin": "generic",
+        "semantic_type": "BuildingInstallation"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_WALL_POLY_V3",
+            "name": "WallSurface_SEMHIER_WALL_POLY_V3",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "Building",
+        "gml_id": "SEMHIER_BUILDING_V3",
+        "lod_level": null,
+        "name": "Semantic Hierarchy Resolver Fixture",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "SEMHIER_WALL_POLY_V3",
+            "name": "WallSurface_SEMHIER_WALL_POLY_V3",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "SEMHIER_WALL_V3",
+        "lod_level": null,
+        "name": "WallSurface_SEMHIER_WALL_V3",
+        "semantic_origin": null,
+        "semantic_type": null
+      }
+    ]
+  },
+  "parts_v3": {
+    "objects": [
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "B_PARENT_WALL_POLY_V3",
+            "name": "WallSurface_B_PARENT_WALL_POLY_V3",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "Building",
+        "gml_id": "B_PART_TEST_PARENT_V3",
+        "lod_level": null,
+        "name": "Building with inline part",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "B_PART_WALL_POLY_V3",
+            "name": "WallSurface_B_PART_WALL_POLY_V3",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingPart",
+        "gml_id": "B_PART_TEST_CHILD_V3",
+        "lod_level": null,
+        "name": "Inline building part",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "B_PARENT_WALL_POLY_V3",
+            "name": "WallSurface_B_PARENT_WALL_POLY_V3",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "B_PARENT_WALL_SURFACE_V3",
+        "lod_level": null,
+        "name": "WallSurface_B_PARENT_WALL_SURFACE_V3",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "B_PART_WALL_POLY_V3",
+            "name": "WallSurface_B_PART_WALL_POLY_V3",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "B_PART_WALL_SURFACE_V3",
+        "lod_level": null,
+        "name": "WallSurface_B_PART_WALL_SURFACE_V3",
+        "semantic_origin": null,
+        "semantic_type": null
+      }
+    ]
+  },
+  "railway_v3": {
+    "objects": [
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21593_339_93218_367548",
+            "name": "BuildingInstallation_PolyID21593_339_93218_367548",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21594_1637_218386_220513",
+            "name": "BuildingInstallation_PolyID21594_1637_218386_220513",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21595_1211_823297_11180",
+            "name": "BuildingInstallation_PolyID21595_1211_823297_11180",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21596_247_324961_321679",
+            "name": "BuildingInstallation_PolyID21596_247_324961_321679",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21597_160_728884_125928",
+            "name": "BuildingInstallation_PolyID21597_160_728884_125928",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21598_1301_472763_165007",
+            "name": "BuildingInstallation_PolyID21598_1301_472763_165007",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "UUID_5fd32809-87e4-4846-a4a5-0d0d05a53a0b",
+        "lod_level": null,
+        "name": "Chimney 1",
+        "semantic_origin": "function",
+        "semantic_type": "Chimney"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21599_116_128481_175104",
+            "name": "BuildingInstallation_PolyID21599_116_128481_175104",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21600_1801_659743_237458",
+            "name": "BuildingInstallation_PolyID21600_1801_659743_237458",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21601_194_323350_263289",
+            "name": "BuildingInstallation_PolyID21601_194_323350_263289",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21602_201_97111_236728",
+            "name": "BuildingInstallation_PolyID21602_201_97111_236728",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21603_1873_657013_366379",
+            "name": "BuildingInstallation_PolyID21603_1873_657013_366379",
+            "type": "BuildingInstallation"
+          },
+          {
+            "gml_id": "PolyID21604_714_432520_142258",
+            "name": "BuildingInstallation_PolyID21604_714_432520_142258",
+            "type": "BuildingInstallation"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "BuildingInstallation",
+        "gml_id": "UUID_7c0c3af1-8b20-43b9-b759-10a36ab1c017",
+        "lod_level": null,
+        "name": "Chimney 2",
+        "semantic_origin": "function",
+        "semantic_type": "Chimney"
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21767_1594_118198_227752",
+            "name": "DoorSurface_Opening_Exterior_118198227752",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21768_397_524725_59757",
+            "name": "DoorSurface_Opening_Exterior_752472559757",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21769_206_411574_138811",
+            "name": "DoorSurface_Opening_Exterior_411574138811",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21770_1549_527497_73025",
+            "name": "DoorSurface_Opening_Exterior_952749773025",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21770_1549_527497_73025_1",
+            "name": "InteriorWall_527497730251",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21771_1483_213734_87743",
+            "name": "DoorSurface_Opening_Exterior_321373487743",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21772_1677_523996_263397",
+            "name": "DoorSurface_Opening_Exterior_523996263397",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21773_1838_339689_235343",
+            "name": "DoorSurface_Opening_Exterior_339689235343",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21774_662_129430_406814",
+            "name": "DoorSurface_Opening_Exterior_129430406814",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21775_1288_245481_80624",
+            "name": "DoorSurface_Opening_Exterior_824548180624",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21776_52_482398_85779",
+            "name": "DoorSurface_Opening_Exterior_248239885779",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21777_1746_565527_208855",
+            "name": "DoorSurface_Opening_Exterior_565527208855",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21778_1178_689010_242345",
+            "name": "DoorSurface_Opening_Exterior_689010242345",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21778_1178_689010_242345_1",
+            "name": "InteriorWall_890102423451",
+            "type": "DoorSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "DoorSurface",
+        "gml_id": "UUID_71e56619-5e06-4a98-9b47-2dc2cc87e7b3",
+        "lod_level": null,
+        "name": "DoorSurface_UUID_71e56619-5e06-4a98-9b47-2dc2cc87e7b3",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21606_1319_122200_221869",
+            "name": "DoorSurface_Opening_Exterior_122200221869",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "ID_FRESH0",
+            "name": "DoorSurface_Opening_Exterior_122200221869_Prism_1",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "ID_FRESH1",
+            "name": "DoorSurface_Opening_Exterior_122200221869_Prism_2",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "ID_FRESH2",
+            "name": "DoorSurface_Opening_Exterior_122200221869_Prism_3",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "ID_FRESH3",
+            "name": "DoorSurface_Opening_Exterior_122200221869_Prism_4",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "ID_FRESH4",
+            "name": "DoorSurface_Opening_Exterior_122200221869_Prism_5",
+            "type": "DoorSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "DoorSurface",
+        "gml_id": "UUID_a868b6de-7710-48f9-9373-f2ab6865e623",
+        "lod_level": null,
+        "name": "DoorSurface_UUID_a868b6de-7710-48f9-9373-f2ab6865e623",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21667_1616_743488_28228",
+            "name": "DoorSurface_Opening_Exterior_674348828228",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21668_578_22848_3048",
+            "name": "DoorSurface_Opening_Exterior_578228483048",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21669_1825_559019_24298",
+            "name": "DoorSurface_Opening_Exterior_555901924298",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21670_1981_534863_243415",
+            "name": "DoorSurface_Opening_Exterior_534863243415",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21671_1943_345543_278980",
+            "name": "DoorSurface_Opening_Exterior_345543278980",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21671_1943_345543_278980_1",
+            "name": "InteriorWall_455432789801",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21672_1239_385994_211805",
+            "name": "DoorSurface_Opening_Exterior_385994211805",
+            "type": "DoorSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "DoorSurface",
+        "gml_id": "UUID_c2fe468c-27eb-4805-b74e-0190534cc10f",
+        "lod_level": null,
+        "name": "DoorSurface_UUID_c2fe468c-27eb-4805-b74e-0190534cc10f",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21628_1909_493526_253829",
+            "name": "DoorSurface_Opening_Exterior_493526253829",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21629_1537_832855_286161",
+            "name": "DoorSurface_Opening_Exterior_832855286161",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21630_1194_277220_15502",
+            "name": "DoorSurface_Opening_Exterior_427722015502",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21630_1194_277220_15502_1",
+            "name": "InteriorWall_277220155021",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21631_234_487715_61917",
+            "name": "DoorSurface_Opening_Exterior_448771561917",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21632_1696_795720_169575",
+            "name": "DoorSurface_Opening_Exterior_795720169575",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21633_1378_666587_357850",
+            "name": "DoorSurface_Opening_Exterior_666587357850",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21634_304_680492_149647",
+            "name": "DoorSurface_Opening_Exterior_680492149647",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21635_763_525221_161335",
+            "name": "DoorSurface_Opening_Exterior_525221161335",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21636_1424_877369_293933",
+            "name": "DoorSurface_Opening_Exterior_877369293933",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21637_866_618990_219959",
+            "name": "DoorSurface_Opening_Exterior_618990219959",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21638_1663_807889_254935",
+            "name": "DoorSurface_Opening_Exterior_807889254935",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21638_1663_807889_254935_1",
+            "name": "InteriorWall_078892549351",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21639_493_204219_212847",
+            "name": "DoorSurface_Opening_Exterior_204219212847",
+            "type": "DoorSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "DoorSurface",
+        "gml_id": "UUID_ca6168dc-3a72-4edb-be06-fc4ec42afabe",
+        "lod_level": null,
+        "name": "DoorSurface_UUID_ca6168dc-3a72-4edb-be06-fc4ec42afabe",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21755_1903_17305_378341",
+            "name": "DoorSurface_Opening_Exterior_317305378341",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21755_1903_17305_378341_1",
+            "name": "InteriorWall_173053783411",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21756_423_574249_239973",
+            "name": "DoorSurface_Opening_Exterior_574249239973",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21757_487_778603_65234",
+            "name": "DoorSurface_Opening_Exterior_777860365234",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21758_1711_9693_131860",
+            "name": "DoorSurface_Opening_Exterior_119693131860",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21758_1711_9693_131860_1",
+            "name": "InteriorWall_196931318601",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21759_1158_474424_284449",
+            "name": "DoorSurface_Opening_Exterior_474424284449",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21760_60_472839_331145",
+            "name": "DoorSurface_Opening_Exterior_472839331145",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21761_1679_75130_137385",
+            "name": "DoorSurface_Opening_Exterior_975130137385",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21762_679_476221_90102",
+            "name": "DoorSurface_Opening_Exterior_947622190102",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21763_816_452269_212260",
+            "name": "DoorSurface_Opening_Exterior_452269212260",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21764_686_645848_135629",
+            "name": "DoorSurface_Opening_Exterior_645848135629",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21765_681_224208_210205",
+            "name": "DoorSurface_Opening_Exterior_224208210205",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21766_414_446470_397119",
+            "name": "DoorSurface_Opening_Exterior_446470397119",
+            "type": "DoorSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "DoorSurface",
+        "gml_id": "UUID_f4012637-7dcb-4861-8562-29c8f2dfd886",
+        "lod_level": null,
+        "name": "DoorSurface_UUID_f4012637-7dcb-4861-8562-29c8f2dfd886",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21640_1464_514549_259422",
+            "name": "DoorSurface_Opening_Exterior_514549259422",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21641_1103_787540_42728",
+            "name": "DoorSurface_Opening_Exterior_378754042728",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21642_609_183994_336466",
+            "name": "DoorSurface_Opening_Exterior_183994336466",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21643_626_492224_149117",
+            "name": "DoorSurface_Opening_Exterior_492224149117",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21644_550_755157_343100",
+            "name": "DoorSurface_Opening_Exterior_755157343100",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21645_1771_49828_228915",
+            "name": "DoorSurface_Opening_Exterior_149828228915",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21646_1986_853742_109577",
+            "name": "DoorSurface_Opening_Exterior_853742109577",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21646_1986_853742_109577_1",
+            "name": "InteriorWall_537421095771",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21647_1713_216309_60424",
+            "name": "DoorSurface_Opening_Exterior_321630960424",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21648_154_66638_121677",
+            "name": "DoorSurface_Opening_Exterior_466638121677",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21648_154_66638_121677_1",
+            "name": "InteriorWall_666381216771",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21649_1861_580156_191188",
+            "name": "DoorSurface_Opening_Exterior_580156191188",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21650_1207_789472_29469",
+            "name": "DoorSurface_Opening_Exterior_778947229469",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21651_1375_486920_169428",
+            "name": "DoorSurface_Opening_Exterior_486920169428",
+            "type": "DoorSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "DoorSurface",
+        "gml_id": "UUID_faf1f747-2cec-4869-8ea8-06a82548a386",
+        "lod_level": null,
+        "name": "DoorSurface_UUID_faf1f747-2cec-4869-8ea8-06a82548a386",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21704_1817_58804_356820",
+            "name": "GroundSurface_PolyID21704_1817_58804_356820",
+            "type": "GroundSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "GroundSurface",
+        "gml_id": "UUID_1d623f45-c783-452e-96b8-476ad9f72630",
+        "lod_level": null,
+        "name": "GroundSurface_UUID_1d623f45-c783-452e-96b8-476ad9f72630",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21718_1543_820918_312040",
+            "name": "RoofSurface_PolyID21718_1543_820918_312040",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21718_1543_820918_312040_1",
+            "name": "Ceiling_209183120401",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21719_155_268889_88974",
+            "name": "RoofSurface_PolyID21719_155_268889_88974",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21720_918_55222_181955",
+            "name": "RoofSurface_PolyID21720_918_55222_181955",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21721_104_752610_77672",
+            "name": "RoofSurface_PolyID21721_104_752610_77672",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21722_1646_229232_145823",
+            "name": "RoofSurface_PolyID21722_1646_229232_145823",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21723_447_68581_282126",
+            "name": "RoofSurface_PolyID21723_447_68581_282126",
+            "type": "RoofSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "RoofSurface",
+        "gml_id": "UUID_676ab97f-6c22-4be7-920b-61109ae6fd21",
+        "lod_level": null,
+        "name": "RoofSurface_UUID_676ab97f-6c22-4be7-920b-61109ae6fd21",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21673_1723_450832_32454",
+            "name": "RoofSurface_PolyID21673_1723_450832_32454",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21674_630_681039_356616",
+            "name": "RoofSurface_PolyID21674_630_681039_356616",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21675_476_781022_160094",
+            "name": "RoofSurface_PolyID21675_476_781022_160094",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21676_1947_845540_293775",
+            "name": "RoofSurface_PolyID21676_1947_845540_293775",
+            "type": "RoofSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "RoofSurface",
+        "gml_id": "UUID_e8d38e1c-537b-487c-972f-a2f8bd070899",
+        "lod_level": null,
+        "name": "RoofSurface_UUID_e8d38e1c-537b-487c-972f-a2f8bd070899",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21696_299_744694_271598",
+            "name": "RoofSurface_PolyID21696_299_744694_271598",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21697_1035_650314_293569",
+            "name": "RoofSurface_PolyID21697_1035_650314_293569",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21698_973_566567_57745",
+            "name": "RoofSurface_PolyID21698_973_566567_57745",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21699_1974_808983_190864",
+            "name": "RoofSurface_PolyID21699_1974_808983_190864",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21700_1887_19546_393928",
+            "name": "RoofSurface_PolyID21700_1887_19546_393928",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21700_1887_19546_393928_1",
+            "name": "Ceiling_195463939281",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21701_96_413288_49717",
+            "name": "RoofSurface_PolyID21701_96_413288_49717",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21702_726_429315_76427",
+            "name": "RoofSurface_PolyID21702_726_429315_76427",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21703_606_849947_253345",
+            "name": "RoofSurface_PolyID21703_606_849947_253345",
+            "type": "RoofSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "RoofSurface",
+        "gml_id": "UUID_e8ffec45-c34e-4f70-a394-88299b16688e",
+        "lod_level": null,
+        "name": "RoofSurface_UUID_e8ffec45-c34e-4f70-a394-88299b16688e",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21605_1586_160767_180859",
+            "name": "WallSurface_PolyID21605_1586_160767_180859",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21606_1319_122200_221869",
+            "name": "DoorSurface_Opening_Exterior_122200221869",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21608_105_178922_293607",
+            "name": "WallSurface_PolyID21608_105_178922_293607",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924",
+            "name": "WallSurface_PolyID21609_1651_576498_430924",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924_1",
+            "name": "InteriorWall_764984309241",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924_2",
+            "name": "InteriorWall_764984309242",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924_3",
+            "name": "InteriorWall_764984309243",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21610_581_490838_368714",
+            "name": "WindowSurface_Opening_Exterior_490838368714",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21611_1695_156545_404220",
+            "name": "WindowSurface_Opening_Exterior_156545404220",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21612_1794_895992_297826",
+            "name": "WindowSurface_Opening_Exterior_895992297826",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21613_1113_314056_161801",
+            "name": "WindowSurface_Opening_Exterior_314056161801",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21613_1113_314056_161801_1",
+            "name": "InteriorWall_140561618011",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21614_980_865208_118879",
+            "name": "WindowSurface_Opening_Exterior_865208118879",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21615_1616_10230_196376",
+            "name": "WindowSurface_Opening_Exterior_610230196376",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21616_1581_580092_138154",
+            "name": "WindowSurface_Opening_Exterior_580092138154",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21617_1746_380499_265502",
+            "name": "WindowSurface_Opening_Exterior_380499265502",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21618_748_857168_328137",
+            "name": "WindowSurface_Opening_Exterior_857168328137",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21618_748_857168_328137_1",
+            "name": "InteriorWall_571683281371",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21619_1476_184837_237536",
+            "name": "WindowSurface_Opening_Exterior_184837237536",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21620_1471_682794_343121",
+            "name": "WindowSurface_Opening_Exterior_682794343121",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21621_1038_500756_353934",
+            "name": "WindowSurface_Opening_Exterior_500756353934",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21622_966_333920_161370",
+            "name": "WindowSurface_Opening_Exterior_333920161370",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21623_1390_734974_430934",
+            "name": "WindowSurface_Opening_Exterior_734974430934",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21624_911_407253_411003",
+            "name": "WindowSurface_Opening_Exterior_407253411003",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21625_1806_339548_140689",
+            "name": "WindowSurface_Opening_Exterior_339548140689",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21625_1806_339548_140689_1",
+            "name": "InteriorWall_395481406891",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21626_1844_770993_82149",
+            "name": "WindowSurface_Opening_Exterior_477099382149",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21627_55_212950_305416",
+            "name": "WindowSurface_Opening_Exterior_212950305416",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21628_1909_493526_253829",
+            "name": "DoorSurface_Opening_Exterior_493526253829",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21629_1537_832855_286161",
+            "name": "DoorSurface_Opening_Exterior_832855286161",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21630_1194_277220_15502",
+            "name": "DoorSurface_Opening_Exterior_427722015502",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21630_1194_277220_15502_1",
+            "name": "InteriorWall_277220155021",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21631_234_487715_61917",
+            "name": "DoorSurface_Opening_Exterior_448771561917",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21632_1696_795720_169575",
+            "name": "DoorSurface_Opening_Exterior_795720169575",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21633_1378_666587_357850",
+            "name": "DoorSurface_Opening_Exterior_666587357850",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21634_304_680492_149647",
+            "name": "DoorSurface_Opening_Exterior_680492149647",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21635_763_525221_161335",
+            "name": "DoorSurface_Opening_Exterior_525221161335",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21636_1424_877369_293933",
+            "name": "DoorSurface_Opening_Exterior_877369293933",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21637_866_618990_219959",
+            "name": "DoorSurface_Opening_Exterior_618990219959",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21638_1663_807889_254935",
+            "name": "DoorSurface_Opening_Exterior_807889254935",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21638_1663_807889_254935_1",
+            "name": "InteriorWall_078892549351",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21639_493_204219_212847",
+            "name": "DoorSurface_Opening_Exterior_204219212847",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21640_1464_514549_259422",
+            "name": "DoorSurface_Opening_Exterior_514549259422",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21641_1103_787540_42728",
+            "name": "DoorSurface_Opening_Exterior_378754042728",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21642_609_183994_336466",
+            "name": "DoorSurface_Opening_Exterior_183994336466",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21643_626_492224_149117",
+            "name": "DoorSurface_Opening_Exterior_492224149117",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21644_550_755157_343100",
+            "name": "DoorSurface_Opening_Exterior_755157343100",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21645_1771_49828_228915",
+            "name": "DoorSurface_Opening_Exterior_149828228915",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21646_1986_853742_109577",
+            "name": "DoorSurface_Opening_Exterior_853742109577",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21646_1986_853742_109577_1",
+            "name": "InteriorWall_537421095771",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21647_1713_216309_60424",
+            "name": "DoorSurface_Opening_Exterior_321630960424",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21648_154_66638_121677",
+            "name": "DoorSurface_Opening_Exterior_466638121677",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21648_154_66638_121677_1",
+            "name": "InteriorWall_666381216771",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21649_1861_580156_191188",
+            "name": "DoorSurface_Opening_Exterior_580156191188",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21650_1207_789472_29469",
+            "name": "DoorSurface_Opening_Exterior_778947229469",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21651_1375_486920_169428",
+            "name": "DoorSurface_Opening_Exterior_486920169428",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21654_1451_25047_202149",
+            "name": "WallSurface_PolyID21654_1451_25047_202149",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21654_1451_25047_202149_1",
+            "name": "InteriorWall_250472021491",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21654_1451_25047_202149_2",
+            "name": "InteriorWall_250472021492",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21655_1949_55819_184184",
+            "name": "WindowSurface_Opening_Exterior_955819184184",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21656_581_617585_259410",
+            "name": "WindowSurface_Opening_Exterior_617585259410",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21656_581_617585_259410_1",
+            "name": "InteriorWall_175852594101",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21657_766_290619_161764",
+            "name": "WindowSurface_Opening_Exterior_290619161764",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21658_875_357768_336139",
+            "name": "WindowSurface_Opening_Exterior_357768336139",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21659_1762_899347_374116",
+            "name": "WindowSurface_Opening_Exterior_899347374116",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21660_207_167570_241713",
+            "name": "WindowSurface_Opening_Exterior_167570241713",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21661_1244_680232_5347",
+            "name": "WindowSurface_Opening_Exterior_446802325347",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21661_1244_680232_5347_1",
+            "name": "InteriorWall_468023253471",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21662_639_342387_269245",
+            "name": "WindowSurface_Opening_Exterior_342387269245",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21663_783_615524_308289",
+            "name": "WindowSurface_Opening_Exterior_615524308289",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21664_348_769661_161130",
+            "name": "WindowSurface_Opening_Exterior_769661161130",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21665_396_76337_318575",
+            "name": "WindowSurface_Opening_Exterior_676337318575",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21666_271_264822_391089",
+            "name": "WindowSurface_Opening_Exterior_264822391089",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21667_1616_743488_28228",
+            "name": "DoorSurface_Opening_Exterior_674348828228",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21668_578_22848_3048",
+            "name": "DoorSurface_Opening_Exterior_578228483048",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21669_1825_559019_24298",
+            "name": "DoorSurface_Opening_Exterior_555901924298",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21670_1981_534863_243415",
+            "name": "DoorSurface_Opening_Exterior_534863243415",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21671_1943_345543_278980",
+            "name": "DoorSurface_Opening_Exterior_345543278980",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21671_1943_345543_278980_1",
+            "name": "InteriorWall_455432789801",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21672_1239_385994_211805",
+            "name": "DoorSurface_Opening_Exterior_385994211805",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608",
+            "name": "WallSurface_PolyID21677_57_185509_240608",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608_1",
+            "name": "InteriorWall_855092406081",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608_2",
+            "name": "InteriorWall_855092406082",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608_3",
+            "name": "InteriorWall_855092406083",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21678_1848_666131_120919",
+            "name": "WindowSurface_Opening_Exterior_666131120919",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21679_612_184850_337628",
+            "name": "WindowSurface_Opening_Exterior_184850337628",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21680_1198_766332_159457",
+            "name": "WindowSurface_Opening_Exterior_766332159457",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21680_1198_766332_159457_1",
+            "name": "InteriorWall_663321594571",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21681_1002_282476_106718",
+            "name": "WindowSurface_Opening_Exterior_282476106718",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21682_305_642227_72480",
+            "name": "WindowSurface_Opening_Exterior_564222772480",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21683_52_511965_29654",
+            "name": "WindowSurface_Opening_Exterior_251196529654",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21684_441_550768_370243",
+            "name": "WindowSurface_Opening_Exterior_550768370243",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21685_834_525681_29704",
+            "name": "WindowSurface_Opening_Exterior_452568129704",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21686_601_786171_425579",
+            "name": "WindowSurface_Opening_Exterior_786171425579",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21687_1056_101984_386901",
+            "name": "WindowSurface_Opening_Exterior_101984386901",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21688_443_524583_409239",
+            "name": "WindowSurface_Opening_Exterior_524583409239",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21689_84_167596_431751",
+            "name": "WindowSurface_Opening_Exterior_167596431751",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21689_84_167596_431751_1",
+            "name": "InteriorWall_675964317511",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21690_1512_543310_218982",
+            "name": "WindowSurface_Opening_Exterior_543310218982",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21691_250_681592_299089",
+            "name": "WindowSurface_Opening_Exterior_681592299089",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21692_1965_797393_277946",
+            "name": "WindowSurface_Opening_Exterior_797393277946",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21693_1182_643300_331418",
+            "name": "WindowSurface_Opening_Exterior_643300331418",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21694_1328_446577_263922",
+            "name": "WindowSurface_Opening_Exterior_446577263922",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21695_435_595218_288785",
+            "name": "WindowSurface_Opening_Exterior_595218288785",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21695_435_595218_288785_1",
+            "name": "InteriorWall_952182887851",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21705_1650_227777_306296",
+            "name": "WallSurface_PolyID21705_1650_227777_306296",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21705_1650_227777_306296_1",
+            "name": "InteriorWall_277773062961",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21705_1650_227777_306296_2",
+            "name": "InteriorWall_277773062962",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21706_1263_554021_128712",
+            "name": "WindowSurface_Opening_Exterior_554021128712",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21707_273_103896_126067",
+            "name": "WindowSurface_Opening_Exterior_103896126067",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21708_78_694940_264609",
+            "name": "WindowSurface_Opening_Exterior_694940264609",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21709_1924_629269_41805",
+            "name": "WindowSurface_Opening_Exterior_462926941805",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21709_1924_629269_41805_1",
+            "name": "InteriorWall_629269418051",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21710_758_748729_61991",
+            "name": "WindowSurface_Opening_Exterior_874872961991",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21711_1590_158019_296092",
+            "name": "WindowSurface_Opening_Exterior_158019296092",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21712_463_592205_374357",
+            "name": "WindowSurface_Opening_Exterior_592205374357",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21713_706_636162_136640",
+            "name": "WindowSurface_Opening_Exterior_636162136640",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21714_931_63149_29028",
+            "name": "WindowSurface_Opening_Exterior_316314929028",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21714_931_63149_29028_1",
+            "name": "InteriorWall_163149290281",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21715_915_55430_109585",
+            "name": "WindowSurface_Opening_Exterior_555430109585",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21716_529_450083_218114",
+            "name": "WindowSurface_Opening_Exterior_450083218114",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21717_937_865733_272673",
+            "name": "WindowSurface_Opening_Exterior_865733272673",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669",
+            "name": "WallSurface_PolyID21724_976_229846_256669",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_1",
+            "name": "InteriorWall_298462566691",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_2",
+            "name": "InteriorWall_298462566692",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_3",
+            "name": "InteriorWall_298462566693",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_4",
+            "name": "InteriorWall_298462566694",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_5",
+            "name": "InteriorWall_298462566695",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21725_1442_797347_44439",
+            "name": "WindowSurface_Opening_Exterior_279734744439",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21726_902_460925_185823",
+            "name": "WindowSurface_Opening_Exterior_460925185823",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21727_1600_748185_345064",
+            "name": "WindowSurface_Opening_Exterior_748185345064",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21727_1600_748185_345064_1",
+            "name": "InteriorWall_481853450641",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21728_1606_108403_22622",
+            "name": "WindowSurface_Opening_Exterior_610840322622",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21729_1549_213437_359943",
+            "name": "WindowSurface_Opening_Exterior_213437359943",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21730_1536_144087_58428",
+            "name": "WindowSurface_Opening_Exterior_614408758428",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21731_1843_394004_37398",
+            "name": "WindowSurface_Opening_Exterior_339400437398",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21732_133_807412_258307",
+            "name": "WindowSurface_Opening_Exterior_807412258307",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21733_474_879706_311258",
+            "name": "WindowSurface_Opening_Exterior_879706311258",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21734_1724_853109_271658",
+            "name": "WindowSurface_Opening_Exterior_853109271658",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21735_1063_354494_68863",
+            "name": "WindowSurface_Opening_Exterior_335449468863",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21735_1063_354494_68863_1",
+            "name": "InteriorWall_354494688631",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21736_1080_544684_292384",
+            "name": "WindowSurface_Opening_Exterior_544684292384",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21737_212_757499_373004",
+            "name": "WindowSurface_Opening_Exterior_757499373004",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21738_144_556648_14254",
+            "name": "WindowSurface_Opening_Exterior_455664814254",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21739_464_546163_277003",
+            "name": "WindowSurface_Opening_Exterior_546163277003",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21740_1461_782028_174718",
+            "name": "WindowSurface_Opening_Exterior_782028174718",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21741_1064_266439_329196",
+            "name": "WindowSurface_Opening_Exterior_266439329196",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21742_593_742455_198073",
+            "name": "WindowSurface_Opening_Exterior_742455198073",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21742_593_742455_198073_1",
+            "name": "InteriorWall_424551980731",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21743_696_382126_245662",
+            "name": "WindowSurface_Opening_Exterior_382126245662",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21744_1794_325824_132257",
+            "name": "WindowSurface_Opening_Exterior_325824132257",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21744_1794_325824_132257_1",
+            "name": "InteriorWall_258241322571",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21745_1610_156625_192745",
+            "name": "WindowSurface_Opening_Exterior_156625192745",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21746_1626_139468_372563",
+            "name": "WindowSurface_Opening_Exterior_139468372563",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21747_1866_580114_237092",
+            "name": "WindowSurface_Opening_Exterior_580114237092",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21748_1291_562609_99611",
+            "name": "WindowSurface_Opening_Exterior_156260999611",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21749_389_33526_157192",
+            "name": "WindowSurface_Opening_Exterior_933526157192",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21750_1488_132663_247733",
+            "name": "WindowSurface_Opening_Exterior_132663247733",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21751_1532_273800_251555",
+            "name": "WindowSurface_Opening_Exterior_273800251555",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21752_568_792163_261779",
+            "name": "WindowSurface_Opening_Exterior_792163261779",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21752_568_792163_261779_1",
+            "name": "InteriorWall_921632617791",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21753_1076_320549_400126",
+            "name": "WindowSurface_Opening_Exterior_320549400126",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21754_1803_662990_124941",
+            "name": "WindowSurface_Opening_Exterior_662990124941",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21755_1903_17305_378341",
+            "name": "DoorSurface_Opening_Exterior_317305378341",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21755_1903_17305_378341_1",
+            "name": "InteriorWall_173053783411",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21756_423_574249_239973",
+            "name": "DoorSurface_Opening_Exterior_574249239973",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21757_487_778603_65234",
+            "name": "DoorSurface_Opening_Exterior_777860365234",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21758_1711_9693_131860",
+            "name": "DoorSurface_Opening_Exterior_119693131860",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21758_1711_9693_131860_1",
+            "name": "InteriorWall_196931318601",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21759_1158_474424_284449",
+            "name": "DoorSurface_Opening_Exterior_474424284449",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21760_60_472839_331145",
+            "name": "DoorSurface_Opening_Exterior_472839331145",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21761_1679_75130_137385",
+            "name": "DoorSurface_Opening_Exterior_975130137385",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21762_679_476221_90102",
+            "name": "DoorSurface_Opening_Exterior_947622190102",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21763_816_452269_212260",
+            "name": "DoorSurface_Opening_Exterior_452269212260",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21764_686_645848_135629",
+            "name": "DoorSurface_Opening_Exterior_645848135629",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21765_681_224208_210205",
+            "name": "DoorSurface_Opening_Exterior_224208210205",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21766_414_446470_397119",
+            "name": "DoorSurface_Opening_Exterior_446470397119",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21767_1594_118198_227752",
+            "name": "DoorSurface_Opening_Exterior_118198227752",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21768_397_524725_59757",
+            "name": "DoorSurface_Opening_Exterior_752472559757",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21769_206_411574_138811",
+            "name": "DoorSurface_Opening_Exterior_411574138811",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21770_1549_527497_73025",
+            "name": "DoorSurface_Opening_Exterior_952749773025",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21770_1549_527497_73025_1",
+            "name": "InteriorWall_527497730251",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21771_1483_213734_87743",
+            "name": "DoorSurface_Opening_Exterior_321373487743",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21772_1677_523996_263397",
+            "name": "DoorSurface_Opening_Exterior_523996263397",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21773_1838_339689_235343",
+            "name": "DoorSurface_Opening_Exterior_339689235343",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21774_662_129430_406814",
+            "name": "DoorSurface_Opening_Exterior_129430406814",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21775_1288_245481_80624",
+            "name": "DoorSurface_Opening_Exterior_824548180624",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21776_52_482398_85779",
+            "name": "DoorSurface_Opening_Exterior_248239885779",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21777_1746_565527_208855",
+            "name": "DoorSurface_Opening_Exterior_565527208855",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21778_1178_689010_242345",
+            "name": "DoorSurface_Opening_Exterior_689010242345",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21778_1178_689010_242345_1",
+            "name": "InteriorWall_890102423451",
+            "type": "DoorSurface"
+          },
+          {
+            "gml_id": "PolyID21704_1817_58804_356820",
+            "name": "GroundSurface_PolyID21704_1817_58804_356820",
+            "type": "GroundSurface"
+          },
+          {
+            "gml_id": "PolyID21718_1543_820918_312040",
+            "name": "RoofSurface_PolyID21718_1543_820918_312040",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21718_1543_820918_312040_1",
+            "name": "Ceiling_209183120401",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21719_155_268889_88974",
+            "name": "RoofSurface_PolyID21719_155_268889_88974",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21720_918_55222_181955",
+            "name": "RoofSurface_PolyID21720_918_55222_181955",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21721_104_752610_77672",
+            "name": "RoofSurface_PolyID21721_104_752610_77672",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21722_1646_229232_145823",
+            "name": "RoofSurface_PolyID21722_1646_229232_145823",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21723_447_68581_282126",
+            "name": "RoofSurface_PolyID21723_447_68581_282126",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21607_1919_469493_142651",
+            "name": "WallSurface_PolyID21607_1919_469493_142651",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21696_299_744694_271598",
+            "name": "RoofSurface_PolyID21696_299_744694_271598",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21697_1035_650314_293569",
+            "name": "RoofSurface_PolyID21697_1035_650314_293569",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21698_973_566567_57745",
+            "name": "RoofSurface_PolyID21698_973_566567_57745",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21699_1974_808983_190864",
+            "name": "RoofSurface_PolyID21699_1974_808983_190864",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21700_1887_19546_393928",
+            "name": "RoofSurface_PolyID21700_1887_19546_393928",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21700_1887_19546_393928_1",
+            "name": "Ceiling_195463939281",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21701_96_413288_49717",
+            "name": "RoofSurface_PolyID21701_96_413288_49717",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21702_726_429315_76427",
+            "name": "RoofSurface_PolyID21702_726_429315_76427",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21703_606_849947_253345",
+            "name": "RoofSurface_PolyID21703_606_849947_253345",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21673_1723_450832_32454",
+            "name": "RoofSurface_PolyID21673_1723_450832_32454",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21674_630_681039_356616",
+            "name": "RoofSurface_PolyID21674_630_681039_356616",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21675_476_781022_160094",
+            "name": "RoofSurface_PolyID21675_476_781022_160094",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21676_1947_845540_293775",
+            "name": "RoofSurface_PolyID21676_1947_845540_293775",
+            "type": "RoofSurface"
+          },
+          {
+            "gml_id": "PolyID21652_1406_532296_339770",
+            "name": "WallSurface_PolyID21652_1406_532296_339770",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21653_309_196615_380283",
+            "name": "WallSurface_PolyID21653_309_196615_380283",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "Building",
+        "gml_id": "GMLID_BUI184698_512_898",
+        "lod_level": null,
+        "name": "Station KIT/KHH-1",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21652_1406_532296_339770",
+            "name": "WallSurface_PolyID21652_1406_532296_339770",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_0d935dab-54a5-421e-95d4-d6ef1ccf269e",
+        "lod_level": null,
+        "name": "WallSurface_UUID_0d935dab-54a5-421e-95d4-d6ef1ccf269e",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21677_57_185509_240608",
+            "name": "WallSurface_PolyID21677_57_185509_240608",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608_1",
+            "name": "InteriorWall_855092406081",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608_2",
+            "name": "InteriorWall_855092406082",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21677_57_185509_240608_3",
+            "name": "InteriorWall_855092406083",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_2501c3d0-7a0d-41ee-a646-69aaa001d667",
+        "lod_level": null,
+        "name": "WallSurface_UUID_2501c3d0-7a0d-41ee-a646-69aaa001d667",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21705_1650_227777_306296",
+            "name": "WallSurface_PolyID21705_1650_227777_306296",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21705_1650_227777_306296_1",
+            "name": "InteriorWall_277773062961",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21705_1650_227777_306296_2",
+            "name": "InteriorWall_277773062962",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_8b3f35d8-a803-43d9-ac27-2b831008482c",
+        "lod_level": null,
+        "name": "WallSurface_UUID_8b3f35d8-a803-43d9-ac27-2b831008482c",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21654_1451_25047_202149",
+            "name": "WallSurface_PolyID21654_1451_25047_202149",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21654_1451_25047_202149_1",
+            "name": "InteriorWall_250472021491",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21654_1451_25047_202149_2",
+            "name": "InteriorWall_250472021492",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_b435832b-919f-4b2e-ab6e-48bd9ea5d1b5",
+        "lod_level": null,
+        "name": "WallSurface_UUID_b435832b-919f-4b2e-ab6e-48bd9ea5d1b5",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21724_976_229846_256669",
+            "name": "WallSurface_PolyID21724_976_229846_256669",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_1",
+            "name": "InteriorWall_298462566691",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_2",
+            "name": "InteriorWall_298462566692",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_3",
+            "name": "InteriorWall_298462566693",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_4",
+            "name": "InteriorWall_298462566694",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21724_976_229846_256669_5",
+            "name": "InteriorWall_298462566695",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_d36c6c34-1901-4d3b-9264-dbe8b98c4dbf",
+        "lod_level": null,
+        "name": "WallSurface_UUID_d36c6c34-1901-4d3b-9264-dbe8b98c4dbf",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21605_1586_160767_180859",
+            "name": "WallSurface_PolyID21605_1586_160767_180859",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_f046b49d-1a02-4e77-b69b-59f80de5ee13",
+        "lod_level": null,
+        "name": "WallSurface_UUID_f046b49d-1a02-4e77-b69b-59f80de5ee13",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21653_309_196615_380283",
+            "name": "WallSurface_PolyID21653_309_196615_380283",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_f59600a3-33b0-4fc6-9111-713c8fa72d11",
+        "lod_level": null,
+        "name": "WallSurface_UUID_f59600a3-33b0-4fc6-9111-713c8fa72d11",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21608_105_178922_293607",
+            "name": "WallSurface_PolyID21608_105_178922_293607",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924",
+            "name": "WallSurface_PolyID21609_1651_576498_430924",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924_1",
+            "name": "InteriorWall_764984309241",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924_2",
+            "name": "InteriorWall_764984309242",
+            "type": "WallSurface"
+          },
+          {
+            "gml_id": "PolyID21609_1651_576498_430924_3",
+            "name": "InteriorWall_764984309243",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_f8aa1812-3627-41d1-af8f-8f8b8467e0e8",
+        "lod_level": null,
+        "name": "WallSurface_UUID_f8aa1812-3627-41d1-af8f-8f8b8467e0e8",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21607_1919_469493_142651",
+            "name": "WallSurface_PolyID21607_1919_469493_142651",
+            "type": "WallSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WallSurface",
+        "gml_id": "UUID_fc7ba87b-9215-4137-ae44-201ab1d12c1f",
+        "lod_level": null,
+        "name": "WallSurface_UUID_fc7ba87b-9215-4137-ae44-201ab1d12c1f",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21622_966_333920_161370",
+            "name": "WindowSurface_Opening_Exterior_333920161370",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21623_1390_734974_430934",
+            "name": "WindowSurface_Opening_Exterior_734974430934",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21624_911_407253_411003",
+            "name": "WindowSurface_Opening_Exterior_407253411003",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21625_1806_339548_140689",
+            "name": "WindowSurface_Opening_Exterior_339548140689",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21625_1806_339548_140689_1",
+            "name": "InteriorWall_395481406891",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21626_1844_770993_82149",
+            "name": "WindowSurface_Opening_Exterior_477099382149",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21627_55_212950_305416",
+            "name": "WindowSurface_Opening_Exterior_212950305416",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_0a3f8924-6c1f-4402-818d-c24ccc9fb695",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_0a3f8924-6c1f-4402-818d-c24ccc9fb695",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21737_212_757499_373004",
+            "name": "WindowSurface_Opening_Exterior_757499373004",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21738_144_556648_14254",
+            "name": "WindowSurface_Opening_Exterior_455664814254",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21739_464_546163_277003",
+            "name": "WindowSurface_Opening_Exterior_546163277003",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21740_1461_782028_174718",
+            "name": "WindowSurface_Opening_Exterior_782028174718",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21741_1064_266439_329196",
+            "name": "WindowSurface_Opening_Exterior_266439329196",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21742_593_742455_198073",
+            "name": "WindowSurface_Opening_Exterior_742455198073",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21742_593_742455_198073_1",
+            "name": "InteriorWall_424551980731",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_1c353dc6-2cb4-47f6-811e-b747186ac1f7",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_1c353dc6-2cb4-47f6-811e-b747186ac1f7",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21706_1263_554021_128712",
+            "name": "WindowSurface_Opening_Exterior_554021128712",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21707_273_103896_126067",
+            "name": "WindowSurface_Opening_Exterior_103896126067",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21708_78_694940_264609",
+            "name": "WindowSurface_Opening_Exterior_694940264609",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21709_1924_629269_41805",
+            "name": "WindowSurface_Opening_Exterior_462926941805",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21709_1924_629269_41805_1",
+            "name": "InteriorWall_629269418051",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21710_758_748729_61991",
+            "name": "WindowSurface_Opening_Exterior_874872961991",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21711_1590_158019_296092",
+            "name": "WindowSurface_Opening_Exterior_158019296092",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_3001563f-3757-4757-accc-5ebd5bd10725",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_3001563f-3757-4757-accc-5ebd5bd10725",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21616_1581_580092_138154",
+            "name": "WindowSurface_Opening_Exterior_580092138154",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21617_1746_380499_265502",
+            "name": "WindowSurface_Opening_Exterior_380499265502",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21618_748_857168_328137",
+            "name": "WindowSurface_Opening_Exterior_857168328137",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21618_748_857168_328137_1",
+            "name": "InteriorWall_571683281371",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21619_1476_184837_237536",
+            "name": "WindowSurface_Opening_Exterior_184837237536",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21620_1471_682794_343121",
+            "name": "WindowSurface_Opening_Exterior_682794343121",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21621_1038_500756_353934",
+            "name": "WindowSurface_Opening_Exterior_500756353934",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_4de1a897-4204-474a-a78a-8a2f9a21f4b4",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_4de1a897-4204-474a-a78a-8a2f9a21f4b4",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21678_1848_666131_120919",
+            "name": "WindowSurface_Opening_Exterior_666131120919",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21679_612_184850_337628",
+            "name": "WindowSurface_Opening_Exterior_184850337628",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21680_1198_766332_159457",
+            "name": "WindowSurface_Opening_Exterior_766332159457",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21680_1198_766332_159457_1",
+            "name": "InteriorWall_663321594571",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21681_1002_282476_106718",
+            "name": "WindowSurface_Opening_Exterior_282476106718",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21682_305_642227_72480",
+            "name": "WindowSurface_Opening_Exterior_564222772480",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21683_52_511965_29654",
+            "name": "WindowSurface_Opening_Exterior_251196529654",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_6619468f-7f16-471d-9955-5e06e74628c6",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_6619468f-7f16-471d-9955-5e06e74628c6",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21610_581_490838_368714",
+            "name": "WindowSurface_Opening_Exterior_490838368714",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21611_1695_156545_404220",
+            "name": "WindowSurface_Opening_Exterior_156545404220",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21612_1794_895992_297826",
+            "name": "WindowSurface_Opening_Exterior_895992297826",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21613_1113_314056_161801",
+            "name": "WindowSurface_Opening_Exterior_314056161801",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21613_1113_314056_161801_1",
+            "name": "InteriorWall_140561618011",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21614_980_865208_118879",
+            "name": "WindowSurface_Opening_Exterior_865208118879",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21615_1616_10230_196376",
+            "name": "WindowSurface_Opening_Exterior_610230196376",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_6c419d23-3b3f-4a35-ba10-81729aa6f877",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_6c419d23-3b3f-4a35-ba10-81729aa6f877",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21684_441_550768_370243",
+            "name": "WindowSurface_Opening_Exterior_550768370243",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21685_834_525681_29704",
+            "name": "WindowSurface_Opening_Exterior_452568129704",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21686_601_786171_425579",
+            "name": "WindowSurface_Opening_Exterior_786171425579",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21687_1056_101984_386901",
+            "name": "WindowSurface_Opening_Exterior_101984386901",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21688_443_524583_409239",
+            "name": "WindowSurface_Opening_Exterior_524583409239",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21689_84_167596_431751",
+            "name": "WindowSurface_Opening_Exterior_167596431751",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21689_84_167596_431751_1",
+            "name": "InteriorWall_675964317511",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_762d895d-40b4-47cf-aac0-ae240198d1e7",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_762d895d-40b4-47cf-aac0-ae240198d1e7",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21655_1949_55819_184184",
+            "name": "WindowSurface_Opening_Exterior_955819184184",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21656_581_617585_259410",
+            "name": "WindowSurface_Opening_Exterior_617585259410",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21656_581_617585_259410_1",
+            "name": "InteriorWall_175852594101",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21657_766_290619_161764",
+            "name": "WindowSurface_Opening_Exterior_290619161764",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21658_875_357768_336139",
+            "name": "WindowSurface_Opening_Exterior_357768336139",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21659_1762_899347_374116",
+            "name": "WindowSurface_Opening_Exterior_899347374116",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21660_207_167570_241713",
+            "name": "WindowSurface_Opening_Exterior_167570241713",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_8353c3fd-3020-413d-8caa-f561fd52ec5f",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_8353c3fd-3020-413d-8caa-f561fd52ec5f",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21749_389_33526_157192",
+            "name": "WindowSurface_Opening_Exterior_933526157192",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21750_1488_132663_247733",
+            "name": "WindowSurface_Opening_Exterior_132663247733",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21751_1532_273800_251555",
+            "name": "WindowSurface_Opening_Exterior_273800251555",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21752_568_792163_261779",
+            "name": "WindowSurface_Opening_Exterior_792163261779",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21752_568_792163_261779_1",
+            "name": "InteriorWall_921632617791",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21753_1076_320549_400126",
+            "name": "WindowSurface_Opening_Exterior_320549400126",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21754_1803_662990_124941",
+            "name": "WindowSurface_Opening_Exterior_662990124941",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_ae0408a1-673a-43d8-ba52-13b2273b0272",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_ae0408a1-673a-43d8-ba52-13b2273b0272",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21743_696_382126_245662",
+            "name": "WindowSurface_Opening_Exterior_382126245662",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21744_1794_325824_132257",
+            "name": "WindowSurface_Opening_Exterior_325824132257",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21744_1794_325824_132257_1",
+            "name": "InteriorWall_258241322571",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21745_1610_156625_192745",
+            "name": "WindowSurface_Opening_Exterior_156625192745",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21746_1626_139468_372563",
+            "name": "WindowSurface_Opening_Exterior_139468372563",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21747_1866_580114_237092",
+            "name": "WindowSurface_Opening_Exterior_580114237092",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21748_1291_562609_99611",
+            "name": "WindowSurface_Opening_Exterior_156260999611",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_b4eeeeb8-0128-4613-b0f5-2a9b69affa1a",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_b4eeeeb8-0128-4613-b0f5-2a9b69affa1a",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21690_1512_543310_218982",
+            "name": "WindowSurface_Opening_Exterior_543310218982",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21691_250_681592_299089",
+            "name": "WindowSurface_Opening_Exterior_681592299089",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21692_1965_797393_277946",
+            "name": "WindowSurface_Opening_Exterior_797393277946",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21693_1182_643300_331418",
+            "name": "WindowSurface_Opening_Exterior_643300331418",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21694_1328_446577_263922",
+            "name": "WindowSurface_Opening_Exterior_446577263922",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21695_435_595218_288785",
+            "name": "WindowSurface_Opening_Exterior_595218288785",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21695_435_595218_288785_1",
+            "name": "InteriorWall_952182887851",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_bcaeb9e8-323f-4b5a-8c43-187f7f864909",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_bcaeb9e8-323f-4b5a-8c43-187f7f864909",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21712_463_592205_374357",
+            "name": "WindowSurface_Opening_Exterior_592205374357",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21713_706_636162_136640",
+            "name": "WindowSurface_Opening_Exterior_636162136640",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21714_931_63149_29028",
+            "name": "WindowSurface_Opening_Exterior_316314929028",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21714_931_63149_29028_1",
+            "name": "InteriorWall_163149290281",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21715_915_55430_109585",
+            "name": "WindowSurface_Opening_Exterior_555430109585",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21716_529_450083_218114",
+            "name": "WindowSurface_Opening_Exterior_450083218114",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21717_937_865733_272673",
+            "name": "WindowSurface_Opening_Exterior_865733272673",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_d9783504-8a1c-4cea-9d2c-80c9c2d01e15",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_d9783504-8a1c-4cea-9d2c-80c9c2d01e15",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21731_1843_394004_37398",
+            "name": "WindowSurface_Opening_Exterior_339400437398",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21732_133_807412_258307",
+            "name": "WindowSurface_Opening_Exterior_807412258307",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21733_474_879706_311258",
+            "name": "WindowSurface_Opening_Exterior_879706311258",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21734_1724_853109_271658",
+            "name": "WindowSurface_Opening_Exterior_853109271658",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21735_1063_354494_68863",
+            "name": "WindowSurface_Opening_Exterior_335449468863",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21735_1063_354494_68863_1",
+            "name": "InteriorWall_354494688631",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21736_1080_544684_292384",
+            "name": "WindowSurface_Opening_Exterior_544684292384",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_db1340dd-b310-4dd3-9622-8ce4195fb5da",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_db1340dd-b310-4dd3-9622-8ce4195fb5da",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21661_1244_680232_5347",
+            "name": "WindowSurface_Opening_Exterior_446802325347",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21661_1244_680232_5347_1",
+            "name": "InteriorWall_468023253471",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21662_639_342387_269245",
+            "name": "WindowSurface_Opening_Exterior_342387269245",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21663_783_615524_308289",
+            "name": "WindowSurface_Opening_Exterior_615524308289",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21664_348_769661_161130",
+            "name": "WindowSurface_Opening_Exterior_769661161130",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21665_396_76337_318575",
+            "name": "WindowSurface_Opening_Exterior_676337318575",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21666_271_264822_391089",
+            "name": "WindowSurface_Opening_Exterior_264822391089",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_de253e34-b4b0-45ca-9dc4-22a022cc58e4",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_de253e34-b4b0-45ca-9dc4-22a022cc58e4",
+        "semantic_origin": null,
+        "semantic_type": null
+      },
+      {
+        "boundary_surfaces": [
+          {
+            "gml_id": "PolyID21725_1442_797347_44439",
+            "name": "WindowSurface_Opening_Exterior_279734744439",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21726_902_460925_185823",
+            "name": "WindowSurface_Opening_Exterior_460925185823",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21727_1600_748185_345064",
+            "name": "WindowSurface_Opening_Exterior_748185345064",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21727_1600_748185_345064_1",
+            "name": "InteriorWall_481853450641",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21728_1606_108403_22622",
+            "name": "WindowSurface_Opening_Exterior_610840322622",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21729_1549_213437_359943",
+            "name": "WindowSurface_Opening_Exterior_213437359943",
+            "type": "WindowSurface"
+          },
+          {
+            "gml_id": "PolyID21730_1536_144087_58428",
+            "name": "WindowSurface_Opening_Exterior_614408758428",
+            "type": "WindowSurface"
+          }
+        ],
+        "feature_attributes": {},
+        "feature_type": "WindowSurface",
+        "gml_id": "UUID_ee74e3c4-7109-45cd-9f74-6273ca95aed6",
+        "lod_level": null,
+        "name": "WindowSurface_UUID_ee74e3c4-7109-45cd-9f74-6273ca95aed6",
+        "semantic_origin": null,
+        "semantic_type": null
+      }
+    ]
+  }
+}

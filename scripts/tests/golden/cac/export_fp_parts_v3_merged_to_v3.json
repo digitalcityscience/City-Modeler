@@ -1,0 +1,57 @@
+{
+  "coordinates": {
+    "B_PARENT_WALL_POLY_V3": "1ca7a53a3513a9cc",
+    "B_PART_WALL_POLY_V3": "bb1f5787b4d16394"
+  },
+  "element_counts": {
+    "Appearance": 2,
+    "Building": 1,
+    "BuildingPart": 1,
+    "CityModel": 1,
+    "Envelope": 3,
+    "LinearRing": 2,
+    "MultiSurface": 2,
+    "Polygon": 2,
+    "WallSurface": 2,
+    "X3DMaterial": 2,
+    "ambientIntensity": 2,
+    "appearanceMember": 2,
+    "boundary": 2,
+    "boundedBy": 3,
+    "buildingPart": 1,
+    "cityObjectMember": 1,
+    "creationDate": 2,
+    "diffuseColor": 2,
+    "emissiveColor": 2,
+    "exterior": 2,
+    "isFront": 2,
+    "isSmooth": 2,
+    "lod2MultiSurface": 2,
+    "lowerCorner": 3,
+    "posList": 2,
+    "shininess": 2,
+    "specularColor": 2,
+    "surfaceData": 2,
+    "surfaceMember": 2,
+    "target": 2,
+    "theme": 2,
+    "transparency": 2,
+    "upperCorner": 3
+  },
+  "feature_ids": [
+    "Building:B_PART_TEST_PARENT_V3",
+    "BuildingPart:B_PART_TEST_CHILD_V3",
+    "WallSurface:B_PARENT_WALL_SURFACE_V3",
+    "WallSurface:B_PART_WALL_SURFACE_V3"
+  ],
+  "interior_rings": {},
+  "opening_nesting": [],
+  "polygon_ids": [
+    "B_PARENT_WALL_POLY_V3",
+    "B_PART_WALL_POLY_V3"
+  ],
+  "xmllint": {
+    "errors": 0,
+    "exit": 0
+  }
+}

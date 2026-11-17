@@ -1,0 +1,47 @@
+{
+  "objects": [
+    {
+      "materials": [
+        {
+          "name": "B_PARENT_WALL_POLY",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "B_PARENT_WALL_SURFACE",
+            "gml_polygon_id": "B_PARENT_WALL_POLY",
+            "gml_ring_id": "B_PARENT_WALL_POLY_0_",
+            "lod": 2
+          }
+        }
+      ],
+      "name": "Building with inline part",
+      "parent": null,
+      "props": {
+        "cgml3_feature": "Building",
+        "gml_id": "B_PART_TEST_PARENT"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "B_PART_WALL_POLY",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "B_PART_WALL_SURFACE",
+            "gml_polygon_id": "B_PART_WALL_POLY",
+            "gml_ring_id": "B_PART_WALL_POLY_0_",
+            "lod": 2
+          }
+        }
+      ],
+      "name": "Inline building part",
+      "parent": "Building with inline part",
+      "props": {
+        "cgml3_feature": "BuildingPart",
+        "cgml_parent_id": "B_PART_TEST_PARENT",
+        "gml_id": "B_PART_TEST_CHILD"
+      },
+      "type": "MESH"
+    }
+  ]
+}

@@ -1,0 +1,224 @@
+{
+  "objects": [
+    {
+      "materials": [
+        {
+          "name": "WallSurface_Poly_wall_1",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "UUID_wall_altspelling_1",
+            "gml_polygon_id": "Poly_wall_1",
+            "gml_ring_id": "Poly_wall_1_0_",
+            "lod": 3
+          }
+        },
+        {
+          "name": "Window_Opening_Exterior_Polywindow1",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "Poly_window_1",
+            "gml_ring_id": "Poly_window_1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "Poly_door_1",
+            "gml_ring_id": "Poly_door_1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        }
+      ],
+      "name": "Alt Opening Spelling Building",
+      "parent": null,
+      "props": {
+        "cgml3_feature": "Building",
+        "gml_id": "GMLID_BUI_ALTSPELLING_1"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "Door_Opening_Exterior_Polydoor1",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "Poly_door_1",
+            "gml_ring_id": "Poly_door_1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1_Prism_1",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "ID_FRESH0",
+            "gml_ring_id": "ID_FRESH0_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1_Prism_2",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "ID_FRESH1",
+            "gml_ring_id": "ID_FRESH1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1_Prism_3",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "ID_FRESH2",
+            "gml_ring_id": "ID_FRESH2_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1_Prism_4",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "ID_FRESH3",
+            "gml_ring_id": "ID_FRESH3_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1_Prism_5",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "ID_FRESH4",
+            "gml_ring_id": "ID_FRESH4_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        }
+      ],
+      "name": "Door_UUID_door_altspelling_1",
+      "parent": "WallSurface_UUID_wall_altspelling_1",
+      "props": {
+        "cgml3_feature": "Door",
+        "filling_parent_surface_id": "UUID_wall_altspelling_1",
+        "gml_id": "UUID_door_altspelling_1"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "WallSurface_Poly_wall_1",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "UUID_wall_altspelling_1",
+            "gml_polygon_id": "Poly_wall_1",
+            "gml_ring_id": "Poly_wall_1_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "WallSurface_UUID_wall_altspelling_1",
+      "parent": "Alt Opening Spelling Building",
+      "props": {
+        "cgml3_feature": "WallSurface",
+        "gml_id": "UUID_wall_altspelling_1"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "CGML_Authored_Window_Glass",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "Poly_window_1",
+            "gml_ring_id": "Poly_window_1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "CGML_Authored_Window_Glass_Prism_1",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "ID_FRESH5",
+            "gml_ring_id": "ID_FRESH5_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "CGML_Authored_Window_Glass_Prism_2",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "ID_FRESH6",
+            "gml_ring_id": "ID_FRESH6_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "CGML_Authored_Window_Glass_Prism_3",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "ID_FRESH7",
+            "gml_ring_id": "ID_FRESH7_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "CGML_Authored_Window_Glass_Prism_4",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "ID_FRESH8",
+            "gml_ring_id": "ID_FRESH8_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "CGML_Authored_Window_Glass_Prism_5",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "ID_FRESH9",
+            "gml_ring_id": "ID_FRESH9_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        }
+      ],
+      "name": "Window_UUID_window_altspelling_1",
+      "parent": "WallSurface_UUID_wall_altspelling_1",
+      "props": {
+        "cgml3_feature": "Window",
+        "filling_parent_surface_id": "UUID_wall_altspelling_1",
+        "gml_id": "UUID_window_altspelling_1"
+      },
+      "type": "MESH"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "command": "tmp_user=$(mktemp -d) && tmp_out=$(mktemp -d) && blender --command extension build --source-dir . --output-filepath \"$tmp_out/city_modeler.zip\" && BLENDER_USER_RESOURCES=\"$tmp_user\" blender --command extension install-file --repo user_default --enable \"$tmp_out/city_modeler.zip\" && BLENDER_USER_RESOURCES=\"$tmp_user\" blender --background --python scripts/headless/semantic_hierarchy_baseline.py -- --output-dir \"$tmp_out\"",
+  "description": "Ticket 01 baseline for the Building-only Railway LoD3 CityGML 2 and CityGML 3 fixtures. Counts are XML ElementTree element counts, not regex matches. The harness builds and installs this working copy as a Blender extension into an isolated BLENDER_USER_RESOURCES directory, then verifies the loaded add-on module path before importing and exporting.",
+  "fixtures": {
+    "citygml2": {
+      "path": "test_files/Building/Railway_Scene_LoD3_CityGML2_Building_only.gml",
+      "citygml_version": "2.0",
+      "expected_counts": {
+        "cityObjectMember": 1,
+        "Building": 1,
+        "WallSurface": 9,
+        "Window": 15,
+        "Door": 6,
+        "BuildingInstallation": 2,
+        "Polygon": 186,
+        "interior": 41
+      }
+    },
+    "citygml3": {
+      "path": "test_files/Building/Railway_Scene_LoD3_CityGML3_Building_only.gml",
+      "citygml_version": "3.0",
+      "expected_counts": {
+        "cityObjectMember": 1,
+        "Building": 1,
+        "WallSurface": 9,
+        "WindowSurface": 15,
+        "DoorSurface": 6,
+        "BuildingInstallation": 2,
+        "Polygon": 186,
+        "interior": 41
+      }
+    }
+  }
+}

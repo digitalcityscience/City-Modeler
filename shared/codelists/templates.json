@@ -1,0 +1,62 @@
+{
+ "note": "B22 templates: values per code list; applied to the selected buildings in one click.",
+ "templates": [
+  {
+   "id": "residential",
+   "label": "Residential building",
+   "values": {
+    "OGC": {
+     "bldg:function": "1000",
+     "bldg:usage": "1000",
+     "bldg:roofType": "1030"
+    },
+    "ADV": {
+     "bldg:function": "31001_1000",
+     "bldg:usage": "31001_1000",
+     "bldg:roofType": "3100"
+    }
+   },
+   "fields": {
+    "bldg:storeysAboveGround": 2
+   }
+  },
+  {
+   "id": "office",
+   "label": "Office building",
+   "values": {
+    "OGC": {
+     "bldg:function": "1120",
+     "bldg:usage": "1120",
+     "bldg:roofType": "1000"
+    },
+    "ADV": {
+     "bldg:function": "31001_2020",
+     "bldg:usage": "31001_2020",
+     "bldg:roofType": "1000"
+    }
+   },
+   "fields": {
+    "bldg:storeysAboveGround": 4
+   }
+  },
+  {
+   "id": "garage",
+   "label": "Garage",
+   "values": {
+    "OGC": {
+     "bldg:function": "1630",
+     "bldg:usage": "1630",
+     "bldg:roofType": "1000"
+    },
+    "ADV": {
+     "bldg:function": "31001_2463",
+     "bldg:usage": "31001_2463",
+     "bldg:roofType": "1000"
+    }
+   },
+   "fields": {
+    "bldg:storeysAboveGround": 1
+   }
+  }
+ ]
+}

@@ -1,0 +1,140 @@
+{
+  "objects": [
+    {
+      "materials": [
+        {
+          "name": "BuildingInstallation_SEMHIER_INST_NAME_BALCONY_POLY_V3",
+          "props": {
+            "SurfaceTyp": "BuildingInstallation",
+            "gml_polygon_id": "SEMHIER_INST_NAME_BALCONY_POLY_V3",
+            "gml_ring_id": "SEMHIER_INST_NAME_BALCONY_POLY_V3_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "Balcony 1",
+      "parent": "Semantic Hierarchy Resolver Fixture",
+      "props": {
+        "cgml3_feature": "BuildingInstallation",
+        "cgml_parent_id": "SEMHIER_BUILDING_V3",
+        "cgml_semantic_type": "BuildingInstallation",
+        "cgml_source_role": "outer",
+        "gml_id": "SEMHIER_INST_NAME_BALCONY_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "BuildingInstallation_SEMHIER_INST_CONFLICT_POLY_V3",
+          "props": {
+            "SurfaceTyp": "BuildingInstallation",
+            "gml_polygon_id": "SEMHIER_INST_CONFLICT_POLY_V3",
+            "gml_ring_id": "SEMHIER_INST_CONFLICT_POLY_V3_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "Balcony 1.001",
+      "parent": "Semantic Hierarchy Resolver Fixture",
+      "props": {
+        "cgml3_feature": "BuildingInstallation",
+        "cgml_parent_id": "SEMHIER_BUILDING_V3",
+        "cgml_semantic_type": "Chimney",
+        "cgml_source_role": "outer",
+        "gml_id": "SEMHIER_INST_CONFLICT_FUNCTION_BEATS_NAME_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "BuildingInstallation_SEMHIER_INST_CLASS_BALCONY_POLY_V3",
+          "props": {
+            "SurfaceTyp": "BuildingInstallation",
+            "gml_polygon_id": "SEMHIER_INST_CLASS_BALCONY_POLY_V3",
+            "gml_ring_id": "SEMHIER_INST_CLASS_BALCONY_POLY_V3_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "Installation A",
+      "parent": "Semantic Hierarchy Resolver Fixture",
+      "props": {
+        "cgml3_feature": "BuildingInstallation",
+        "cgml_parent_id": "SEMHIER_BUILDING_V3",
+        "cgml_semantic_type": "Balcony",
+        "cgml_source_role": "outer",
+        "gml_id": "SEMHIER_INST_CLASS_BALCONY_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "BuildingInstallation_SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V3",
+          "props": {
+            "SurfaceTyp": "BuildingInstallation",
+            "gml_polygon_id": "SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V3",
+            "gml_ring_id": "SEMHIER_INST_FUNCTION_CHIMNEY_POLY_V3_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "Installation B",
+      "parent": "Semantic Hierarchy Resolver Fixture",
+      "props": {
+        "cgml3_feature": "BuildingInstallation",
+        "cgml_parent_id": "SEMHIER_BUILDING_V3",
+        "cgml_semantic_type": "Chimney",
+        "cgml_source_role": "outer",
+        "gml_id": "SEMHIER_INST_FUNCTION_CHIMNEY_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "BuildingInstallation_SEMHIER_INST_BARE_POLY_V3",
+          "props": {
+            "SurfaceTyp": "BuildingInstallation",
+            "gml_polygon_id": "SEMHIER_INST_BARE_POLY_V3",
+            "gml_ring_id": "SEMHIER_INST_BARE_POLY_V3_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "SEMHIER_INST_BARE_V3",
+      "parent": "Semantic Hierarchy Resolver Fixture",
+      "props": {
+        "cgml3_feature": "BuildingInstallation",
+        "cgml_parent_id": "SEMHIER_BUILDING_V3",
+        "cgml_semantic_type": "BuildingInstallation",
+        "cgml_source_role": "outer",
+        "gml_id": "SEMHIER_INST_BARE_V3"
+      },
+      "type": "MESH"
+    },
+    {
+      "materials": [
+        {
+          "name": "WallSurface_SEMHIER_WALL_POLY_V3",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "SEMHIER_WALL_V3",
+            "gml_polygon_id": "SEMHIER_WALL_POLY_V3",
+            "gml_ring_id": "SEMHIER_WALL_POLY_V3_0_",
+            "lod": 3
+          }
+        }
+      ],
+      "name": "Semantic Hierarchy Resolver Fixture",
+      "parent": null,
+      "props": {
+        "cgml3_feature": "Building",
+        "gml_id": "SEMHIER_BUILDING_V3"
+      },
+      "type": "MESH"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Real-XSD validation entry point for CityGML 3.0 files (appearance ticket 03
+  fixture validation and general-purpose CityGML 3 output).
+
+  Mirrors scripts/headless/xmllint_v2/wrapper_v2.xsd's approach: import the
+  modules real fixtures/exporter output mix (building, construction, since
+  CityGML 3 moved Window/Door/Wall/Roof/GroundSurface into con:*, and
+  appearance) so a single schema argument covers real files.
+
+  core.xsd (declares the CityModel document root) and the GML 3.2.1 base are
+  pulled in transitively by building.xsd over plain http (this add-on does
+  not vendor a fetchable copy of core.xsd's own network-facing imports).
+  building.xsd's http-fetched copy also pulls in construction.xsd the same
+  way, so it is not imported again here explicitly - doing so only produces
+  a harmless "already imported" xmllint warning. The xAL 3.0 import inside
+  core.xsd resolves relative to wherever core.xsd was loaded from -
+  catalog.xml in this directory redirects it to the vendored
+  Schema/citygml_3/xAL/3.0/xAL.xsd so it never depends on OGC's xAL hosting.
+
+  schemaLocations are relative to THIS file, so xmllint resolves them the
+  same way regardless of the working directory it is invoked from. This file
+  lives at scripts/headless/xmllint_v3/, i.e. three levels below the repo
+  root.
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:bldg="http://www.opengis.net/citygml/building/3.0"
+           xmlns:con="http://www.opengis.net/citygml/construction/3.0"
+           xmlns:app="http://www.opengis.net/citygml/appearance/3.0">
+  <xs:import namespace="http://www.opengis.net/citygml/building/3.0"
+             schemaLocation="../../../Schema/citygml_3/building/3.0/building.xsd"/>
+  <xs:import namespace="http://www.opengis.net/citygml/appearance/3.0"
+             schemaLocation="../../../Schema/citygml_3/appearance/3.0/appearance.xsd"/>
+  <xs:import namespace="http://www.opengis.net/citygml/generics/3.0"
+             schemaLocation="../../../Schema/citygml_3/generics/3.0/generics.xsd"/>
+</xs:schema>

@@ -1,0 +1,5 @@
+#!/bin/sh
+# Re-installs the extension into every local Blender >= 5.0 after a pull/merge.
+# Enable once per clone with: git config core.hooksPath .githooks
+repo_root="$(git rev-parse --show-toplevel)"
+python3 "$repo_root/scripts/dev_install.py" || python "$repo_root/scripts/dev_install.py" || true

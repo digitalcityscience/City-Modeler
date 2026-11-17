@@ -1,0 +1,78 @@
+# =============================================================================
+# Dependency Manifest for CityGML Importer/Exporter Blender Add-on
+# =============================================================================
+# Edit versions here to trigger automatic re-download in CI pipeline.
+# The fetch_deps.py script reads this file to resolve all dependencies.
+
+tools:
+  # 3DCityDB 5.x client; the add-on does not support 3DCityDB 4.x.
+  citydb-tool:
+    version: "1.3.0"
+    url: "https://github.com/3dcitydb/citydb-tool/releases/download/v{version}/citydb-tool-{version}.zip"
+    target_dir: "citydb-tool-{version}"
+    strip_components: 0
+
+python_modules:
+  - name: lxml
+    version: "6.0.2"
+  - name: pyproj
+    version: "3.7.2"
+  # 3DCityDB access (connection test, database/schema discovery, catalog queries).
+  # citydb-tool stays the CityGML import/export client; see citydb/__init__.py.
+  - name: psycopg
+    version: "3.3.6"
+    pure: true
+  - name: psycopg-binary
+    version: "3.3.6"
+  - name: typing-extensions   # psycopg on Python < 3.13
+    version: "4.15.0"
+    pure: true
+  - name: tzdata              # psycopg on Windows
+    version: "2026.5"
+    pure: true
+  # "Remember password" in the OS keychain (Windows Credential Manager, macOS Keychain).
+  # Linux Secret Service needs SecretStorage + cryptography and is not bundled; there the
+  # password stays per session or comes from ~/.pgpass.
+  - name: keyring
+    version: "25.7.0"
+    pure: true
+  - name: jaraco.classes
+    version: "3.4.0"
+    pure: true
+  - name: jaraco.functools
+    version: "4.6.0"
+    pure: true
+  - name: jaraco.context
+    version: "6.1.2"
+    pure: true
+  - name: more-itertools
+    version: "11.2.1"
+    pure: true
+  - name: pywin32-ctypes
+    version: "0.2.3"
+    pure: true
+  - name: importlib-metadata  # keyring on Python < 3.12
+    version: "8.7.1"
+    pure: true
+  - name: zipp
+    version: "3.23.0"
+    pure: true
+  - name: backports.tarfile   # jaraco.context on Python < 3.12
+    version: "1.2.0"
+    pure: true
+
+python:
+  # Blender 5.0 bundles Python 3.11; Blender 5.1+ bundles 3.13. 3.14 is carried as a
+  # hedge for a future Blender: Blender ignores wheels that don't match its interpreter.
+  versions:
+    - "3.11"
+    - "3.13"
+    - "3.14"
+  # Lowest platform each declared module publishes a wheel for. pyproj 3.7.2 ships no
+  # manylinux2014 wheel at all, and its macOS wheels start at 13.0 (x86_64) / 14.0 (arm64),
+  # so requesting anything older here resolves to nothing and fails the build.
+  platforms:
+    - win_amd64
+    - manylinux_2_28_x86_64
+    - macosx_13_0_x86_64
+    - macosx_14_0_arm64

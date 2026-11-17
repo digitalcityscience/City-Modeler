@@ -1,0 +1,47 @@
+{
+  "objects": [
+    {
+      "materials": [
+        {
+          "name": "WallSurface_Poly_wall_1",
+          "props": {
+            "SurfaceTyp": "WallSurface",
+            "con_surface_id": "UUID_wall_altspelling_1",
+            "gml_polygon_id": "Poly_wall_1",
+            "gml_ring_id": "Poly_wall_1_0_",
+            "lod": 3
+          }
+        },
+        {
+          "name": "Window_Opening_Exterior_Polywindow1",
+          "props": {
+            "SurfaceTyp": "Window",
+            "con_surface_id": "UUID_window_altspelling_1",
+            "gml_polygon_id": "Poly_window_1",
+            "gml_ring_id": "Poly_window_1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_window_altspelling_1"
+          }
+        },
+        {
+          "name": "Door_Opening_Exterior_Polydoor1",
+          "props": {
+            "SurfaceTyp": "Door",
+            "con_surface_id": "UUID_door_altspelling_1",
+            "gml_polygon_id": "Poly_door_1",
+            "gml_ring_id": "Poly_door_1_0_",
+            "lod": 3,
+            "opening_gml_id": "UUID_door_altspelling_1"
+          }
+        }
+      ],
+      "name": "Alt Opening Spelling Building",
+      "parent": null,
+      "props": {
+        "cgml3_feature": "Building",
+        "gml_id": "GMLID_BUI_ALTSPELLING_1"
+      },
+      "type": "MESH"
+    }
+  ]
+}
