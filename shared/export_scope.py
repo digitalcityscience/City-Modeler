@@ -192,6 +192,8 @@ def summary(rec: dict) -> str:
     if plain:
         text += (f"; {len(plain)} Blender object(s) without a CityGML type not written: "
                  + ", ".join(plain[:5]) + (" ..." if len(plain) > 5 else "") + " (Make CityGML turns one into a building)")
+    for note in rec.get("notes") or ():   # CJ-03: what a CityJSON export left out
+        text += f"; {note}"
     return text
 
 

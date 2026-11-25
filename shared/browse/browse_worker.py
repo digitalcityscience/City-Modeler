@@ -49,10 +49,13 @@ def run_browse_index(
     cache_dir: Optional[str] = None,
     cache_max_mb: Optional[float] = None,
     use_cache: bool = True,
+    indexer=index_file,
 ) -> FileIndex:
     """Index ``path`` (or load it from the cache) and post proxy data.
 
     ``use_cache=False`` ignores a cached index; the new one is cached anyway.
+    ``indexer``: ``index_file`` (GML) or ``cityjson_index.index_cityjson``; an indexer that sends no
+    batch (CityJSON without a file extent: the origin needs the whole index) gets its boxes at the end.
     """
     if use_cache:
         cached = index_cache.load(path, cache_dir)
@@ -80,12 +83,14 @@ def run_browse_index(
         state["loops"] += arrays.loop_count
         post(("batch", entries, arrays))
 
-    idx = index_file(path, progress=progress, on_batch=on_batch, cancel=cancelled)
+    idx = indexer(path, progress=progress, on_batch=on_batch, cancel=cancelled)
     if not state["posted"]:
         state["origin"] = state["origin"] or decide_origin(idx.envelope, idx.entries)
         post(("origin", state["origin"], idx.version, idx.srs_name))
     # srsName mismatches are known only after the pass; they change face states
-    full = build_proxy_arrays(idx.entries, state["origin"]) if any(e.srs_mismatch for e in idx.entries) else None
-    index_cache.save(idx, cache_dir, max_mb=cache_max_mb)
+    full = (build_proxy_arrays(idx.entries, state["origin"])
+            if not state["entries"] or any(e.srs_mismatch for e in idx.entries) else None)
+    if idx.document is None:  # a single CityJSON document is parsed again anyway (Load needs it)
+        index_cache.save(idx, cache_dir, max_mb=cache_max_mb)
     post(("final", idx, full, False))
     return idx

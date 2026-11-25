@@ -20,6 +20,8 @@ class ImportSummary:
     crs: str = ""
     origin: Optional[Sequence[float]] = None
     warnings: List[str] = field(default_factory=list)
+    # what the file has and the scene does not ("2 BuildingRoom", "3 LoD1.2 geometries", "no LoD2.2: 1")
+    not_loaded: List[str] = field(default_factory=list)
 
     @property
     def feature_total(self) -> int:
@@ -30,7 +32,8 @@ def format_summary(summary: ImportSummary) -> str:
     """``Imported 3 features (3 Building) in 0.4 s · EPSG:25832 · origin 564800/5934300``."""
     total = summary.feature_total
     if total == 0:
-        return NO_FEATURES_MESSAGE
+        return NO_FEATURES_MESSAGE + (" · not loaded: " + ", ".join(summary.not_loaded)
+                                      if summary.not_loaded else "")
     noun = "feature" if total == 1 else "features"
     types = ", ".join(
         f"{n} {t}" for t, n in sorted(summary.feature_counts.items(), key=lambda kv: (-kv[1], kv[0]))
@@ -40,6 +43,8 @@ def format_summary(summary: ImportSummary) -> str:
         parts.append(summary.crs)
     if summary.origin is not None and len(summary.origin) >= 2:
         parts.append(f"origin {summary.origin[0]:.0f}/{summary.origin[1]:.0f}")
+    if summary.not_loaded:
+        parts.append("not loaded: " + ", ".join(summary.not_loaded))
     if summary.warnings:
         n = len(summary.warnings)
         parts.append(f"{n} warning" + ("" if n == 1 else "s"))

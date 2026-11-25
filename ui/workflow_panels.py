@@ -9,6 +9,8 @@ facade editing (the "Tab, 3" gesture) and make the selected mesh CityGML
 __init__.
 """
 
+import os
+
 import bpy
 from bpy.types import Operator, Panel
 
@@ -241,9 +243,21 @@ class CGML3_PT_Save(Panel):
 
     def draw(self, context):
         layout = self.layout
+        wm = context.window_manager
+        if hasattr(wm, "cgml_export_format"):   # CJ-03: CityGML (3.0/2.0 in the dialog) or CityJSON 2.0
+            layout.row(align=True).prop(wm, "cgml_export_format", expand=True)
         row = layout.row()
         row.scale_y = 1.3
-        colors.add(row, "cgml3.export_gml_file", text="Export CityGML File...", icon='EXPORT')
+        if getattr(wm, "cgml_export_format", 'CITYGML') == 'CITYJSON':
+            colors.add(row, "cgml3.export_cityjson_file", text="Export CityJSON File...", icon='EXPORT')
+        else:
+            colors.add(row, "cgml3.export_gml_file", text="Export CityGML File...", icon='EXPORT')
+        # CJ-06: one button per CityJSON file the scene came from; writes the changes back into it
+        from ..shared import cityjson_open as cjo
+        from ..shared import georef as gr
+        for path in cjo.sources(gr.world()):
+            colors.add(layout, "cgml3.save_cityjson_source", text=f"Save into {os.path.basename(path)}...",
+                       icon='FILE_REFRESH').filepath = path
         n = len(context.selected_objects)
         layout.label(text=f"Writes the {n} selected objects (with their parts)" if n
                      else "Writes the whole scene (nothing selected)", icon='INFO')

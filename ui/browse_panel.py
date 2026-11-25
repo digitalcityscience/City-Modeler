@@ -44,8 +44,11 @@ class CGML3_PT_Browse(Panel):
         box.label(text=os.path.basename(s.path), icon='FILE')
         version = s.index.version if s.index.version != "unknown" else "?"
         crs = s.crs if s.crs and s.crs != "Unknown CRS" else "CRS unknown"
-        box.label(text=f"CityGML {version} · {crs} · {len(s.entries):,} features")
+        box.label(text=f"{s.source_format} {version} · {crs} · {len(s.entries):,} features")
         box.label(text=f"Preview: {s.preview()}")
+        skipped = browse_gml.not_indexed_text(s)
+        if skipped:
+            box.label(text=skipped, icon='INFO')
 
         drv = background_job.current()
         if drv is not None and drv.job.name == browse_gml.JOB_NAME and not s.complete:
@@ -108,7 +111,13 @@ def draw_show_unshow(layout, context, s) -> None:
     colors.add(row, "cgml3.browse_load", text=f"Show ({to_show})  S", icon='HIDE_OFF').mode = 'HIGHEST'
     sub = row.row(align=True)
     sub.scale_x = 0.8
-    colors.add(sub, "cgml3.browse_load", text="LoD2").mode = 'LOD2'
+    if s.cityjson:  # CJ-05 (K6): the LoDs as written in the file; Show takes the first one
+        from ..shared.browse.cityjson_index import lod_texts
+        from ..shared.cityjson_open import lod_choices
+        for text in lod_choices(lod_texts(s.selected_entries() or s.entries)):
+            colors.add(sub, "cgml3.browse_load", text=text).lod = text
+    else:
+        colors.add(sub, "cgml3.browse_load", text="LoD2").mode = 'LOD2'
     row = colors.remove_row(box)
     row.enabled = shown > 0
     row.operator("cgml3.browse_unload", text="Unshow  U", icon='HIDE_ON').all = False

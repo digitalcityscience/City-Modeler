@@ -15,6 +15,10 @@
    loaded feature's box is hidden. ``cgml3.browse_unload`` deletes the
    detail objects and shows the box again.
 
+CityJSON and CityJSONSeq (CJ-05) go the same way: ``shared.browse.cityjson_index``
+gives the same index, and Load builds a small CityJSON document of the picked
+buildings for the builder (no temporary file). The LoD is chosen by its text.
+
 The proxy mesh carries the face attributes ``feature_index`` and
 ``load_state``; a geometry nodes modifier hides faces flagged
 ``cgml3_hidden`` (loaded features). Selection is drawn as an overlay.
@@ -33,7 +37,9 @@ import bpy
 from bpy.props import BoolProperty, EnumProperty, StringProperty
 
 from ..common import background_job
+from ..shared import cityjson_open as co
 from ..shared import georef as gr
+from ..shared.browse import cityjson_index as cji
 from ..shared.browse import index_cache
 from ..shared.browse.browse_worker import run_browse_index
 from ..shared.browse.fragment import build_fragment
@@ -153,9 +159,14 @@ class BrowseSession:
         self.stats: Dict[str, float] = {}
         self.last_load: Dict[str, object] = {}
         self.framed = ""  # "", "partial" (while indexing) or "complete"
+        self.source_format = "CityGML"  # or "CityJSON" / "CityJSONSeq" (CJ-05), from the sniff
         self.t0 = time.perf_counter()
 
     # convenience
+    @property
+    def cityjson(self) -> bool:
+        return self.source_format in cji.FORMATS
+
     @property
     def entries(self):
         return self.index.entries
@@ -641,6 +652,10 @@ def start_browse(context, path: str, *, use_cache: bool = True, manual: bool = F
         session.loaded = set(old.loaded)
     summary = sniff_file(path)
     session.estimate = summary.features_estimate
+    if summary.format in cji.FORMATS:
+        session.source_format = summary.format
+    # a single CityJSON document is parsed for Load anyway: no cached index for it
+    cached = use_cache and session.source_format != cji.FORMAT_DOCUMENT
     # an existing proxy (same file, saved .blend) keeps its origin
     for o in proxy_objects():
         if _key(o[PROXY_PATH_PROP]) == _key(path) and o.get(PROXY_ORIGIN_PROP):
@@ -661,7 +676,8 @@ def start_browse(context, path: str, *, use_cache: bool = True, manual: bool = F
         try:
             return run_browse_index(
                 path, job.post, fixed_origin=session.fixed_origin, progress=progress,
-                cancelled=job.cancelled, cache_max_mb=cache_max_mb(), use_cache=use_cache)
+                cancelled=job.cancelled, cache_max_mb=cache_max_mb(), use_cache=cached,
+                **({"indexer": cji.index_cityjson} if session.cityjson else {}))
         except IndexCancelled:
             raise background_job.JobCancelled()
 
@@ -716,10 +732,13 @@ def start_browse(context, path: str, *, use_cache: bool = True, manual: bool = F
         n = len(session.entries)
         risks = session.index.risk_counts()
         risk_txt = "; ".join(f"{k}: {v}" for k, v in sorted(risks.items()))
+        skipped = not_indexed_text(session)
+        if session.cityjson:    # count and LoDs from the index, not from the sniff's token scan
+            skipped = " · ".join(t for t in ("LoD " + ", ".join(cji.lod_texts(session.entries)), skipped) if t)
         _notify(
             f"{'Index from cache' if session.from_cache else 'Indexed'}: {n:,} features "
             f"in {session.stats['index_s']:.1f} s · preview: {session.preview()}"
-            + (f" · {risk_txt}" if risk_txt else ""),
+            + (f" · {risk_txt}" if risk_txt else "") + (f" · {skipped}" if skipped else ""),
             'WARNING' if risks else 'INFO',
         )
 
@@ -730,6 +749,12 @@ def start_browse(context, path: str, *, use_cache: bool = True, manual: bool = F
         _sessions.pop(_key(path), None)
         raise RuntimeError("Another background job is running")
     return session, driver
+
+
+def not_indexed_text(session: BrowseSession) -> str:
+    """CityJSON: what the file has and the index does not ("not indexed: 2 WaterBody"), else ''."""
+    kinds = session.index.skipped_kinds
+    return "not indexed: " + ", ".join(f"{n} {k}" for k, n in sorted(kinds.items())) if kinds else ""
 
 
 def close_session(session: BrowseSession, *, remove_proxy: bool = True) -> None:
@@ -849,15 +874,21 @@ def _browse_import_filters(scene, level: Optional[int]):
             setattr(props, n, v)
 
 
+def _file_of(o):
+    """The browsed file of a root. A commit to 3DCityDB re-tags the root "citydb" (B84); a CityJSON
+    root still names its source file (CJ-04)."""
+    return o.get(SOURCE_PATH_PROP) if o.get(SOURCE_KIND_PROP) == "file" else o.get(co.SOURCE_PROP)
+
+
 def _feature_objects(session: BrowseSession, gml_ids: Optional[Set[str]] = None):
     """Root objects loaded by browse for this file (optionally only ``gml_ids``)."""
     key = _key(session.path)
     out = []
     for o in bpy.data.objects:
         try:
-            if o.get(SOURCE_KIND_PROP) != "file" or not o.get(FEATURE_ID_PROP):
+            if not o.get(FEATURE_ID_PROP):
                 continue
-            src = o.get(SOURCE_PATH_PROP)
+            src = _file_of(o)
         except Exception:
             continue
         if not src or _key(src) != key:
@@ -887,7 +918,7 @@ def shown_targets(context, session: BrowseSession) -> Set[int]:
         p = o
         while p is not None:
             gid = p.get(FEATURE_ID_PROP)
-            if gid and p.get(SOURCE_KIND_PROP) == "file" and _key(str(p.get(SOURCE_PATH_PROP, ""))) == key:
+            if gid and _file_of(p) and _key(str(_file_of(p))) == key:
                 if gid in session.id_to_index:
                     out.add(session.id_to_index[gid])
                 break
@@ -929,12 +960,15 @@ def unload_features(session: BrowseSession, indices: Iterable[int]) -> int:
     """Delete the detail objects of ``indices``; their boxes show again."""
     ids = {session.entries[i].gml_id for i in indices if 0 <= i < len(session.entries)}
     roots = _feature_objects(session, ids)
+    from . import commit_citydb   # CJ-06 / B84: unloaded is not deleted, neither in the source nor in the DB
+    others = commit_citydb.forget(roots)
     colls = {c.name for r in roots for c in r.users_collection}
     removed = _remove_objects(roots)
     _remove_empty_collections(colls)
     _refresh_loaded(session)
     session.failed -= set(indices)
     write_proxy_states(session)
+    commit_citydb.refresh_boxes(others - {session.path})
     _redraw_views()
     return removed
 
@@ -947,8 +981,12 @@ def _temp_fragment_path(session: BrowseSession) -> str:
     return path
 
 
-def load_features(context, session: BrowseSession, indices: Iterable[int], mode: str = 'LOD2'):
-    """Import ``indices`` from their byte ranges; returns ``(level, message)``."""
+def load_features(context, session: BrowseSession, indices: Iterable[int], mode: str = 'LOD2', lod: str = ""):
+    """Import ``indices`` from their byte ranges; returns ``(level, message)``.
+
+    CityJSON (CJ-05): ``lod`` is the LoD text to load ("2.2"; empty: the default among the LoDs of the
+    picked buildings, ``cityjson_open.lod_choices``) and ``mode`` is not used. A building without that
+    LoD is left out and counted, never loaded in another LoD."""
     from ..common import import_citygml_auto
     from ..common.import_landing import ImportSnapshot, finish_import
     from ..shared.load_limits import ImportNotSupported
@@ -956,17 +994,35 @@ def load_features(context, session: BrowseSession, indices: Iterable[int], mode:
     indices = sorted({i for i in indices if 0 <= i < len(session.entries)})
     if not session.complete:
         return 'ERROR', "Wait until the index is complete"
-    groups, missing = plan_load({i: session.entries[i] for i in indices}, mode)
-    if not groups:
-        return 'ERROR', f"None of the {len(indices)} selected features has {'LoD2' if mode == 'LOD2' else 'geometry'}"
+    if session.cityjson:
+        lod = lod or (co.lod_choices(cji.lod_texts(session.entries[i] for i in indices)) or [""])[0]
+        loading = [i for i in indices if lod in session.entries[i].lod_texts]
+        groups, missing = {}, [i for i in indices if lod not in session.entries[i].lod_texts]
+        what = f"LoD{lod}" if lod else "geometry"
+    else:
+        groups, missing = plan_load({i: session.entries[i] for i in indices}, mode)
+        loading = [i for g in groups.values() for i in g]
+        what = 'LoD2' if mode == 'LOD2' else 'geometry'
+    if not loading:
+        return 'ERROR', f"None of the {len(indices)} selected features has {what}"
     replaced = [i for i in indices if i in session.loaded]
     if replaced:
         unload_features(session, replaced)
     warnings: List[str] = []
+    left_out: List[str] = []    # import summary "not loaded" texts (CityJSON)
     t0 = time.perf_counter()
     snapshot = ImportSnapshot()
     bytes_read = 0
-    loading = [i for g in groups.values() for i in g]
+    if session.cityjson:
+        from ..common.unified_builder import import_cityjson_with_builder
+        doc, bytes_read = cji.selection_document(session.index, loading)
+        with _browse_import_filters(context.scene, None):
+            try:
+                notices, left_out = import_cityjson_with_builder(
+                    session.path, context, lod=lod, doc=doc, origin=session.origin)
+                warnings.extend(notices)
+            except ImportNotSupported as exc:
+                warnings.append(str(exc))
     for level, fis in sorted(groups.items()):
         frag = build_fragment(session.index, fis, origin=session.origin)
         bytes_read += frag.bytes_read
@@ -1006,7 +1062,9 @@ def load_features(context, session: BrowseSession, indices: Iterable[int], mode:
     if not_loaded:
         warnings.append(f"not imported: {len(not_loaded)}")
     if missing:
-        warnings.append(f"no {'LoD2' if mode == 'LOD2' else 'geometry'}: {len(missing)}")
+        warnings.append(f"no {what}: {len(missing)}")
+        if session.cityjson:
+            left_out.append(warnings[-1])
     ext = sum(1 for i in loading if session.entries[i].external_xlink)
     if ext:
         warnings.append(f"geometry referenced outside the feature: {ext}")
@@ -1015,18 +1073,19 @@ def load_features(context, session: BrowseSession, indices: Iterable[int], mode:
         warnings.append(f"implicit geometry: {imp}")
     _refresh_loaded(session)
     write_proxy_states(session)
-    level, message, summary = finish_import(context, snapshot, frame=False, warnings=warnings)
+    level, message, summary = finish_import(context, snapshot, frame=False, warnings=warnings,
+                                            not_loaded=left_out)
     seconds = time.perf_counter() - t0
     session.last_load = {
         "features": len(tagged), "requested": len(indices), "bytes_read": bytes_read,
         "seconds": seconds, "objects": len(snapshot.new_objects()), "warnings": list(warnings),
-        "message": message, "mode": mode,
+        "message": message, "mode": mode, "lod": lod, "not_loaded": list(left_out),
     }
     print(f"[CityGML Browse] read {bytes_read:,} bytes for {len(loading)} features in {seconds:.2f} s")
     if warnings:
         print("[CityGML Browse] " + "; ".join(warnings))
     _redraw_views()
-    return level, f"{message} · {bytes_read / 1024:.0f} KB read"
+    return level, f"{message} · {bytes_read / 1024:.0f} KB read" if bytes_read else message
 
 
 # --------------------------------------------------------------------------- show / unshow
@@ -1124,7 +1183,7 @@ class CGML3_OT_browse_gml_file(bpy.types.Operator):
     bl_options = {'REGISTER'}
 
     filepath: StringProperty(name="CityGML", subtype='FILE_PATH')
-    filter_glob: StringProperty(default="*.gml;*.xml", options={'HIDDEN'})
+    filter_glob: StringProperty(default="*.gml;*.xml;*.json;*.jsonl", options={'HIDDEN'})
     use_cache: BoolProperty(name="Use index cache", default=True,
                             description="Reuse the cached index of an unchanged file; off re-indexes and refreshes the cache")
 
@@ -1144,7 +1203,13 @@ class CGML3_OT_browse_gml_file(bpy.types.Operator):
             self.report({'ERROR'}, "Extract the archive first: compressed files cannot be browsed")
             return {'CANCELLED'}
         summary = sniff_file(path)
-        if not summary.is_citygml:
+        if summary.format in ("CityJSON", "CityJSONSeq", "JSON"):
+            # CJ-05: previewed here like GML; only what cannot be indexed is refused
+            kind, text = co.open_decision(summary)
+            if kind == 'error':
+                self.report({'ERROR'}, text)
+                return {'CANCELLED'}
+        elif not summary.is_citygml:
             self.report({'ERROR'}, f"Not a CityGML file (no CityGML namespace in header): {os.path.basename(path)}")
             return {'CANCELLED'}
         try:
@@ -1157,7 +1222,9 @@ class CGML3_OT_browse_gml_file(bpy.types.Operator):
             return {'CANCELLED'}
         if not session.complete and driver.finished:
             return {'CANCELLED'}
-        self.report({'INFO'}, f"Browsing {summary.label()}")
+        # CityJSON: the sniff's count and LoDs are a token scan; the index reports the real ones when done
+        self.report({'INFO'}, f"Browsing {summary.format} {os.path.basename(path)}" if session.cityjson
+                    else f"Browsing {summary.label()}")
         return {'FINISHED'}
 
 
@@ -1206,9 +1273,15 @@ class CGML3_OT_browse_load(bpy.types.Operator):
         ('LOD2', "LoD2", "Load the LoD2 geometry of the selected buildings"),
         ('HIGHEST', "Highest", "Load the highest LoD of every selected building"),
     ], default='LOD2')
+    lod: StringProperty(
+        name="CityJSON LoD", default="", options={'SKIP_SAVE'},
+        description="CityJSON preview: the LoD to load, as written in the file (2.2); "
+                    "empty loads the default LoD of the picked buildings. Buildings without it are skipped")
 
     @classmethod
     def description(cls, context, props):
+        if props.lod:
+            return f"Show the picked buildings in LoD {props.lod}; buildings without it are skipped and counted"
         if props.mode == 'HIGHEST':
             return "Show the picked buildings in their highest LoD (only their bytes are read)"
         return "Show the picked buildings in LoD2 (only their bytes are read)"
@@ -1222,7 +1295,7 @@ class CGML3_OT_browse_load(bpy.types.Operator):
             self.report({'ERROR'}, msg)
             return {'CANCELLED'}
         try:
-            level, message = load_features(context, s, s.selected, self.mode)
+            level, message = load_features(context, s, s.selected, self.mode, self.lod)
         except Exception as exc:
             from ..common.import_landing import report_import_error
             report_import_error(self, exc, log_prefix="citygml_browse_error")
@@ -1515,8 +1588,12 @@ def selection_summary(session: BrowseSession):
     """Panel text: ``(count, common LoDs, preview label, risk lines)``."""
     ents = session.selected_entries()
     common, _union = lod_summary(ents)
+    lods = format_levels(common)
+    if session.cityjson and ents:   # the LoDs as written in the file, those every picked building has
+        shared = set.intersection(*(set(e.lod_texts) for e in ents))
+        lods = ", ".join(sorted(shared, key=cji.lod_order)) or "none"
     risks: Dict[str, int] = {}
     for e in ents:
         for r in e.risks():
             risks[r] = risks.get(r, 0) + 1
-    return len(ents), format_levels(common), preview_label(ents) if ents else session.preview(), risks
+    return len(ents), lods, preview_label(ents) if ents else session.preview(), risks

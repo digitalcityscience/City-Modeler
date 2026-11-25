@@ -11,31 +11,27 @@ import xml.dom.minidom as minidom
 from xml.etree.ElementTree import tostring, SubElement
 from .namespaces import Q, NS, GML_ID
 from ...shared import georef as gr
+from ...shared.authoring_core.domain.ids import is_ncname
 from uuid import uuid4
-
-# XML Schema xs:ID is derived from NCName, so colon is not allowed and the name must start
-# with a letter or '_' and then contain only name characters.
-# We are conservative here and disallow '.' as well to match common schema validators.
-_XS_ID_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_-]*$")
 
 def ensure_xs_id(val: object | None, prefix: str = "ID") -> str:
     """Erzeugt eine xs:ID-konforme gml:id.
 
-    xs:ID muss mit Buchstabe oder '_' starten und darf nur [A-Za-z0-9_-] enthalten.
-    Falls val ungültig/leer ist, wird eine neue ID generiert.
+    Eine gültige ID (xs:ID = NCName, ``is_ncname``: Buchstabe oder '_' am Anfang, danach
+    Buchstaben, Ziffern, '.', '-', '_') bleibt unverändert. Nur eine ungültige wird umgeschrieben,
+    eine leere neu erzeugt.
     """
     s = str(val).strip() if val is not None else ""
     if s.startswith("#"):
         s = s[1:]
     if not s:
         return f"{prefix}_{uuid4().hex}"
-    # ungültige Zeichen ersetzen (xs:ID / NCName: erlaubt '-', '_'; '.' ist NICHT erlaubt)
+    if is_ncname(s):
+        return s
+    # nur ungültige IDs: unerlaubte Zeichen ersetzen, Startzeichen korrigieren
     s = re.sub(r"[^A-Za-z0-9_-]", "_", s)
-    # Startzeichen korrigieren
     if not re.match(r"^[A-Za-z_]", s):
         s = f"{prefix}_{s}"
-    if not _XS_ID_RE.match(s):
-        return f"{prefix}_{uuid4().hex}"
     return s
 
 def fmt_pos(x: float) -> str:  # für Koordinaten wie gehabt, falls genutzt
@@ -160,11 +156,12 @@ def _envelope_elem(parent, coords_3d, srs_epsg: str):
 
 def make_gml_id(name: str, used: set) -> str:
     s = (name or "").strip()
-    # ungültige Zeichen → "_"
-    s = re.sub(r"[^A-Za-z0-9_.-]", "_", s)
-    # darf nicht mit Ziffer/“-”/“.” beginnen
-    if not s or not re.match(r"[A-Za-z_]", s[0]):
-        s = "ID_" + s
+    if not is_ncname(s):   # eine gültige ID bleibt unverändert
+        # ungültige Zeichen → "_"
+        s = re.sub(r"[^A-Za-z0-9_.-]", "_", s)
+        # darf nicht mit Ziffer/“-”/“.” beginnen
+        if not s or not re.match(r"[A-Za-z_]", s[0]):
+            s = "ID_" + s
     # Mehrfachverwendung verhindern
     base = s; k = 2
     while s in used:

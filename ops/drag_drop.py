@@ -14,11 +14,13 @@ class CityGMLDropHandler(bpy.types.FileHandler):
     operator receives the dropped path and skips the file browser.
     ``poll_drop`` gets no file path, so a dropped ``.xml`` that is not
     CityGML is rejected by the operator (namespace check on the header).
+    A dropped CityJSON or CityJSONSeq (``.json``/``.jsonl``, decided by content)
+    is previewed the same way (CJ-05).
     """
     bl_idname = "CGML3_FH_citygml"
     bl_label = "CityGML File Handler"
     bl_import_operator = "cgml3.browse_gml_file"
-    bl_file_extensions = ".gml;.xml"
+    bl_file_extensions = ".gml;.xml;.json;.jsonl"
 
     @classmethod
     def poll_drop(cls, context):

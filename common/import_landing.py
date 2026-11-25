@@ -81,13 +81,13 @@ def _activate_first_feature(context, new_objects) -> None:
             continue
 
 
-def finish_import(context, snapshot: ImportSnapshot, *, frame: bool = True, warnings=()):
+def finish_import(context, snapshot: ImportSnapshot, *, frame: bool = True, warnings=(), not_loaded=()):
     """Land on the imported objects and return ``(level, message, summary)``.
 
     ``level`` is ``'INFO'`` or ``'WARNING'`` (no features, or warnings).
     """
     new_objects = snapshot.new_objects()
-    summary = ImportSummary(seconds=snapshot.seconds, warnings=list(warnings))
+    summary = ImportSummary(seconds=snapshot.seconds, warnings=list(warnings), not_loaded=list(not_loaded))
     summary.feature_counts = count_root_features(new_objects)
     summary.origin, summary.crs = _world_origin_and_crs(context.scene)
 

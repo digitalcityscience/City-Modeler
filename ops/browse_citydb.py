@@ -467,12 +467,13 @@ def unload(session: DBBrowseSession, *, fids: Optional[Set[int]] = None, objecti
     colls = {c.name for r in roots for c in r.users_collection}
     # B84: unloading is not deleting: the feature leaves the scene and the pending changes
     from . import commit_citydb
-    commit_citydb.track(bpy.context.scene, session.path, remove=[str(r.get(OBJECTID_PROP)) for r in roots])
+    others = commit_citydb.forget(roots)
     removed = _remove_objects(roots)
     _remove_empty_collections(colls)
     _remove_empty_loaded_children()
     _refresh_loaded(session)
     write_proxy_states(session)
+    commit_citydb.refresh_boxes(others - {session.path})
     _redraw_views()
     return removed
 
