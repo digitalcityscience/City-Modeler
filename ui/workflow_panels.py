@@ -239,7 +239,7 @@ class CGML3_PT_Findings(Panel):
     MAX_ROWS = 40
 
     def draw(self, context):
-        from ..ops.validation import last_rows
+        from ..ops.validation import FIXES, last_rows
         layout = self.layout
         row = layout.row(align=True)
         row.operator("cgml.check_geometry", icon='MESH_ICOSPHERE')
@@ -259,7 +259,10 @@ class CGML3_PT_Findings(Panel):
             if r["building"] != building:
                 building = r["building"]
                 col.label(text=building, icon='HOME')
-            col.operator("cgml.show_finding", text=f"{r['label']}  {r['value']}".strip(), icon='ERROR').index = i
+            line = col.row(align=True)
+            line.operator("cgml.show_finding", text=f"{r['label']}  {r['value']}".strip(), icon='ERROR').index = i
+            if r["code"] in FIXES:  # repair this kind on the building, then check again
+                line.operator("cgml.fix_finding", text="", icon='TOOL_SETTINGS').index = i
         if len(rows) > self.MAX_ROWS:
             layout.label(text=f"{len(rows) - self.MAX_ROWS} more: Text Editor > citygml_geometry_check", icon='INFO')
 

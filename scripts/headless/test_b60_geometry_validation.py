@@ -161,6 +161,20 @@ def main():
     shown = show_findings("GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE")
     check("findings panel: 3 non-planar rows, each selects its face(s)", len(shown) == 3 and all(
         r == {'FINISHED'} and kind == "face" and n >= 1 for r, kind, n in shown), str(shown))
+    # fix from the list while the row press left Edit Mode on (an edit mesh used to be skipped
+    # while its neighbours moved: 122 open edges)
+    val = import_module(ADDON + ".ops.validation")
+    for _ in range(5):
+        fixable = [i for i, r in enumerate(val.last_rows(bpy.context.scene) or []) if r["code"] in val.FIXES]
+        if not fixable:
+            break
+        bpy.ops.cgml.show_finding(index=fixable[0])
+        bpy.ops.cgml.fix_finding(index=fixable[0])
+    import json
+    last = json.loads(bpy.context.scene[API.LAST_VALIDATION_KEY])["buildings"]
+    check("findings panel: Fix from Edit Mode empties the list, all shells closed",
+          val.last_rows(bpy.context.scene) == [] and len(last) == 3 and all(b["closed"] for b in last.values()),
+          str(val.last_rows(bpy.context.scene)))
     if API.citydoctor_validator():
         check("Hamburg: CityDoctor ran, per building", res["citydoctor"] is not None
               and all(b["citydoctor"] is not None for b in res["buildings"].values()), str(res["warnings"]))

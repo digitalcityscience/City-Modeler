@@ -346,7 +346,42 @@ class CGML_OT_clear_findings(Operator):
         return {'FINISHED'}
 
 
-classes = (*classes, CGML_OT_show_finding, CGML_OT_clear_findings)
+# finding code -> agent_api.repair code; the rest has no automatic fix
+FIXES = {"GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE": "GE_P_NON_PLANAR",
+         "GE_S_NOT_CLOSED": "GE_S_NOT_CLOSED", "CGML_SHELL_OPEN": "GE_S_NOT_CLOSED"}
+
+
+class CGML_OT_fix_finding(Operator):
+    """Repair this kind of finding on its building (flatten non-planar polygons, weld T-junctions of an open shell), then check again"""
+    bl_idname = "cgml.fix_finding"
+    bl_label = "Fix Finding"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    index: bpy.props.IntProperty(options={'HIDDEN'})
+
+    def execute(self, context):
+        from ..shared import agent_api
+        rows = last_rows(context.scene) or []
+        if not 0 <= self.index < len(rows) or rows[self.index]["code"] not in FIXES:
+            self.report({'WARNING'}, "Run Check Geometry again: the list is out of date")
+            return {'CANCELLED'}
+        row = rows[self.index]
+        checked = list(json.loads(context.scene[agent_api.LAST_VALIDATION_KEY])["buildings"])
+        res = agent_api.repair(row["building"], FIXES[row["code"]])  # leaves Edit Mode itself
+        if not res["ok"]:
+            self.report({'ERROR'}, f"{res['error_code']}: {res['message']}")
+            return {'CANCELLED'}
+        again = agent_api.validate(checked, _version(context))  # the same buildings as the list
+        if not again["ok"]:
+            again = agent_api.validate(None, _version(context))
+        left = sum(len(b["checks"]) for b in again.get("buildings", {}).values())
+        self.report({'WARNING'} if res["after"] or left else {'INFO'},
+                    f"{row['label']}: {res['before']} -> {res['after']} on {row['building']}; "
+                    f"checked again: {left} finding(s) left")
+        return {'FINISHED'}
+
+
+classes = (*classes, CGML_OT_show_finding, CGML_OT_clear_findings, CGML_OT_fix_finding)
 
 
 def _draw_findings():

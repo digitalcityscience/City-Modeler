@@ -564,7 +564,15 @@ def delete_feature(gml_id) -> dict:
                   deleted=deleted)
 
 
+def _leave_edit_mode():
+    """A repair reads and writes object meshes: an edit mesh would be skipped or overwritten while
+    its neighbours move, and the shell opens."""
+    if bpy.context.mode != 'OBJECT':
+        bpy.ops.object.mode_set(mode='OBJECT')
+
+
 def _planarity_scope(building_id):
+    _leave_edit_mode()
     if building_id:
         root = _need(building_id)
         objs = [root, *root.children_recursive]
@@ -809,6 +817,7 @@ def repair(building_id, code, tolerance=DEFAULT_TOLERANCE_M, angle_deg=1.0) -> d
         code = "GE_P_NON_PLANAR"
     if code not in REPAIR_CODES:
         raise CommandError("BAD_ARGUMENT", f"code must be one of {REPAIR_CODES} (got {code!r})")
+    _leave_edit_mode()
     root = _building(building_id)
     tolerance = _number("tolerance", tolerance, positive=True)
     angle_deg = _number("angle_deg", angle_deg, 0.01, 45.0)
