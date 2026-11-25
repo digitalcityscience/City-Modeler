@@ -216,6 +216,11 @@ def _key(p, nd=EDGE_DIGITS):
     return tuple(round(c, nd) for c in p)
 
 
+def _pts(ring):
+    """A finding's ring as file coordinates, so the scene can show and select it."""
+    return [list(_key(p)) for p in ring]
+
+
 def open_edges(rings):
     """``[(a, b, uses)]`` of the edges not used by exactly two rings."""
     edges = Counter()
@@ -263,12 +268,14 @@ def check_building(bldg, tolerance=NON_PLANAR_TOL_M) -> dict:
             for ring in [p["exterior"], *p["interiors"]]:
                 if ring_self_intersects(ring):
                     codes["GE_R_SELF_INTERSECTION"] += 1
-                    details.setdefault("GE_R_SELF_INTERSECTION", []).append({"polygon": p["id"], "surface": s["id"]})
+                    details.setdefault("GE_R_SELF_INTERSECTION", []).append(
+                        {"polygon": p["id"], "surface": s["id"], "rings": [_pts(ring)]})
             dev = plane_deviation(p["exterior"])
             if dev > tolerance:
                 codes["GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE"] += 1
                 details.setdefault("GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE", []).append(
-                    {"polygon": p["id"], "surface": s["id"], "value_m": round(dev, 4)})
+                    {"polygon": p["id"], "surface": s["id"], "value_m": round(dev, 4),
+                     "rings": [_pts(p["exterior"])]})
         holes = [r for p in s["polygons"] for r in p["interiors"]]
         outlines = [p["exterior"] for p in s["polygons"]]
         for f in s["fillings"]:
@@ -283,7 +290,8 @@ def check_building(bldg, tolerance=NON_PLANAR_TOL_M) -> dict:
             if not fitted:
                 codes["CGML_FILLING_WITHOUT_HOLE"] += 1
                 details.setdefault("CGML_FILLING_WITHOUT_HOLE", []).append(
-                    {"filling": f["id"], "type": f["type"], "surface": s["id"]})
+                    {"filling": f["id"], "type": f["type"], "surface": s["id"],
+                     "rings": [_pts(fp["exterior"]) for fp in f["polygons"]]})
     edges = open_edges(shell) if shell else []
     if edges:
         # like CityDoctor: an error only for a building written with a solid; otherwise the open

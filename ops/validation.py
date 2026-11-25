@@ -210,3 +210,188 @@ class CGML_OT_repair_geometry(Operator):
 
 
 classes = (*classes, CGML_OT_repair_geometry)
+
+
+# ------------------------------------------------- findings in the Edit tab and the viewport
+MATCH_TOL_M = 0.002   # file coordinates are written with mm precision
+COLOR_RING = (1.0, 0.1, 0.1, 0.9)
+COLOR_EDGE = (1.0, 0.75, 0.0, 0.95)
+_rows_cache = {"key": None, "rows": None, "gen": 0}
+_draw_cache = {"key": None, "batches": None}
+_draw_handle = None
+
+
+def export_offset(scene):
+    """What the exporter adds to scene coordinates (``_resolve_export_offset``)."""
+    from ..shared import georef as gr
+    w = gr.world()
+    if w and all(k in w for k in (gr.X_ORIGIN, gr.Y_ORIGIN, gr.Z_ORIGIN)):
+        return float(w[gr.X_ORIGIN]), float(w[gr.Y_ORIGIN]), float(w[gr.Z_ORIGIN])
+    so = getattr(scene, "cgml3_offset", (0.0, 0.0, 0.0))
+    return float(so[0]), float(so[1]), float(so[2])
+
+
+def last_rows(scene):
+    """Rows of the last check stored in ``scene``, or None when nothing was checked yet."""
+    from ..shared import agent_api, validation_findings
+    raw = scene.get(agent_api.LAST_VALIDATION_KEY)
+    if not raw:
+        return None
+    if _rows_cache["key"] != raw:
+        _rows_cache["rows"] = validation_findings.rows(json.loads(raw))
+        _rows_cache["key"] = raw
+        _rows_cache["gen"] += 1
+    return _rows_cache["rows"]
+
+
+def _building_objects(scene, gid):
+    root = next((o for o in scene.objects if str(o.get("gml_id") or "") == gid), None)
+    return [] if root is None else [o for o in (root, *root.children_recursive) if o.type == 'MESH']
+
+
+def match(objs, points, faces=True, tol=MATCH_TOL_M):
+    """``{obj: [index]}``: faces whose every corner lies on ``points`` (else vertices on them)."""
+    from mathutils import kdtree
+    kd = kdtree.KDTree(len(points))
+    for i, p in enumerate(points):
+        kd.insert(p, i)
+    kd.balance()
+    hits = {}
+    for o in objs:
+        mw = o.matrix_world
+        near = [kd.find(mw @ v.co)[2] <= tol for v in o.data.vertices]
+        idx = ([p.index for p in o.data.polygons if all(near[i] for i in p.vertices)] if faces
+               else [i for i, n in enumerate(near) if n])
+        if idx:
+            hits[o] = idx
+    return hits
+
+
+def _frame_selected(context):
+    for area in context.screen.areas if context.screen else ():
+        if area.type == 'VIEW_3D':
+            region = next((r for r in area.regions if r.type == 'WINDOW'), None)
+            with context.temp_override(area=area, region=region):
+                bpy.ops.view3d.view_selected()
+            return
+
+
+class CGML_OT_show_finding(Operator):
+    """Select this finding in Edit Mode and turn the view to it"""
+    bl_idname = "cgml.show_finding"
+    bl_label = "Show Finding"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    index: bpy.props.IntProperty(options={'HIDDEN'})
+
+    def execute(self, context):
+        import bmesh
+        from ..shared import validation_findings as vf
+        rows = last_rows(context.scene) or []
+        if not 0 <= self.index < len(rows):
+            self.report({'WARNING'}, "Run Check Geometry again: the list is out of date")
+            return {'CANCELLED'}
+        row = rows[self.index]
+        if context.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+        objs = _building_objects(context.scene, row["building"])
+        if not objs:
+            self.report({'WARNING'}, f"{row['building']} is not in this scene")
+            return {'CANCELLED'}
+        pts = vf.targets(row, export_offset(context.scene))
+        hits, faces = {}, bool(row["rings"])
+        if pts:
+            hits = match(objs, pts, faces=faces)
+            if not hits and faces:  # e.g. a wall split around a hole: show the ring's corners
+                hits, faces = match(objs, pts, faces=False), False
+        for o in context.view_layer.objects:
+            o.select_set(False)
+        if not hits:  # no points (a CityDoctor count) or the mesh changed since the check
+            for o in objs:
+                o.select_set(True)
+            context.view_layer.objects.active = objs[0]
+            _frame_selected(context)
+            self.report({'INFO'}, f"{row['building']}: {row['label']} (no exact place: building selected)")
+            return {'FINISHED'}
+        for o in hits:
+            o.select_set(True)
+        context.view_layer.objects.active = next(iter(hits))
+        bpy.ops.object.mode_set(mode='EDIT')
+        context.tool_settings.mesh_select_mode = (not faces, False, faces)
+        for o, idx in hits.items():
+            bm = bmesh.from_edit_mesh(o.data)
+            for el in (*bm.verts, *bm.edges, *bm.faces):
+                el.select_set(False)
+            seq = bm.faces if faces else bm.verts
+            seq.ensure_lookup_table()
+            for i in idx:
+                seq[i].select_set(True)
+            bm.select_flush_mode()
+            bmesh.update_edit_mesh(o.data)
+        _frame_selected(context)
+        n = sum(len(i) for i in hits.values())
+        self.report({'INFO'}, f"{row['label']} {row['value']}: {n} {'face' if faces else 'vertex'}(s) selected")
+        return {'FINISHED'}
+
+
+class CGML_OT_clear_findings(Operator):
+    """Forget the last check: empty the list and the red marks"""
+    bl_idname = "cgml.clear_findings"
+    bl_label = "Clear Findings"
+    bl_options = {'REGISTER'}
+
+    def execute(self, context):
+        from ..shared import agent_api
+        context.scene.pop(agent_api.LAST_VALIDATION_KEY, None)
+        return {'FINISHED'}
+
+
+classes = (*classes, CGML_OT_show_finding, CGML_OT_clear_findings)
+
+
+def _draw_findings():
+    import gpu
+    from gpu_extras.batch import batch_for_shader
+    from ..shared import validation_findings as vf
+    context = bpy.context
+    if not getattr(context.window_manager, "cgml_show_findings", True):
+        return
+    rows = last_rows(context.scene)
+    if not rows:
+        return
+    offset = export_offset(context.scene)
+    key = (_rows_cache["gen"], offset)
+    if _draw_cache["key"] != key:
+        shader = gpu.shader.from_builtin('POLYLINE_UNIFORM_COLOR')
+        rings = [p for r in rows if r["rings"] for p in vf.segments({**r, "edges": []}, offset)]
+        edges = [p for r in rows if r["edges"] for p in vf.segments({**r, "rings": []}, offset)]
+        _draw_cache["batches"] = [(shader, batch_for_shader(shader, 'LINES', {"pos": pts}), color)
+                                  for pts, color in ((rings, COLOR_RING), (edges, COLOR_EDGE)) if pts]
+        _draw_cache["key"] = key
+    vp = gpu.state.viewport_get()
+    gpu.state.blend_set('ALPHA')
+    gpu.state.depth_test_set('NONE')  # a finding behind a wall is still shown
+    for shader, batch, color in _draw_cache["batches"]:
+        shader.bind()
+        shader.uniform_float("viewportSize", (vp[2], vp[3]))
+        shader.uniform_float("lineWidth", 3.0)
+        shader.uniform_float("color", color)
+        batch.draw(shader)
+    gpu.state.blend_set('NONE')
+
+
+def register():
+    global _draw_handle
+    bpy.types.WindowManager.cgml_show_findings = bpy.props.BoolProperty(
+        name="Show Findings", default=True, description="Draw the last check's findings red in the viewport")
+    if not bpy.app.background and _draw_handle is None:
+        _draw_handle = bpy.types.SpaceView3D.draw_handler_add(_draw_findings, (), 'WINDOW', 'POST_VIEW')
+
+
+def unregister():
+    global _draw_handle
+    if _draw_handle is not None:
+        bpy.types.SpaceView3D.draw_handler_remove(_draw_handle, 'WINDOW')
+        _draw_handle = None
+    if hasattr(bpy.types.WindowManager, "cgml_show_findings"):
+        del bpy.types.WindowManager.cgml_show_findings
