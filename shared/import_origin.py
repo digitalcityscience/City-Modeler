@@ -147,6 +147,25 @@ def parse_origin(text: Optional[str]) -> Optional[Origin]:
     return (vals[0], vals[1], vals[2] if len(vals) == 3 else 0.0)
 
 
+# Point Cloud IO (extensions.blender.org/add-ons/point-cloud-io) subtracts the data minimum on LAS/LAZ
+# import and keeps it on the object: the CRS coordinates of that object's 0,0,0
+POINT_CLOUD_IO_OFFSET = "las_origin_offset"
+
+
+def point_cloud_io_offset(value) -> Optional[Origin]:
+    """Point Cloud IO's ``las_origin_offset`` property ([x, y, z]) -> (x, y, z), or None when absent or not
+    2/3 finite numbers (it is another add-on's data, so it is checked, not trusted)."""
+    if value is None or isinstance(value, (str, bytes)):
+        return None
+    try:
+        vals = [float(v) for v in value]
+    except (TypeError, ValueError):
+        return None
+    if len(vals) not in (2, 3) or not all(math.isfinite(v) for v in vals):
+        return None
+    return (vals[0], vals[1], vals[2] if len(vals) == 3 else 0.0)
+
+
 def float32_step(value: float) -> float:
     """Distance between neighbouring float32 values at ``value`` (Blender's vertex precision there)."""
     if not value:

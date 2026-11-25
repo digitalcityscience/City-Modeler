@@ -11,8 +11,16 @@ from shared.import_origin import (
     is_far_from_origin,
     parse_origin,
     parse_corner,
+    point_cloud_io_offset,
     round_to_step,
 )
+
+
+def test_point_cloud_io_offset_reads_its_shift_and_rejects_junk():
+    assert point_cloud_io_offset([564512.0, 5934010.5, 3.2]) == (564512.0, 5934010.5, 3.2)
+    assert point_cloud_io_offset((564512, 5934010)) == (564512.0, 5934010.0, 0.0)
+    for bad in (None, "564512 5934010 3", [1.0], [1, 2, 3, 4], ["x", 1, 2], [float("nan"), 1, 2], 5):
+        assert point_cloud_io_offset(bad) is None
 
 # Envelope of buildings_lod2_citygml_3_0.gml (Hamburg, EPSG:25832)
 LOWER = (564719.04, 5934183.51, 17.23)
