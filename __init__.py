@@ -31,6 +31,7 @@ from .ops import validation
 from .ops import citydb_connection
 from .ops import browse_gml
 from .ops import browse_citydb
+from .ops import scene_origin
 from .ops import update_citydb
 from .ops import commit_citydb
 from .ops import building_authoring
@@ -2592,6 +2593,7 @@ classes = (
     *commit_citydb.operator_classes,
     *db_browse_panel.classes,
     CGML3_PT_Filter,
+    *scene_origin.classes,
     CGML3_OT_ParseBBoxString, CGML3_OT_BBoxToString, CGML3_OT_DBAreaFill,
     CGML3_OT_ImportGMLFile, CGML3_OT_ExportGMLFile,
     CGML3_OT_ImportFromDB, CGML3_OT_ExportToDB,

@@ -13,6 +13,7 @@ that decision stays in the importers.
 from __future__ import annotations
 
 import math
+import re
 from typing import Iterable, Optional, Sequence, Tuple
 
 ORIGIN_ROUNDING_M = 100.0
@@ -127,3 +128,46 @@ def xy_distance(a: Sequence[float], b: Sequence[float]) -> float:
 def is_far_from_origin(local_center_xy: Sequence[float], limit_m: float = FAR_FROM_ORIGIN_M) -> bool:
     """True when data placed in local coordinates lies beyond ``limit_m``."""
     return xy_distance(local_center_xy, (0.0, 0.0)) > limit_m
+
+
+def parse_origin(text: Optional[str]) -> Optional[Origin]:
+    """``"548100 5934200 12.5"`` (space, comma or semicolon between values; dot decimals) -> (x, y, z).
+
+    Two values give Z = 0. Kept as text in the UI because Blender float properties are float32.
+    """
+    parts = [p for p in re.split(r"[\s,;]+", str(text or "").strip()) if p]
+    if len(parts) not in (2, 3):
+        return None
+    try:
+        vals = [float(p) for p in parts]
+    except ValueError:
+        return None
+    if not all(math.isfinite(v) for v in vals):
+        return None
+    return (vals[0], vals[1], vals[2] if len(vals) == 3 else 0.0)
+
+
+def float32_step(value: float) -> float:
+    """Distance between neighbouring float32 values at ``value`` (Blender's vertex precision there)."""
+    if not value:
+        return 0.0
+    return 2.0 ** (math.frexp(abs(float(value)))[1] - 24)
+
+
+def georef_status(epsg: Optional[str], origin: Optional[Sequence[float]]):
+    """Header lines ``(text, kind)`` for the scene georeference; kind is "ok", "unset" or "error".
+
+    Blender keeps float32 vertices, so data sits around ``origin`` (CRS coordinates of Blender 0,0,0);
+    showing it lets users shift other data (point clouds) by the same amount.
+    """
+    if epsg:
+        lines = [(f"CRS: {epsg}", "ok")]
+        if origin is not None:
+            x, y, z = (float(v) for v in origin)
+            lines.append((f"Origin: {x:.2f}, {y:.2f}, {z:.2f}", "ok"))
+        return lines
+    if origin is None:
+        return [("CRS: not set yet", "unset")]
+    # an origin without a CRS: the file had no srsName, so nothing is georeferenced
+    return [("CRS unknown: the file has no srsName", "error"),
+            ("Not georeferenced; add srsName to the file", "error")]
