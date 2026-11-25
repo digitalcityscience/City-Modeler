@@ -115,7 +115,7 @@ def _prepare_world(v: _Versioned, context, root):
     file_origin, file_crs = imp._determine_file_origin_and_crs(root)
     if not is_local:
         # a CRS without an origin: a building drawn in an empty scene (_ensure_crs) sets only the CRS
-        if ((gr.CRS not in world.keys()) or world[gr.CRS] == "Unknown CRS"
+        if (not gr.georef_in_use(world) or (gr.CRS not in world.keys()) or world[gr.CRS] == "Unknown CRS"
                 or not gr.same_crs(world[gr.CRS], file_crs)
                 or gr.X_ORIGIN not in world.keys() or gr.Y_ORIGIN not in world.keys()):
             world[gr.CRS] = file_crs

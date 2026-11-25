@@ -9,6 +9,7 @@ EPSG:25832). Exits 1 when any check fails.
 """
 import math
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -54,6 +55,21 @@ def import_file(path):
     res = bpy.ops.cgml3.import_gml_file(filepath=path)
     assert res == {'FINISHED'}, res
     return [o for o in bpy.data.objects if o.as_pointer() not in before]
+
+
+def header_epsg():
+    return __import__(f"{ADDON}.ui.header_panel", fromlist=["scene_epsg"]).scene_epsg(bpy.context.scene)
+
+
+def shifted_copy(path, out_dir, dx):
+    """The same file moved ``dx`` metres east (EPSG:25832 X values start with 56)."""
+    with open(path, encoding="utf-8") as fh:
+        text = fh.read()
+    text = re.sub(r"\b56\d{4}(?:\.\d+)?(?= 59\d{5})", lambda m: repr(float(m.group()) + dx), text)
+    out = os.path.join(out_dir, "t01_shifted_" + os.path.basename(path))
+    with open(out, "w", encoding="utf-8") as fh:
+        fh.write(text)
+    return out
 
 
 def world_origin():
@@ -170,14 +186,32 @@ def main():
 
     print("\n[T01] --- georeferenced scene is not changed ---")
     fresh_scene()
-    w = bpy.context.scene.world
-    w["cgml_CRS"] = "EPSG:25832"
-    w["cgml_X-Origin"], w["cgml_Y-Origin"], w["cgml_Z-Origin"] = 564000.0, 5934000.0, 0.0
+    res = bpy.ops.cgml3.set_scene_origin(crs="EPSG:25832", origin="564000 5934000 0")
+    check(res == {'FINISHED'}, "Set Origin Before Opening", str(res))
     objs = import_file(lod2_v3)
     origin_g, _ = world_origin()
     check(close(origin_g, (564000.0, 5934000.0, 0.0)), "Existing World origin kept", f"{origin_g}")
     mins_g, _ = data_bounds(objs)
     check(close(mins_g[:2], (mins[0] + 800.0, mins[1] + 300.0), 1e-2), "Data placed relative to existing origin", f"{mins_g[:2]}")
+    for o in list(bpy.data.objects):
+        bpy.data.objects.remove(o)
+    check(header_epsg() == "EPSG:25832", "Hand-set origin still shown with nothing open", str(header_epsg()))
+
+    print("\n[T01] --- data closed: a same-CRS file 100 km away gets its own origin ---")
+    fresh_scene()
+    import_file(lod2_v3)
+    for o in list(bpy.data.objects):  # the user deletes everything; World keeps the old keys
+        bpy.data.objects.remove(o)
+    check(header_epsg() is None, "Left-over CRS not shown with nothing open", str(header_epsg()))
+    browse_gml = __import__(f"{ADDON}.ops.browse_gml", fromlist=["existing_origin"])
+    check(browse_gml.existing_origin(bpy.context, "EPSG:25832") is None, "Preview ignores the left-over origin")
+    objs = import_file(shifted_copy(lod2_v3, out_dir, 100000.0))
+    origin_s, crs_s = world_origin()
+    want = (EXPECTED_ORIGIN[0] + 100000.0,) + EXPECTED_ORIGIN[1:]
+    check(close(origin_s, want, 1e-6) and crs_s == "EPSG:25832", "Origin re-based to the new file", f"{origin_s}")
+    mins_s, maxs_s = data_bounds(objs)
+    check(abs((mins_s[0] + maxs_s[0]) / 2) <= 100, "New data near (0,0)", f"{mins_s[:2]}")
+    check(header_epsg() == "EPSG:25832", "CRS shown again with data open", str(header_epsg()))
 
     print("\n[T01] --- export round trip keeps coordinates (1 mm) ---")
     fresh_scene()

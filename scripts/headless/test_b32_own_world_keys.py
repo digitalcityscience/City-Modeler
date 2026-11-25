@@ -74,6 +74,9 @@ def main():
     check("legacy: values under the new names",
           all(w.get("cgml_" + k) == v for k, v in LEGACY.items()), str(dict(w.items())))
     check("legacy: old names removed", not any(k in w for k in LEGACY), str(list(w.keys())))
+    check("legacy: no data open, sidebar shows no left-over EPSG", header.scene_epsg(bpy.context.scene) is None)
+    bpy.ops.mesh.primitive_cube_add()
+    bpy.context.active_object["cgml3_feature"] = "Building"
     check("legacy: sidebar EPSG", header.scene_epsg(bpy.context.scene) == "EPSG:25832")
 
     # 2. only CRS, but CityGML features in the file -> ours

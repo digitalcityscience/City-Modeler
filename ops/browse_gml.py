@@ -258,13 +258,14 @@ def _local_import(context) -> bool:
 def existing_origin(context, srs_name: str):
     """World origin the importers would keep for a file with ``srs_name``, else None.
 
-    Same rule as the importers: an origin is kept when the World CRS matches the file CRS.
+    Same rule as the importers: an origin is kept when the World CRS matches the file CRS and
+    is still in use (data open or set by hand).
     """
     if _local_import(context):
         return None
     world = _scene_world(context)
     crs = _normalize_crs(srs_name)
-    if crs == "Unknown CRS" or gr.X_ORIGIN not in world or gr.Y_ORIGIN not in world:
+    if crs == "Unknown CRS" or gr.X_ORIGIN not in world or gr.Y_ORIGIN not in world or not gr.georef_in_use(world):
         return None
     if not gr.same_crs(world.get(gr.CRS), crs):
         return None
