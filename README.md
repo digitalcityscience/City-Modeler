@@ -1,16 +1,18 @@
 # City Modeler for Blender
 
-**City Modeler** is a Blender add-on for modelling semantic 3D city models: draw and edit buildings, give their surfaces and parts meaning, and keep them in sync with a **3DCityDB 5.x** database. Files are read and written as **CityGML 2.0 / 3.0** today; **CityJSON** support is coming soon.
+**City Modeler** is a Blender add-on for modelling semantic 3D city models: draw and edit buildings, give their surfaces and parts meaning, and keep them in sync with a **3DCityDB 5.x** database. Files are read and written as **CityGML 2.0 / 3.0** and **CityJSON 2.0** (CityJSON 1.1 and CityJSONSeq are read as well).
 Developed and maintained by [Mehmet Akif Ortak](https://github.com/orttak) as part of research work at **HafenCity University Hamburg (HCU)** within the **Next Generation City Network (NGCN)** project.
 
 ## Features
 
-- CityGML 2.0 and 3.0 import/export (`.gml`, `.xml`) with textures, materials and semantics; CityJSON is coming soon
+- CityGML 2.0 and 3.0 import/export (`.gml`, `.xml`) with textures, materials and semantics
+- CityJSON 2.0 / 1.1 and CityJSONSeq open (`.city.json`, `.city.jsonl`); export as CityJSON 2.0 or CityJSONSeq; changes can be saved back into the CityJSON file they came from (see [File formats](#file-formats-how-citygml-and-cityjson-are-handled))
+- Large files open as a preview first: outlines only, pick the buildings you need, then load them
 - 3DCityDB 5.x import/export via the bundled `citydb-tool` (3DCityDB 4.x is not supported)
 - Drawing tools for buildings: footprint and height, roofs (AdV roof types), windows, doors, balconies, chimneys, Copy / Paste
 - Semantics: assign surface classes (roof, wall, ground …), attribute card with code lists, building parts and installations
 - Focus: Building, Transportation (road, railway, track, square) and CityFurniture. Interiors and the other modules are 3DCityDB 5.x work
-- Filters (BBox, GML-ID, LoD, feature type), XSD validation, optional CityDoctor geometry check
+- Filters (BBox, GML-ID, LoD, feature type), XSD validation, geometry check with a findings list and repairs, optional CityDoctor check
 - Headless CLI operation (`scripts/headless/`)
 
 ## Requirements
@@ -41,10 +43,66 @@ File import/export and the drawing tools need nothing else; all Python packages 
 
 ## Quick start
 
-- **Import:** *File → Import → CityGML*, or drag a `.gml` / `.xml` file into the viewport.
-- **Export:** *File → Export → CityGML*.
+- **Open:** *File → Import → CityGML 2/3 Preview* or *Whole File*, the **Open** tab, or drag the file into the viewport. The same entries open CityJSON (`.city.json`) and CityJSONSeq (`.city.jsonl`): the file content decides the reader, not the menu name or the extension.
+- **Export:** *File → Export → CityGML*, or the **Save** tab: pick **CityGML** or **CityJSON 2.0**, then export. A scene opened from a CityJSON file also shows **Save into <file>**.
 - **Database:** *Properties → Tool tab → Open*: connect, pick a city model, load buildings. Blender is a working copy; *Save → Commit* writes your new, changed and deleted buildings to the database.
 - **Panels:** the right panel has three tabs. **Open** (files, 3DCityDB), **Edit** (selection, semantics, attributes) and **Save** (check, export, commit).
+
+## File formats: how CityGML and CityJSON are handled
+
+### One model inside
+
+Every source ends up in the same internal model, the CityGML 3.0 feature tree. A CityGML 2.0 file, a CityGML 3.0 file, a CityJSON file and a 3DCityDB city model all become the same Blender objects with the same semantics and attribute card. Editing, checking and the 3DCityDB commit do not depend on where a building came from.
+
+- **CityGML 2.0 / 3.0** is read and written directly, including appearances (textures, materials).
+- **CityJSON** is read into the same tree a CityGML 3.0 file gives. It is written by first running the CityGML 3.0 writer with its usual rules (scope, export defaults, checks), reading that result back and converting it to CityJSON 2.0. Both formats therefore follow the same export rules.
+
+### Opening
+
+- **Small files open completely.** A file of 20 MB or more, or with more than 30 buildings, opens as a **preview** first: only the outlines are drawn, you pick the buildings you need and load those. Both thresholds can be changed in the add-on preferences.
+- **CityJSONSeq always opens as a preview** and is read line by line, never as a whole.
+- Loading a whole file stops at 200 MB. Larger data belongs in 3DCityDB 5.x: import it there and load the part you need with **Open → 3DCityDB**.
+- **One LoD per load.** CityGML loads LoD2 by default. CityJSON keeps its LoD text ("2.2"); the default is the highest LoD2. A building without the chosen LoD is skipped and counted in the summary, never filled from another LoD.
+
+### Coordinates: CRS and scene origin
+
+- The CRS comes from `srsName` (CityGML) or `metadata.referenceSystem` (CityJSON). The accepted spellings (EPSG, OGC URN/URL, compound CRS, AdV URNs) are listed in [shared/CRS_SUPPORT.md](shared/CRS_SUPPORT.md). Nothing is reprojected.
+- Blender stores vertices as 32-bit floats, which lose precision at real-world coordinates such as UTM values in the millions of metres. The add-on therefore shifts the data near Blender's 0,0,0 by the **scene origin**: the centre of the first file's extent rounded to 100 m, with Z at its lowest point. The CRS and origin are kept on the World and shown at the top of the right panel. Export and commit add the origin back, so files and the database always receive the real CRS coordinates.
+- A second file in the same CRS uses the same origin, so the two line up. While city objects are loaded, a file or city model in another CRS is refused: start a new Blender file (*File → New*) for it.
+- When everything is closed or deleted, the old CRS and origin are forgotten and the next file sets its own. The exception is **Open → Align Other Data → Set Origin Before Opening**: an origin set there is kept until *File → New*. Use it to line the city model up with data that is already shifted, such as a point cloud's Global Shift.
+- Other data (point cloud, shapefile, mesh) is moved onto the city model with **Align Selected to City Model**. For point clouds opened with Point Cloud IO it reads their shift by itself; for other data you enter the shift that data was imported with.
+
+### Saving
+
+- **CityGML:** 3.0 or 2.0, chosen in the export dialog.
+- **CityJSON:** **Save** tab → **CityJSON 2.0** → **Export CityJSON File…**, with these options:
+  - **Scope:** the whole scene, the selection, or a list of GML ids.
+  - **CityJSONSeq:** a header line, then one feature per line.
+  - **Vertex Precision:** 3 decimals = 1 mm by default.
+- **Save into the source CityJSON file:** writes only what changed back into the file: changed, new and deleted buildings. Everything else stays exactly as it was in the file, including other city objects, other LoDs, metadata, extensions and geometry templates. The result is checked, written to a temporary file and only then renamed over the source, and only if the source was not changed on disk in the meantime. This works for buildings only.
+- **3DCityDB:** *Save → Commit* writes new, changed and deleted buildings, whichever format they were opened from.
+
+### What CityJSON covers
+
+- **Read and written:** Building, BuildingPart, BuildingInstallation, their semantic surfaces and Window/Door; Road, Railway and TransportSquare with TrafficArea / AuxiliaryTrafficArea (the CityJSON core profile); CityFurniture, including `GeometryInstance` templates.
+- **Core profile limits:** CityJSON core has no Section, Intersection, TrafficSpace or AuxiliaryTrafficSpace. Their polygons are written into their road's geometry and counted in the export summary. A Track has no core type and is not written.
+- **Not read or written yet:**
+  - CityJSON textures and materials. When you save into the source file, a building you changed loses its appearance; untouched buildings keep theirs.
+  - Extension types (`+Type`). Save into the source file keeps them untouched.
+- **Not loaded:** interiors (rooms, storeys, units, furniture) and other modules (Bridge, Tunnel, Relief, LandUse, WaterBody, Vegetation, Generic). They are counted in the summary; use 3DCityDB 5.x for them.
+- **IDs:** an id that is a valid `gml:id` (for example `B.1` or `NL.IMBAG.Pand.0503100000000010`) is kept as it is. An id that is not valid (it starts with a digit, or contains a blank or `:`) gets a stable `gml:id`. Its original id is kept and written back on CityJSON export.
+
+## Geometry Findings
+
+**Edit → Geometry Findings → Check Geometry** checks the buildings and lists one row per finding:
+
+- **Not planar:** with its distance from the plane, in mm.
+- **Ring crosses itself.**
+- **Window/door without hole.**
+- **Shell not closed** and **Shell open (no solid):** with the number of open edges and T-junctions.
+- **CityDoctor results:** also listed when [CityDoctor](#citydoctor-optional-geometry-validation) is set up.
+
+Pressing a row opens Edit Mode on that building, selects the faces concerned (or the vertices of an open edge) and frames the view. The viewport draws the findings: red rings for polygons, yellow lines for open edges. A toggle on the panel turns this drawing off. Rows for non-planar polygons and open shells have a wrench button that repairs that kind of problem on the building (flatten polygons, or weld T-junctions) and checks it again.
 
 ## Drawing a building
 
