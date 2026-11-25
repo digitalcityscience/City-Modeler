@@ -2773,6 +2773,10 @@ def register():
     except Exception as e:
         print(f"[CityGML] Edit-exit validation handler register failed: {e}")
     try:
+        validation.register()  # findings overlay + its toggle
+    except Exception as e:
+        print(f"[CityGML] Findings overlay register failed: {e}")
+    try:
         authoring_core_transform_drift.register()
     except Exception as e:
         print(f"[CityGML] Transform-drift handler register failed: {e}")
@@ -2805,6 +2809,10 @@ def unregister():
         pass
     try:
         edit_exit_validation.unregister()
+    except Exception:
+        pass
+    try:
+        validation.unregister()
     except Exception:
         pass
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)

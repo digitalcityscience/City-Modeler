@@ -62,6 +62,24 @@ def findings(res, bid):
     return res["buildings"].get(bid, {}).get("checks", {})
 
 
+def show_findings(*codes):
+    """Press each Geometry Findings row of ``codes``: ``[(result, "face"|"vertex", selected count)]``."""
+    val = import_module(ADDON + ".ops.validation")
+    out = []
+    for i, row in enumerate(val.last_rows(bpy.context.scene) or []):
+        if row["code"] not in codes:
+            continue
+        r = bpy.ops.cgml.show_finding(index=i)
+        faces = bpy.context.tool_settings.mesh_select_mode[2]
+        n = 0
+        for o in bpy.context.objects_in_mode:
+            bm = bmesh.from_edit_mesh(o.data)
+            n += sum(1 for e in (bm.faces if faces else bm.verts) if e.select)
+        out.append((r, "face" if faces else "vertex", n))
+        bpy.ops.object.mode_set(mode='OBJECT')
+    return out
+
+
 def main():
     global API, ADDON
     argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
@@ -127,6 +145,9 @@ def main():
     check("missing wall: GE_S_NOT_CLOSED with open edges", (findings(res, bid).get("GE_S_NOT_CLOSED") or findings(res, bid).get("CGML_SHELL_OPEN")) == 1
           and det.get("open_edges", 0) >= 4 and det.get("edges"), str(det.get("open_edges")))
     check("missing wall: closed false", res["buildings"][bid]["closed"] is False)
+    shown = show_findings("GE_S_NOT_CLOSED", "CGML_SHELL_OPEN")
+    check("findings panel: open shell row selects the edge vertices", shown and all(
+        r == {'FINISHED'} and kind == "vertex" and n >= 4 for r, kind, n in shown), str(shown))
 
     # Hamburg LoD3
     clear()
@@ -137,6 +158,23 @@ def main():
     check("Hamburg: all 3 closed, no filling findings",
           len(res["buildings"]) == 3 and all(b["closed"] for b in res["buildings"].values())
           and "CGML_FILLING_WITHOUT_HOLE" not in res["summary"], str(res["summary"]))
+    shown = show_findings("GE_P_NON_PLANAR_POLYGON_DISTANCE_PLANE")
+    check("findings panel: 3 non-planar rows, each selects its face(s)", len(shown) == 3 and all(
+        r == {'FINISHED'} and kind == "face" and n >= 1 for r, kind, n in shown), str(shown))
+    # fix from the list while the row press left Edit Mode on (an edit mesh used to be skipped
+    # while its neighbours moved: 122 open edges)
+    val = import_module(ADDON + ".ops.validation")
+    for _ in range(5):
+        fixable = [i for i, r in enumerate(val.last_rows(bpy.context.scene) or []) if r["code"] in val.FIXES]
+        if not fixable:
+            break
+        bpy.ops.cgml.show_finding(index=fixable[0])
+        bpy.ops.cgml.fix_finding(index=fixable[0])
+    import json
+    last = json.loads(bpy.context.scene[API.LAST_VALIDATION_KEY])["buildings"]
+    check("findings panel: Fix from Edit Mode empties the list, all shells closed",
+          val.last_rows(bpy.context.scene) == [] and len(last) == 3 and all(b["closed"] for b in last.values()),
+          str(val.last_rows(bpy.context.scene)))
     if API.citydoctor_validator():
         check("Hamburg: CityDoctor ran, per building", res["citydoctor"] is not None
               and all(b["citydoctor"] is not None for b in res["buildings"].values()), str(res["warnings"]))

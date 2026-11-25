@@ -227,6 +227,46 @@ class CGML3_PT_AssignSurface(Panel):
         _step_button(row, context, "surface")
 
 
+class CGML3_PT_Findings(Panel):
+    """The last geometry check: one row per finding; a click selects it in Edit Mode, red in the view."""
+    bl_label = "Geometry Findings"
+    bl_idname = "CGML3_PT_Findings"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "Tool"
+    bl_parent_id = "CGML3_PT_Edit"
+    bl_order = 6
+    MAX_ROWS = 40
+
+    def draw(self, context):
+        from ..ops.validation import FIXES, last_rows
+        layout = self.layout
+        row = layout.row(align=True)
+        row.operator("cgml.check_geometry", icon='MESH_ICOSPHERE')
+        if hasattr(context.window_manager, "cgml_show_findings"):
+            row.prop(context.window_manager, "cgml_show_findings", text="", icon='OVERLAY')
+        row.operator("cgml.clear_findings", text="", icon='X')
+        rows = last_rows(context.scene)
+        if rows is None:
+            layout.label(text="Not checked yet", icon='INFO')
+            return
+        if not rows:
+            layout.label(text="No findings in the last check", icon='CHECKMARK')
+            return
+        col = layout.column(align=True)
+        building = None
+        for i, r in enumerate(rows[:self.MAX_ROWS]):
+            if r["building"] != building:
+                building = r["building"]
+                col.label(text=building, icon='HOME')
+            line = col.row(align=True)
+            line.operator("cgml.show_finding", text=f"{r['label']}  {r['value']}".strip(), icon='ERROR').index = i
+            if r["code"] in FIXES:  # repair this kind on the building, then check again
+                line.operator("cgml.fix_finding", text="", icon='TOOL_SETTINGS').index = i
+        if len(rows) > self.MAX_ROWS:
+            layout.label(text=f"{len(rows) - self.MAX_ROWS} more: Text Editor > citygml_geometry_check", icon='INFO')
+
+
 class CGML3_PT_Save(Panel):
     bl_label = "Save"
     bl_idname = "CGML3_PT_Save"
@@ -347,4 +387,4 @@ def draw_object_context_menu(self, context):
 
 operator_classes = (CGML_OT_facade_edit_start, CGML_OT_make_citygml, CGML_MT_object_context)
 # Parents before children: CGML3_PT_Tools must be registered before the panels that attach to it.
-panel_classes = (CGML3_PT_Edit, CGML3_PT_AssignSurface, CGML3_PT_Save, CGML3_PT_ExportOptions, CGML3_PT_Tools)
+panel_classes = (CGML3_PT_Edit, CGML3_PT_AssignSurface, CGML3_PT_Findings, CGML3_PT_Save, CGML3_PT_ExportOptions, CGML3_PT_Tools)
