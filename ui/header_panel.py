@@ -100,9 +100,16 @@ class VCS3DCityDB_PT_HeaderPanel(bpy.types.Panel):
             col.label(text=f"Scene: {n} city object{'s' if n != 1 else ''}", icon='COLLECTION_COLOR_05')
         else:
             col.label(text="Scene: nothing open yet", icon='COLLECTION_COLOR_08')
-        epsg = scene_epsg(context.scene)
-        col.label(text=f"CRS: {epsg}" if epsg else "CRS: not set yet",
-                  icon='COLLECTION_COLOR_04' if epsg else 'COLLECTION_COLOR_03')
+        from ..shared.import_origin import georef_status
+        world = gr.world()
+        origin = None
+        if world is not None and gr.X_ORIGIN in world and gr.Y_ORIGIN in world:
+            origin = (world[gr.X_ORIGIN], world[gr.Y_ORIGIN], world.get(gr.Z_ORIGIN, 0.0))
+        icons = {"ok": 'COLLECTION_COLOR_04', "unset": 'COLLECTION_COLOR_03', "error": 'ERROR'}
+        for text, kind in georef_status(scene_epsg(context.scene), origin):
+            row = col.row()
+            row.alert = kind == "error"
+            row.label(text=text, icon=icons[kind])
         text, icon = connection_status(context)
         col.label(text=f"3DCityDB: {text}", icon=icon)
         from .colors import LEGEND

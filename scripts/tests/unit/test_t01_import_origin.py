@@ -6,7 +6,10 @@ from shared.import_origin import (
     bounds_from_pos_lists,
     center_origin,
     file_origin,
+    float32_step,
+    georef_status,
     is_far_from_origin,
+    parse_origin,
     parse_corner,
     round_to_step,
 )
@@ -98,3 +101,24 @@ def test_bounds_from_pos_lists_empty():
 )
 def test_far_from_origin_warning_threshold(center, expected):
     assert is_far_from_origin(center) is expected
+
+
+def test_georef_status_shows_origin_and_flags_missing_crs():
+    assert georef_status("EPSG:25832", (548100.0, 5934200.0, 3.5)) == [
+        ("CRS: EPSG:25832", "ok"), ("Origin: 548100.00, 5934200.00, 3.50", "ok")]
+    assert georef_status(None, None) == [("CRS: not set yet", "unset")]
+    assert all(kind == "error" for _, kind in georef_status(None, (548100.0, 5934200.0, 0.0)))
+
+
+def test_parse_origin_accepts_separators_and_rejects_junk():
+    assert parse_origin("548100 5934200 12.5") == (548100.0, 5934200.0, 12.5)
+    assert parse_origin("548100.25, 5934200;3") == (548100.25, 5934200.0, 3.0)
+    assert parse_origin("548100 5934200") == (548100.0, 5934200.0, 0.0)
+    for bad in ("", "1", "1 2 3 4", "a b", "1 nan 2"):
+        assert parse_origin(bad) is None
+
+
+def test_float32_step_is_half_a_metre_at_utm_northing():
+    assert float32_step(5934200.0) == 0.5
+    assert float32_step(500.0) < 0.0001
+    assert float32_step(0.0) == 0.0
