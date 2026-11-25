@@ -19,9 +19,10 @@ ROOT_ID = "VCS3DCITYDB_PT_header"
 
 
 def scene_epsg(scene):
-    """``"EPSG:<code>"`` from World["cgml_CRS"], or ``None``."""
+    """``"EPSG:<code>"`` from World["cgml_CRS"], or ``None`` (also when it is left over from closed data)."""
     world = gr.world()
-    match = re.search(r"EPSG[:\s]*(\d+)", str(world.get(gr.CRS, "")), re.IGNORECASE) if world else None
+    match = re.search(r"EPSG[:\s]*(\d+)", str(world.get(gr.CRS, "")), re.IGNORECASE) \
+        if gr.georef_in_use(world) else None
     return f"EPSG:{match.group(1)}" if match else None
 
 
@@ -103,7 +104,7 @@ class VCS3DCityDB_PT_HeaderPanel(bpy.types.Panel):
         from ..shared.import_origin import georef_status
         world = gr.world()
         origin = None
-        if world is not None and gr.X_ORIGIN in world and gr.Y_ORIGIN in world:
+        if gr.georef_in_use(world) and gr.X_ORIGIN in world and gr.Y_ORIGIN in world:
             origin = (world[gr.X_ORIGIN], world[gr.Y_ORIGIN], world.get(gr.Z_ORIGIN, 0.0))
         icons = {"ok": 'COLLECTION_COLOR_04', "unset": 'COLLECTION_COLOR_03', "error": 'ERROR'}
         for text, kind in georef_status(scene_epsg(context.scene), origin):

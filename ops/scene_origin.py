@@ -27,7 +27,7 @@ PRECISION_WARN_M = 0.01
 def scene_origin():
     """(x, y, z) of Blender 0,0,0 in the World CRS, or None."""
     w = gr.world()
-    if w is None or gr.X_ORIGIN not in w or gr.Y_ORIGIN not in w:
+    if w is None or gr.X_ORIGIN not in w or gr.Y_ORIGIN not in w or not gr.georef_in_use(w):
         return None
     return (float(w[gr.X_ORIGIN]), float(w[gr.Y_ORIGIN]), float(w.get(gr.Z_ORIGIN, 0.0)))
 
@@ -37,7 +37,7 @@ def _fmt(origin) -> str:
 
 
 def _city_data_open() -> bool:
-    return bool(browse_gml.proxy_objects()) or any(o.users and o.get("cgml3_feature") for o in bpy.data.objects)
+    return gr.city_data_open()
 
 
 class CGML3_OT_set_scene_origin(Operator):
@@ -87,6 +87,7 @@ class CGML3_OT_set_scene_origin(Operator):
         gr.set_world_float(w, gr.X_ORIGIN, origin[0])
         gr.set_world_float(w, gr.Y_ORIGIN, origin[1])
         gr.set_world_float(w, gr.Z_ORIGIN, origin[2])
+        w[gr.MANUAL_ORIGIN] = True  # kept with no data open; the next file lines up with it
         self.report({'INFO'}, f"Scene origin {crs}: {_fmt(origin)}")
         return {'FINISHED'}
 

@@ -27,6 +27,8 @@ X_ORIGIN = "cgml_X-Origin"
 Y_ORIGIN = "cgml_Y-Origin"
 Z_ORIGIN = "cgml_Z-Origin"
 Z_EPSG = "cgml_Z-EPSG"
+# set by "Set Origin Before Opening": that origin stays even while no city data is open
+MANUAL_ORIGIN = "cgml_origin_manual"
 # names before B32 -> ours
 LEGACY_KEYS = {"CRS": CRS, "X-Origin": X_ORIGIN, "Y-Origin": Y_ORIGIN, "Z-Origin": Z_ORIGIN, "Z-EPSG": Z_EPSG}
 
@@ -133,6 +135,21 @@ def same_crs(a, b) -> bool:
     """Same horizontal EPSG (X/Y of one frame); the vertical part may be named or not."""
     ha, hb = epsg(a).split("+")[0], epsg(b).split("+")[0]
     return ha != "Unknown CRS" and ha == hb
+
+
+def city_data_open() -> bool:
+    """Some object is a CityGML feature or a preview box (ops.browse_gml.PROXY_PATH_PROP)."""
+    return any(o.users and (o.get("cgml3_feature") or o.get("cgml3_browse_path")) for o in bpy.data.objects)
+
+
+def georef_in_use(w=None) -> bool:
+    """False when the World CRS/origin is only left over from data that is gone (closed or deleted).
+
+    A left-over georeference is neither shown nor kept: the next file sets its own origin, so a
+    same-CRS file far away does not land kilometres from Blender 0,0,0 (float32 precision).
+    """
+    w = world() if w is None else w
+    return w is not None and (bool(w.get(MANUAL_ORIGIN)) or city_data_open())
 
 
 def scene_crs_lock() -> str | None:
