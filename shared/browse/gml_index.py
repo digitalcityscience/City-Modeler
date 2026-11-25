@@ -84,6 +84,8 @@ class FeatureIndexEntry:
     srs_mismatch: bool = False
     # exterior rings of the GroundSurface polygons (2D preview when there is no LoD0)
     footprint: List[List[float]] = field(default_factory=list)
+    # CityJSON (CJ-05): the LoD texts as written in the file ("1.2", "2.2"); empty for GML and DB
+    lod_texts: Tuple[str, ...] = ()
 
     @property
     def lod_levels(self) -> Tuple[int, ...]:
@@ -121,7 +123,7 @@ class FeatureIndexEntry:
         return [self.gml_id, self.feature_type, self.name, self.start, self.end,
                 list(self.bbox) if self.bbox else None, int(self.envelope_mismatch),
                 int(self.has_envelope), list(self.lods), self.lod0, self.external_xlink,
-                int(self.implicit_geometry), int(self.srs_mismatch), self.footprint]
+                int(self.implicit_geometry), int(self.srs_mismatch), self.footprint, list(self.lod_texts)]
 
     @classmethod
     def from_list(cls, v: Sequence) -> "FeatureIndexEntry":
@@ -129,7 +131,8 @@ class FeatureIndexEntry:
                    bbox=tuple(v[5]) if v[5] else None, envelope_mismatch=bool(v[6]),
                    has_envelope=bool(v[7]), lods=tuple(v[8]), lod0=[list(r) for r in v[9]],
                    external_xlink=int(v[10]), implicit_geometry=bool(v[11]), srs_mismatch=bool(v[12]),
-                   footprint=[list(r) for r in v[13]] if len(v) > 13 else [])
+                   footprint=[list(r) for r in v[13]] if len(v) > 13 else [],
+                   lod_texts=tuple(v[14]) if len(v) > 14 else ())
 
 
 @dataclass
@@ -155,6 +158,10 @@ class FileIndex:
     appearances: List[AppearanceRange] = field(default_factory=list)
     skipped_members: int = 0
     seconds: float = 0.0
+    # CityJSON (CJ-05): what is not in the index, by kind ("WaterBody", "unreadable line")
+    skipped_kinds: Dict[str, int] = field(default_factory=dict)
+    # CityJSON (CJ-05): the parsed single-document file, kept for Load; never cached
+    document: Optional[dict] = field(default=None, repr=False, compare=False)
 
     @property
     def has_lod0(self) -> bool:
@@ -185,6 +192,7 @@ class FileIndex:
             "srs_name": self.srs_name,
             "envelope": [list(self.envelope[0]), list(self.envelope[1])] if self.envelope else None,
             "skipped_members": self.skipped_members, "seconds": self.seconds,
+            "skipped_kinds": dict(self.skipped_kinds),
             "appearances": [[a.start, a.end, list(a.feature_indices)] for a in self.appearances],
         }
         if entries:
@@ -203,6 +211,7 @@ class FileIndex:
             srs_name=d.get("srs_name", ""),
             envelope=(tuple(env[0]), tuple(env[1])) if env else None,
             skipped_members=int(d.get("skipped_members", 0)), seconds=float(d.get("seconds", 0.0)),
+            skipped_kinds=dict(d.get("skipped_kinds") or {}),
             entries=[FeatureIndexEntry.from_list(v) for v in d["entries"]],
             appearances=[AppearanceRange(int(a[0]), int(a[1]), tuple(a[2])) for a in d["appearances"]],
         )

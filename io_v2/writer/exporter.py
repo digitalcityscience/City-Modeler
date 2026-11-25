@@ -868,7 +868,7 @@ def export_blender_to_citygml3(
     _semantic_hierarchy_restore_data: list = []
 
     def _feature_id(obj_):
-        """Stabiler Roundtrip: bevorzugt obj['gml_id'], sonst Name → make_gml_id."""
+        """Stabiler Roundtrip: obj['gml_id']; fehlt sie, wird einmal eine ID_<uuid> erzeugt und am Objekt gespeichert."""
         # 1) gml_id aus Custom Property verwenden, falls vorhanden
         try:
             raw = obj_.get("gml_id", None)
@@ -882,9 +882,14 @@ def export_blender_to_citygml3(
                 # UUIDs aus 3DCityDB können mit Zahl beginnen → make_gml_id validiert
                 return make_gml_id(gid, used_feat_ids)
 
-        # 2) Fallback: Name → make_gml_id
-        return make_gml_id(obj_.name, used_feat_ids)
-    
+        # 2) keine gml_id: nie aus dem Objektnamen (ändert sich beim Umbenennen, Blender hängt ".001" an),
+        #    sondern einmal erzeugen und am Objekt behalten, damit der nächste Export dieselbe ID schreibt
+        try:
+            obj_["gml_id"] = gid = f"ID_{uuid4().hex}"
+        except Exception:   # schreibgeschütztes (verlinktes) Objekt: nur der Name ist stabil
+            gid = obj_.name
+        return make_gml_id(gid, used_feat_ids)
+
     def _id_from_material(mat, key: str) -> str:
         try:
             v = mat.get(key, None) if mat else None
@@ -3154,7 +3159,18 @@ def export_blender_to_citygml3(
             if obj_eval:
                 obj_eval.to_mesh_clear()
             _raw_gml_id = str(obj.get("gml_id", "") or "").strip()
-            if com is not None and _feature_tag(obj) == ("bldg", "Building") and _raw_gml_id in _child_objects_by_parent_id:
+            _empty_tag = _feature_tag(obj)
+            if (com is not None and _empty_tag[0] == "tran" and _empty_tag[1] in _TRAN_TOP_FEATURES
+                    and _raw_gml_id in _child_objects_by_parent_id):
+                # a Road whose geometry is all in its TrafficAreas: write it, they follow inline
+                feature = SubElement(com, Q(*_empty_tag))
+                feat_id = _feature_id(obj)
+                feature.set(f"{{{NS['gml']}}}id", feat_id)
+                if obj.name and obj.name != feat_id:
+                    SubElement(feature, Q("gml", "name")).text = obj.name
+                _write_specific_attributes(feature, obj)
+                _parent_feature_elements[_raw_gml_id] = feature
+            elif com is not None and _empty_tag == ("bldg", "Building") and _raw_gml_id in _child_objects_by_parent_id:
                 # B09: a Building made only of BuildingParts has no geometry of its
                 # own; write it so its parts are written inline under it.
                 feature = SubElement(com, Q("bldg", "Building"))

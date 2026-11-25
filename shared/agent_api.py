@@ -596,12 +596,19 @@ def fix_planarity(building_id=None, tolerance=DEFAULT_TOLERANCE_M) -> dict:
 
 
 @_command
-def export(path, version="3.0", scope="SCENE", gml_ids=None, xsd=True) -> dict:
-    """Write a CityGML file. ``scope``: SCENE (default), SELECTION or IDS (``gml_ids``). The result
-    has the written / skipped top-level ids and the XSD result; geometry is not checked."""
+def export(path, version="3.0", scope="SCENE", gml_ids=None, xsd=True, format="citygml", seq=False,
+           precision=3) -> dict:
+    """Write a CityGML file, or with ``format="cityjson"`` a CityJSON 2.0 file (``seq``: CityJSONSeq,
+    ``precision``: decimals; Building, CityFurniture and Transportation in the CityJSON core profile, where
+    Section / Intersection / TrafficSpace are flattened into their road and a Track is not written: the
+    counts are in ``export["reduced"]`` / ``export["not_written"]`` and in the warnings). ``scope``: SCENE (default), SELECTION or IDS
+    (``gml_ids``). The result has the written / skipped top-level ids and the XSD result (CityGML) or
+    the self-check result (CityJSON); geometry is not checked."""
     import os
     from . import export_scope
-    if str(version) not in ("2.0", "3.0"):
+    if format not in ("citygml", "cityjson"):
+        raise CommandError("BAD_ARGUMENT", "format is 'citygml' or 'cityjson'")
+    if format == "citygml" and str(version) not in ("2.0", "3.0"):
         raise CommandError("BAD_ARGUMENT", "version is '2.0' or '3.0'")
     ctx = bpy.context
     ids = export_scope.parse_ids(gml_ids or [])
@@ -610,6 +617,8 @@ def export(path, version="3.0", scope="SCENE", gml_ids=None, xsd=True) -> dict:
     except ValueError as e:
         raise CommandError("SCOPE_ERROR", str(e))
     path = os.path.abspath(str(path))
+    if format == "cityjson":
+        return _export_cityjson(ctx, path, scope, ids, bool(seq), int(precision))
     if not path.lower().endswith(".gml"):
         raise CommandError("BAD_ARGUMENT", "path must end with .gml")
     if os.path.exists(path):
@@ -634,6 +643,57 @@ def export(path, version="3.0", scope="SCENE", gml_ids=None, xsd=True) -> dict:
         warnings.append("XSD validation failed (see the citygml_xsd_check text block)")
     return result(True, message=export_scope.summary(rec) + f"; XSD {rec.get('xsd')}; geometry not checked",
                   warnings=warnings, export=rec)
+
+
+def _export_cityjson(ctx, path, scope, ids, seq, precision) -> dict:
+    """CJ-03: the operator's path (``ops/export_cityjson.export_file``); an old file at ``path`` is
+    only replaced once the new one passed the self-check."""
+    from . import export_scope
+    from .cityjson_reader import CityJSONError
+    from ..ops.export_cityjson import export_file
+    if not path.lower().endswith(".jsonl" if seq else ".json"):
+        raise CommandError("BAD_ARGUMENT", "path must end with .jsonl (seq=True)" if seq else "path must end with .json")
+    warnings = []
+    try:
+        rec = export_file(ctx, path, scope, ids, seq, precision,
+                          report=lambda level, text: warnings.append(text))
+    except ValueError as e:
+        raise CommandError("EXPORT_FAILED", str(e))
+    except CityJSONError as e:
+        raise CommandError("EXPORT_FAILED", str(e))
+    if rec["skipped"]:
+        warnings.append(f"{rec['skipped_count']} top-level feature(s) not written")
+    warnings += rec["notes"]
+    return result(True, message=export_scope.summary(rec) + "; self-check passed; not validated with cjval; "
+                  "geometry not checked", warnings=warnings, export=rec)
+
+
+@_command
+def save_cityjson_source(path=None, dry_run=False) -> dict:
+    """CJ-06: write the changed, new and deleted buildings back into the CityJSON file the scene was
+    opened from (``path``: needed when the scene has several sources). ``dry_run``: only the change
+    summary (``export``: changed / new / deleted ids, kept and lost counts), nothing written."""
+    from . import cityjson_open as co
+    from . import export_scope
+    from . import georef as gr
+    from .cityjson_reader import CityJSONError
+    from ..ops.export_cityjson import save_source
+    srcs = list(co.sources(gr.world()))
+    if not srcs:
+        raise CommandError("BAD_ARGUMENT", "the scene was not opened from a CityJSON file")
+    if path is None:
+        if len(srcs) > 1:
+            raise CommandError("BAD_ARGUMENT", "several CityJSON sources, pass path: " + ", ".join(srcs))
+        path = srcs[0]
+    warnings = []
+    try:
+        rec = save_source(bpy.context, str(path), dry_run=bool(dry_run),
+                          report=lambda level, text: warnings.append(text))
+    except (ValueError, CityJSONError) as e:
+        raise CommandError("EXPORT_FAILED", str(e))
+    what = "would be written (dry run, nothing written)" if dry_run else "written"
+    return result(True, message=f"{export_scope.summary(rec)}; {what}; self-check {rec['self_check']}; "
+                  "not validated with cjval", warnings=warnings + rec["notes"][1:], export=rec)
 
 
 # =========================================================================== validation (A5, B60)

@@ -559,7 +559,7 @@ def export_blender_to_citygml3(
     _semantic_hierarchy_restore_data: list = []
 
     def _feature_id(obj_):
-        """Stabiler Roundtrip: bevorzugt obj['gml_id'], sonst Name → make_gml_id."""
+        """Stabiler Roundtrip: obj['gml_id']; fehlt sie, wird einmal eine ID_<uuid> erzeugt und am Objekt gespeichert."""
         # 1) gml_id aus Custom Property verwenden, falls vorhanden
         try:
             raw = obj_.get("gml_id", None)
@@ -573,8 +573,13 @@ def export_blender_to_citygml3(
                 # UUIDs aus 3DCityDB können mit Zahl beginnen → make_gml_id validiert
                 return make_gml_id(gid, used_feat_ids)
 
-        # 2) Fallback: Name → make_gml_id
-        return make_gml_id(obj_.name, used_feat_ids)
+        # 2) keine gml_id: nie aus dem Objektnamen (ändert sich beim Umbenennen, Blender hängt ".001" an),
+        #    sondern einmal erzeugen und am Objekt behalten, damit der nächste Export dieselbe ID schreibt
+        try:
+            obj_["gml_id"] = gid = f"ID_{uuid4().hex}"
+        except Exception:   # schreibgeschütztes (verlinktes) Objekt: nur der Name ist stabil
+            gid = obj_.name
+        return make_gml_id(gid, used_feat_ids)
 
     def _alloc_gml_id(prefix: str = "ID") -> str:
         return make_gml_id(f"{prefix}_{uuid4().hex}", used_gml_ids)
@@ -4110,6 +4115,15 @@ def export_blender_to_citygml3(
                 _write_specific_attributes(feature, obj)
                 for child in _part_children:
                     _part_obj_to_building_el[id(child)] = feature
+                if obj_eval:
+                    obj_eval.to_mesh_clear()
+                continue
+            if (ns_key == "tran" and local_name in ("Road", "Railway", "Track", "Square")
+                    and any(object_is_viewport_visible(c, context) for c in obj.children)):
+                # a Road whose geometry is all in its TrafficAreas / Sections (CityGML 2.0, CityJSON):
+                # write it so the children nest under it instead of becoming city objects of their own
+                feature = _export_feature_empty_inline(obj, com)
+                _register_inline_relation_children(obj, feature, ns_key, local_name)
                 if obj_eval:
                     obj_eval.to_mesh_clear()
                 continue

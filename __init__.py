@@ -28,6 +28,7 @@ from .ops import edit_exit_validation
 from .ops import authoring_core_ops
 from .ops import planarity
 from .ops import validation
+from .ops import export_cityjson
 from .ops import citydb_connection
 from .ops import browse_gml
 from .ops import browse_citydb
@@ -798,12 +799,12 @@ class CGML3_PT_Main(Panel):
             browse_panel.draw_show_unshow(layout, ctx, s)
 
         box = layout.box()
-        box.label(text="From a file (CityGML 2.0 / 3.0)", icon='FILE')
+        box.label(text="From a file (CityGML 2.0 / 3.0, CityJSON)", icon='FILE')
         row = box.row()
         row.scale_y = 1.3
         colors.add(row, "cgml3.browse_gml_file", text="Preview File (pick buildings)...", icon='VIEWZOOM')
         colors.add(box, "cgml3.import_gml_file", text="Open Whole File (small files)...", icon='IMPORT')
-        box.label(text="or drop a .gml file into the viewport", icon='BLANK1')
+        box.label(text="or drop a .gml / .city.json file into the viewport", icon='BLANK1')
 
         box = layout.box()
         box.label(text="From 3DCityDB", icon='NETWORK_DRIVE')
@@ -1109,14 +1110,35 @@ class CGML3_OT_BBoxToString(Operator):
         return {'FINISHED'}
 
 # ---------------- Operator: File Import ----------------
+_CITYJSON_LOD_ITEMS = {}   # Blender reads dynamic enum strings after the callback returns: keep them alive
+
+
+def _cityjson_lod_items(self, _context):
+    from .shared.cityjson_open import lod_choices
+    summary = CGML3_OT_ImportGMLFile._sniff(self.filepath) if self.filepath else None
+    lods = tuple(lod_choices(summary.lods)) if summary is not None and summary.format == "CityJSON" else ()
+    if lods not in _CITYJSON_LOD_ITEMS:
+        _CITYJSON_LOD_ITEMS[lods] = [
+            (t, f"LoD {t}", f"Load the LoD {t} geometry; buildings without it are skipped and counted")
+            for t in lods] or [("NONE", "LoD of the file", "")]
+    return _CITYJSON_LOD_ITEMS[lods]
+
+
 class CGML3_OT_ImportGMLFile(Operator):
     bl_idname = "cgml3.import_gml_file"
     bl_label = "Import CityGML (File)"
     bl_options = {'REGISTER', 'UNDO'}
-    bl_description = "Imports CityGML 2.0/3.0, optionally with Appearance/Textures"
+    bl_description = "Imports CityGML 2.0/3.0 or CityJSON 2.0/1.1, optionally with Appearance/Textures"
 
     filepath: StringProperty(name="CityGML", subtype='FILE_PATH')
-    filter_glob: StringProperty(default="*.gml;*.xml", options={'HIDDEN'})
+    # CJ-02: the content decides the reader (CityGML or CityJSON), not the extension
+    filter_glob: StringProperty(default="*.gml;*.xml;*.json;*.jsonl", options={'HIDDEN'})
+    cityjson_lod: EnumProperty(
+        name="LoD",
+        description="CityJSON: the LoD to load, as written in the file; buildings without it are skipped",
+        items=_cityjson_lod_items,
+        options={'SKIP_SAVE'},
+    )
     filename_ext = ".gml"
     import_appearance: BoolProperty(
         name="Import Appearance",
@@ -1146,7 +1168,7 @@ class CGML3_OT_ImportGMLFile(Operator):
     @classmethod
     def description(cls, context, props):
         # Only static text. No access to props.filepath, no parser calls.
-        return "Imports CityGML files optionally with Appearance, UV, and textures"
+        return "Imports CityGML files optionally with Appearance, UV, and textures, or CityJSON files"
 
     def _log_text(self, name_prefix, content):
         from .shared.export_helpers import log_text_to_blender
@@ -1169,6 +1191,18 @@ class CGML3_OT_ImportGMLFile(Operator):
 
     def draw(self, ctx):
         summary = self._sniff(self.filepath) if self.filepath else None
+        if summary is not None and summary.format and summary.format != "CityGML":
+            box = self.layout.box()
+            box.label(text=summary.label(), icon='FILE')
+            kind, text = self._cityjson_decision(ctx, summary)
+            if text:
+                box.label(text=text, icon='ERROR' if kind == 'error' else 'VIEWZOOM' if kind == 'browse' else 'INFO')
+            if summary.format == "CityJSON" and kind != 'error':
+                # the LoD of a whole-file open; Browse first asks at Show, from the index (CJ-05)
+                if len(summary.lods) > 1:
+                    box.prop(self, "cityjson_lod")
+                self.layout.prop(self, "load_mode")
+            return
         if summary is not None and summary.is_citygml:
             box = self.layout.box()
             box.label(text=summary.label(), icon='FILE')
@@ -1189,22 +1223,52 @@ class CGML3_OT_ImportGMLFile(Operator):
             int(getattr(prefs, "browse_threshold_features", 30)),
         )
 
+    @staticmethod
+    def _cityjson_decision(ctx, summary):
+        from .shared.cityjson_open import open_decision
+        return open_decision(summary, int(getattr(_get_citydb_prefs(ctx), "browse_threshold_features", 30)))
+
+    def _open_cityjson(self, ctx, summary):
+        """CJ-02/CJ-05: CityJSON through cityjson_reader into the same builder. Above the Browse-first
+        threshold the GML question (Browse first / Load all); CityJSONSeq is always browsed."""
+        from .common.import_landing import ImportSnapshot, finish_import, report_import_error
+        from .common.unified_builder import import_cityjson_with_builder
+        from .shared.cityjson_open import load_all_refusal
+
+        kind, text = self._cityjson_decision(ctx, summary)
+        if kind == 'error':
+            self.report({'ERROR'}, text)
+            return {'CANCELLED'}
+        if summary.format == "CityJSONSeq" and self.load_mode == 'ALL':
+            self.report({'ERROR'}, load_all_refusal(summary))
+            return {'CANCELLED'}
+        if self.load_mode == 'BROWSE' or summary.format == "CityJSONSeq":
+            return bpy.ops.cgml3.browse_gml_file(filepath=self.filepath)
+        # like GML: background runs (scripts, tests) have no popup and load all
+        if kind == 'browse' and self.load_mode == 'AUTO' and not bpy.app.background:
+            self._ask_browse_or_load(ctx, summary)
+            return {'FINISHED'}
+        lod = self.cityjson_lod if self.cityjson_lod in summary.lods else None
+        snapshot = ImportSnapshot()
+        warnings = []
+        try:
+            notices, not_loaded = import_cityjson_with_builder(self.filepath, ctx, lod=lod)
+        except Exception as exc:
+            report_import_error(self, exc)
+            return {'CANCELLED'}
+        warnings.extend(notices)
+        level, message, _summary = finish_import(
+            ctx, snapshot, frame=_frame_view_after_import(ctx), warnings=warnings, not_loaded=not_loaded)
+        self.report({level}, message)
+        return {'FINISHED'}
+
     def _ask_browse_or_load(self, ctx, summary):
         path = self.filepath
         appearance = self.import_appearance
         n = summary.features_estimate
         threshold = int(getattr(_get_citydb_prefs(ctx), "browse_threshold_features", 30))
-        from .shared.load_limits import LOAD_ALL_MAX_FEATURES, LOAD_ALL_MAX_MB
-        try:
-            size_mb = os.path.getsize(path) / (1024 * 1024)
-        except OSError:
-            size_mb = 0.0
-        if size_mb > LOAD_ALL_MAX_MB:
-            too_large = f"{size_mb:,.0f} MB, limit {LOAD_ALL_MAX_MB:,.0f} MB"
-        elif n > LOAD_ALL_MAX_FEATURES:
-            too_large = f"{'~' if not summary.exact else ''}{n:,} features, limit {LOAD_ALL_MAX_FEATURES:,}"
-        else:
-            too_large = ""
+        from .shared.cityjson_open import load_all_refusal
+        too_large = load_all_refusal(summary)   # the Load-all limits, the same for GML and CityJSON
 
         def draw_menu(menu, _context):
             col = menu.layout.column()
@@ -1233,12 +1297,14 @@ class CGML3_OT_ImportGMLFile(Operator):
         if not os.path.isfile(self.filepath):
             self.report({'ERROR'}, f"File not found: {self.filepath}")
             return {'CANCELLED'}
+        summary = self._sniff(self.filepath)
+        if summary is not None and summary.format in ("CityJSON", "CityJSONSeq", "JSON"):
+            return self._open_cityjson(ctx, summary)
         # .xml is shared with many formats (drag & drop accepts it): require a CityGML namespace.
         if self.filepath.lower().endswith(".xml") and not looks_like_citygml(self.filepath):
             self.report({'ERROR'}, f"Not a CityGML file (no CityGML namespace in header): {Path(self.filepath).name}")
             return {'CANCELLED'}
 
-        summary = self._sniff(self.filepath)
         if self.load_mode == 'BROWSE':
             return bpy.ops.cgml3.browse_gml_file(filepath=self.filepath)
         # Large files ask first; background runs (scripts, tests) have no popup and load all.
@@ -2594,6 +2660,7 @@ classes = (
     CGML3_PT_Filter,
     CGML3_OT_ParseBBoxString, CGML3_OT_BBoxToString, CGML3_OT_DBAreaFill,
     CGML3_OT_ImportGMLFile, CGML3_OT_ExportGMLFile,
+    *export_cityjson.classes,
     CGML3_OT_ImportFromDB, CGML3_OT_ExportToDB,
     CGML3_PT_Reload, CGML3_OT_ReloadAddon,
     CGML3_OT_SelectAllLODs, CGML3_OT_DeselectAllLODs,
@@ -2686,6 +2753,7 @@ def register():
         browse_gml.register()
         browse_citydb.register()
         commit_citydb.register()
+        export_cityjson.register()
     except Exception as e:
         print(f"[CityGML] Browse overlay register failed: {e}")
     try:
@@ -2716,7 +2784,7 @@ def register():
     # Register drag & drop handler
     try:
         drag_drop.register()
-        print("[CityGML] Drag & Drop enabled for .gml/.xml files")
+        print("[CityGML] Drag & Drop enabled for .gml/.xml/.json/.jsonl files")
     except Exception as e:
         print(f"[CityGML] Drag & Drop registration failed: {e}")
     # __pycache__ is kept: Python recompiles a module whose source mtime/size
@@ -2777,6 +2845,7 @@ def unregister():
     except Exception:
         traceback.print_exc()
     try:
+        export_cityjson.unregister()
         commit_citydb.unregister()
         browse_citydb.unregister()
         browse_gml.unregister()

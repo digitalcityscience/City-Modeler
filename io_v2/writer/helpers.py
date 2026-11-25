@@ -11,6 +11,7 @@ import xml.dom.minidom as minidom
 from xml.etree.ElementTree import tostring, SubElement
 from .namespaces import Q, NS, GML_ID
 from ...shared import georef as gr
+from ...shared.authoring_core.domain.ids import is_ncname
 
 def fmt_pos(x: float) -> str:  # für Koordinaten wie gehabt, falls genutzt
     return f"{x:.6f}"
@@ -130,12 +131,12 @@ def _envelope_elem(parent, coords_3d, srs_epsg: str):
 
 def make_gml_id(name: str, used: set) -> str:
     s = (name or "").strip()
-    # ungültige Zeichen → "_"
-    # xs:ID / NCName erlaubt keine '.' Zeichen; nur [A-Za-z0-9_-]
-    s = re.sub(r"[^A-Za-z0-9_-]", "_", s)
-    # darf nicht mit Ziffer/“–”/“.” beginnen
-    if not s or not re.match(r"[A-Za-z_]", s[0]):
-        s = "ID_" + s
+    if not is_ncname(s):   # eine gültige ID (xs:ID = NCName, '.' ist erlaubt) bleibt unverändert
+        # nur ungültige IDs: unerlaubte Zeichen → "_"
+        s = re.sub(r"[^A-Za-z0-9_-]", "_", s)
+        # darf nicht mit Ziffer/“–”/“.” beginnen
+        if not s or not re.match(r"[A-Za-z_]", s[0]):
+            s = "ID_" + s
     # Mehrfachverwendung verhindern
     base = s; k = 2
     while s in used:

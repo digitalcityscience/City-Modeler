@@ -36,7 +36,7 @@ fi
 run() {
   t=$1; n=${t%.py}; o="$WOUT\\$n"; mkdir -p "$OUT/$n"
   case $n in
-    test_b10[0-9]_*|test_b0*|test_b20*|test_b22*|test_b23*|test_b25*|test_b28*|test_b5*|test_b6*|test_b81*|test_b88*|test_t14*) a="$o";;
+    test_b10[0-9]_*|test_cj0*|test_b0*|test_b20*|test_b22*|test_b23*|test_b25*|test_b28*|test_b5*|test_b6*|test_b81*|test_b88*|test_t14*) a="$o";;
     test_b14*) a="$BD $TILE";;
     test_b1*|test_b2*) a="$BD";;
     test_t01*) a="$BD $o";;

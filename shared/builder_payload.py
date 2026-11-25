@@ -765,6 +765,13 @@ def importer_properties(node, thematic: Optional[dict] = None, schema: str = "2.
     props.update(address_properties(node.attrs, schema))
     if schema == "3.0":
         props.update(construction_properties(node))
+        if "bldg:measuredHeight" in props and "con:height:value" not in props:
+            # CJ-02: only CityJSON IR has measuredHeight in a 3.0 document; the 3.0 card and writer
+            # read con:height (all four parts are mandatory in the XSD, as ui/attribute_card.set_height)
+            props.update({"con:height": "", "con:height:value": props.pop("bldg:measuredHeight"),
+                          "con:height:uom": props.pop("bldg:measuredHeight:uom", "m"),
+                          "con:height:highReference": "highestRoofEdge",
+                          "con:height:lowReference": "lowestGroundPoint", "con:height:status": "measured"})
     props.update(flat_generic_attributes(node.attrs))
     # B48: the LoDs whose geometry was a Solid in the source; the writers keep that solid on
     # round-trip even where our edge-based closure check is stricter than ISO 19107 (T-junctions)
@@ -773,6 +780,18 @@ def importer_properties(node, thematic: Optional[dict] = None, schema: str = "2.
                          and g.gml_type in ("Solid", "CompositeSolid")})
     if solid_lods:
         props["cgml_source_solid_lods"] = ",".join(solid_lods)
+    # CJ-02 (K2): a CityJSON id outside the gml:id alphabet was mapped; CJ-03 writes the original back
+    if node.extra.get("cgml3_cityjson_id"):
+        props["cgml3_cityjson_id"] = str(node.extra["cgml3_cityjson_id"])
+    surface_ids = {n.gml_id: str(n.extra["cgml3_cityjson_id"]) for b in node.boundaries
+                   for n in (b, *b.openings) if n.extra.get("cgml3_cityjson_id")}
+    if surface_ids:
+        props["cgml3_cityjson_surface_ids"] = json.dumps(surface_ids, sort_keys=True)
+    # CJ-03 (K6): the LoD text ("2.2") per integer LoD, written back by the CityJSON export
+    lods = {k[3]: str(g.extra["cityjson_lod"]) for n in (node, *node.boundaries)
+            for k, g in n.geometries.items() if g.extra.get("cityjson_lod")}
+    if lods:
+        props["cgml3_cityjson_lods"] = json.dumps(lods, sort_keys=True)
     return props
 
 
@@ -789,28 +808,30 @@ def address_properties(attrs, schema: str) -> Dict[str, Any]:
     if not attrs.addresses:
         return props
     address = attrs.addresses[0]
+    el = None
     if address.xal:
         try:
             el = ET.fromstring(address.xal)
         except ET.ParseError:
             el = None
-        # <xAL:Address> in the schema's own xAL namespace, else the 2.0 <xAL:AddressDetails>
-        uri = XAL_NAMESPACE[schema]
-        if el is not None and el.tag == f"{{{uri}}}Address":
-            data = parse_xal_address(el, {"xAL": uri}, version=schema)
-            for key, value in data.items():
-                if value:
-                    props[f"bldg:address:{key}"] = value
-            for key in _LEGACY_ADDRESS_KEYS:
-                if key in data:
-                    props[f"bldg:address:{key}"] = data[key]
-        elif schema == "2.0":
-            # a real 2.0 file carries <xAL:AddressDetails>; the IR has read its fields
-            for key, value in (("country", address.country), ("locality", address.locality),
-                               ("street", address.street), ("streetNumber", address.house_number),
-                               ("postCode", address.postal_code)):
-                if value:
-                    props[f"bldg:address:{key}"] = value
+    # <xAL:Address> in the schema's own xAL namespace, else the 2.0 <xAL:AddressDetails>
+    uri = XAL_NAMESPACE[schema]
+    if el is not None and el.tag == f"{{{uri}}}Address":
+        data = parse_xal_address(el, {"xAL": uri}, version=schema)
+        for key, value in data.items():
+            if value:
+                props[f"bldg:address:{key}"] = value
+        for key in _LEGACY_ADDRESS_KEYS:
+            if key in data:
+                props[f"bldg:address:{key}"] = data[key]
+    elif schema == "2.0" and address.xal or not address.xal:
+        # a real 2.0 file carries <xAL:AddressDetails>, a CityJSON address (CJ-02) no xAL at all;
+        # the IR has read the fields of both
+        for key, value in (("country", address.country), ("locality", address.locality),
+                           ("street", address.street), ("streetNumber", address.house_number),
+                           ("postCode", address.postal_code)):
+            if value:
+                props[f"bldg:address:{key}"] = value
     if address.multi_point:
         x, y, *rest = address.multi_point[0]
         props["bldg:address:point:x"], props["bldg:address:point:y"] = float(x), float(y)
@@ -838,6 +859,10 @@ def construction_properties(node) -> Dict[str, Any]:
             if text:
                 props[f"con:{local}"] = text
             break
+        else:   # CJ-03: CityJSON's dateOfConstruction reaches the IR as a thematic attribute
+            text = _text(_first(node.extra.get("thematic_attributes") or {}, f"con:{local}"))
+            if text:
+                props[f"con:{local}"] = text
     for wrapper in _unknown_by_local(node, "height"):
         height = next((c for c in wrapper if c.tag.rpartition("}")[2] == "Height"), None)
         if height is None:

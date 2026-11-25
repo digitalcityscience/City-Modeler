@@ -43,14 +43,18 @@ from ..shared import export_scope
 from ..shared import georef as gr
 from . import browse_citydb as bc
 from . import update_citydb
-from .browse_gml import SOURCE_KIND_PROP, SOURCE_PATH_PROP, _redraw_views
+from .browse_gml import FEATURE_ID_PROP, SOURCE_KIND_PROP, SOURCE_PATH_PROP, _redraw_views
+from ..shared import cityjson_open as co
 
 COMMIT_JOB = "citydb-commit"
 TRACKED_PROP = "cgml3_db_tracked"
 FINGERPRINT_PROP = "cgml3_db_fingerprint"
 # bookkeeping of the add-on: never part of what a feature "is"
 _SKIP_KEYS = frozenset({SOURCE_KIND_PROP, SOURCE_PATH_PROP, bc.SOURCE_PROFILE_PROP, bc.DB_FEATURE_ID_PROP,
-                        bc.OBJECTID_PROP, bc.LOADED_LOD_PROP, FINGERPRINT_PROP})
+                        bc.OBJECTID_PROP, bc.LOADED_LOD_PROP, FINGERPRINT_PROP,
+                        co.SOURCE_PROP, co.FINGERPRINT_PROP})
+# CJ-06: the browse preview tags the root (feature id) after the build
+_CJ_SKIP_KEYS = _SKIP_KEYS | {FEATURE_ID_PROP}
 
 
 # --------------------------------------------------------------------------- fingerprint
@@ -62,11 +66,16 @@ def _plain(value):
     return value
 
 
-def _props(idblock) -> bytes:
-    return repr(sorted((k, _plain(v)) for k, v in idblock.items() if k not in _SKIP_KEYS)).encode()
+def _props(idblock, skip=_SKIP_KEYS) -> bytes:
+    return repr(sorted((k, _plain(v)) for k, v in idblock.items() if k not in skip)).encode()
 
 
-def fingerprint(root) -> str:
+def cityjson_fingerprint(root) -> str:
+    """``fingerprint`` for save into a CityJSON source (CJ-06)."""
+    return fingerprint(root, _CJ_SKIP_KEYS)
+
+
+def fingerprint(root, skip=_SKIP_KEYS) -> str:
     """Hash of what the exporter reads from ``root`` and its children: names, transforms,
     custom properties, mesh geometry, materials.
 
@@ -77,7 +86,7 @@ def fingerprint(root) -> str:
     for o in sorted([root, *root.children_recursive], key=lambda o: o.name):
         h.update(o.name.encode())
         h.update(repr([round(v, 5) for row in o.matrix_world for v in row]).encode())
-        h.update(_props(o))
+        h.update(_props(o, skip))
         me = o.data if o.type == 'MESH' else None
         if me is None:
             continue
@@ -87,12 +96,12 @@ def fingerprint(root) -> str:
             buf = array(code, bytes(array(code).itemsize * len(seq) * width))
             seq.foreach_get(attr, buf)
             h.update(buf.tobytes())
-        h.update(_props(me))
+        h.update(_props(me, skip))
         for m in me.materials:
             if m is not None:
                 h.update(m.name.encode())
                 h.update(repr([round(c, 4) for c in m.diffuse_color]).encode())
-                h.update(_props(m))
+                h.update(_props(m, skip))
     return h.hexdigest()
 
 
@@ -121,6 +130,31 @@ def track(scene, path: str, add: Mapping[str, int] = (), remove: Iterable[str] =
         data.pop(path, None)
     scene[TRACKED_PROP] = json.dumps(data, sort_keys=True)
     _cache.clear()
+
+
+def forget(roots) -> set:
+    """Unload (file or 3DCityDB browse): the roots leave every working copy they are in, so neither the
+    commit nor save into the CityJSON source counts them as deleted. A CityJSON building that was
+    committed is in both (CJ-04). Returns the session paths whose boxes must follow."""
+    scene, paths = bpy.context.scene, set()
+    for r in roots:
+        if r.get(SOURCE_KIND_PROP) == "citydb":
+            paths.add(str(r.get(SOURCE_PATH_PROP)))
+            track(scene, str(r.get(SOURCE_PATH_PROP)), remove=[str(r.get(bc.OBJECTID_PROP))])
+        if r.get(co.SOURCE_PROP):
+            paths.add(str(r[co.SOURCE_PROP]))
+            co.track_loaded(gr.world(), str(r[co.SOURCE_PROP]), remove=[str(r.get("gml_id"))])
+    return paths
+
+
+def refresh_boxes(paths) -> None:
+    """Browse boxes of the other working copy after an Unload: the building shows as not loaded."""
+    from . import browse_gml
+    for p in paths:
+        s = browse_gml.get_session(p)
+        if s is not None:
+            (bc._refresh_loaded if s.kind == "citydb" else browse_gml._refresh_loaded)(s)
+            browse_gml.write_proxy_states(s)
 
 
 def stamp(scene, session, roots: Mapping[str, Tuple[object, int]]) -> None:

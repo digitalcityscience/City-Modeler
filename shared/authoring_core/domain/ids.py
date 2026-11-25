@@ -13,6 +13,21 @@ import uuid
 # letters, digits, "_", ".", "-", not starting with a digit, "-" or ".".
 _AUTHORED_ID = re.compile(r"^[A-Za-z_][A-Za-z0-9_.-]*$")
 
+# gml:id is xs:ID = NCName (XML 1.0 5th edition "Name" without ':'): first a letter or "_",
+# then letters, digits, ".", "-", "_". Unicode letters count; the dot is allowed.
+_NAME_START = ("A-Z_a-zÀ-ÖØ-öø-˿Ͱ-ͽͿ-῿‌‍"
+               "⁰-↏Ⰰ-⿯、-퟿豈-﷏ﷰ-�\U00010000-\U000EFFFF")
+_NCNAME = re.compile(f"[{_NAME_START}][{_NAME_START}0-9.·̀-ͯ‿⁀-]*")
+
+
+def is_ncname(value):
+    """True when ``value`` can be written as a gml:id as it stands.
+
+    The one id check of the add-on: the CityJSON reader (``gml_id_for``) and both GML writers
+    (``ensure_xs_id``, ``make_gml_id``) ask it, and none of them renames an id it accepts.
+    """
+    return isinstance(value, str) and bool(_NCNAME.fullmatch(value))
+
 
 def is_valid_gml_id(value):
     """True for a usable record id: a non-empty string without whitespace.

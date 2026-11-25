@@ -6,6 +6,10 @@
 :func:`sniff_file` also summarises a file without parsing it: version, CRS,
 size and an estimated number of top-level features (member tags counted in
 three 64 KiB samples). The browse-first decision (T08) uses it.
+
+CJ-02: a file whose content starts with ``{`` is JSON; its ``"type"`` says CityJSON or
+CityJSONFeature (CityJSONSeq), whatever the extension. The whole file is scanned with a
+regex (no JSON parse) for the Building count and the real LoD texts ("1.2", "2.2").
 """
 
 from __future__ import annotations
@@ -31,6 +35,15 @@ _SCHEMA_LOCATION = re.compile(rb"schemaLocation\s*=\s*[\"']([^\"']*)[\"']")
 _GML_NS_DECL = re.compile(rb"xmlns:gml\s*=\s*[\"'](http://www\.opengis\.net/gml(?:/3\.2)?)[\"']")
 _CITYMODEL = re.compile(rb"<(?:[A-Za-z_][\w.-]*:)?CityModel[\s>/]")
 _XSI_SCHEMA_LOCATION = "{http://www.w3.org/2001/XMLSchema-instance}schemaLocation"
+
+# CityJSON: top-level and object keys, read token by token (strings or bare numbers)
+_JSON_TOKEN = re.compile(rb'"(type|lod|referenceSystem|version)"\s*:\s*("[^"]*"|[0-9.]+)')
+_LOD_TEXT = re.compile(r"\d+(?:\.\d+)?")
+# top-level types cityjson_reader reads (CJ-07 added the last four); kept here: the sniff imports nothing
+_JSON_FEATURES = ("Building", "Road", "Railway", "TransportSquare", "CityFurniture")
+JSON_SCAN_MAX_BYTES = 200 * 2**20     # LOAD_ALL_MAX_MB: a bigger file is refused before it is read
+_JSON_CHUNK = 8 * 2**20
+_JSON_OVERLAP = 1024                  # a token cut by a chunk boundary is read whole in the next one
 
 VERSION_UNKNOWN = "unknown"
 GML_31 = "http://www.opengis.net/gml"
@@ -113,6 +126,9 @@ class SniffSummary:
     srs_name: str = ""
     features_estimate: int = 0
     exact: bool = False           # whole file was counted
+    # 'CityGML', 'CityJSON', 'CityJSONSeq' (CityJSONFeature lines), 'JSON' (not CityJSON), '' (unknown)
+    format: str = ""
+    lods: tuple = ()              # CityJSON: the LoD texts of the file ("1.2", "2.2"), sorted
 
     @property
     def size_mb(self) -> float:
@@ -120,12 +136,16 @@ class SniffSummary:
 
     def label(self) -> str:
         """``CityGML 3.0 · EPSG:25832 · 412 MB · ~18,400 features``."""
-        parts = [f"CityGML {self.version}" if self.version != "unknown" else "CityGML (version unknown)"]
+        name = self.format if self.format in ("CityJSON", "CityJSONSeq", "JSON") else "CityGML"
+        parts = [f"{name} {self.version}" if self.version != "unknown" else f"{name} (version unknown)"]
         if self.srs_name:
             parts.append(_short_srs(self.srs_name))
         parts.append(f"{self.size_mb:.0f} MB" if self.size_mb >= 10 else f"{self.size_mb:.1f} MB")
         n = self.features_estimate
-        parts.append(f"{'' if self.exact else '~'}{n:,} feature{'s' if n != 1 else ''}")
+        noun = "building" if name != "CityGML" else "feature"
+        parts.append(f"{'' if self.exact else '~'}{n:,} {noun}{'s' if n != 1 else ''}")
+        if self.lods:
+            parts.append("LoD " + ", ".join(self.lods))
         return " · ".join(parts)
 
 
@@ -152,6 +172,9 @@ def sniff_file(path: str, sample_bytes: int = SNIFF_BYTES) -> SniffSummary:
     size = os.path.getsize(path)
     with open(path, "rb") as fh:
         head = fh.read(sample_bytes)
+        if head.lstrip(b"\xef\xbb\xbf \t\r\n").startswith(b"{"):
+            fh.seek(0)
+            return _sniff_json(path, size, fh)
         samples = [head]
         exact = size <= 3 * sample_bytes
         if exact:
@@ -161,6 +184,7 @@ def sniff_file(path: str, sample_bytes: int = SNIFF_BYTES) -> SniffSummary:
                 fh.seek(int(size * frac))
                 samples.append(fh.read(sample_bytes))
     summary = SniffSummary(path=path, size=size, is_citygml=CITYGML_NAMESPACE_PREFIX in head.lower(), exact=exact)
+    summary.format = "CityGML" if summary.is_citygml else ""
     summary.version = version_from_bytes(head)
     m = _SRS.search(head)
     if m:
@@ -172,6 +196,41 @@ def sniff_file(path: str, sample_bytes: int = SNIFF_BYTES) -> SniffSummary:
         scanned = sum(len(s) for s in samples)
         summary.features_estimate = _round_estimate(count * size / max(1, scanned))
     return summary
+
+
+def _sniff_json(path: str, size: int, fh) -> SniffSummary:
+    """CityJSON summary from a regex scan of the whole file (up to ``JSON_SCAN_MAX_BYTES``)."""
+    exact = size <= JSON_SCAN_MAX_BYTES
+    chunk = _JSON_CHUNK if exact else SNIFF_BYTES     # too large to open: the head names the format
+    types, lods, first = set(), set(), {}
+    buildings, buf, done = 0, b"", False
+    while not done:
+        data = fh.read(chunk)
+        done = not data or not exact
+        buf += data
+        cut = len(buf) if done else max(0, len(buf) - _JSON_OVERLAP)
+        for m in _JSON_TOKEN.finditer(buf):
+            if m.start() >= cut:
+                break
+            key, value = m.group(1).decode("ascii"), m.group(2).strip(b'"').decode("utf-8", "replace")
+            if key == "type":
+                if value in _JSON_FEATURES:
+                    buildings += 1
+                elif value in ("CityJSON", "CityJSONFeature"):
+                    types.add(value)
+            elif key == "lod":
+                if _LOD_TEXT.fullmatch(value):
+                    lods.add(value)
+            else:
+                first.setdefault(key, value)
+        buf = buf[cut:]
+    # shortcut: the scan sees tokens, not the JSON tree; an attribute named "lod" or "type" would count too,
+    # and so does the LoD of an object that is not a building. It feeds the Open dialog and the Browse-first
+    # threshold; Browse first itself takes count and LoDs from the index (CJ-05, browse/cityjson_index)
+    fmt = "CityJSONSeq" if "CityJSONFeature" in types else "CityJSON" if types else "JSON"
+    return SniffSummary(path=path, size=size, is_citygml=False, version=first.get("version", VERSION_UNKNOWN),
+                        srs_name=first.get("referenceSystem", ""), features_estimate=buildings, exact=exact,
+                        format=fmt, lods=tuple(sorted(lods, key=lambda t: (float(t), t))))
 
 
 def browse_recommended(

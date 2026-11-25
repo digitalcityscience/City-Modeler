@@ -100,19 +100,24 @@ def _prepare_world(v: _Versioned, context, root):
     imp = v.imp
     default_srs = root.get("srsName")
     env_srs, _lower = imp._get_envelope_srs_and_corners(root)
+    try:
+        z_epsg = imp._extract_vertical_epsg(env_srs or default_srs or "")
+    except Exception:
+        z_epsg = ""
+    file_origin, file_crs = imp._determine_file_origin_and_crs(root)
+    return _set_world(context, file_origin, file_crs, z_epsg), default_srs
+
+
+def _set_world(context, file_origin, file_crs: str, z_epsg: str = ""):
+    """Write the file CRS/origin into our World keys unless the scene already has them (T01, B31/B32);
+    returns the reference origin the geometry is placed against."""
     sc = context.scene if not isinstance(context, dict) else bpy.context.scene
     is_local = bool(getattr(sc.cgml3, "import_local", False))
-    if not is_local:
-        try:
-            z_epsg = imp._extract_vertical_epsg(env_srs or default_srs or "")
-            if z_epsg:
-                gr.georef_world()[gr.Z_EPSG] = z_epsg
-        except Exception:
-            pass
+    if not is_local and z_epsg:
+        gr.georef_world()[gr.Z_EPSG] = z_epsg
     # the georeference lives only in bpy.data.worlds["World"] (every reader uses it), never in the
     # scene's own world or in other add-ons' scene keys; a world-less scene gets "World"
     world = gr.georef_world(sc)
-    file_origin, file_crs = imp._determine_file_origin_and_crs(root)
     if not is_local:
         # a CRS without an origin: a building drawn in an empty scene (_ensure_crs) sets only the CRS
         if ((gr.CRS not in world.keys()) or world[gr.CRS] == "Unknown CRS"
@@ -125,9 +130,9 @@ def _prepare_world(v: _Versioned, context, root):
         if gr.Z_ORIGIN not in world.keys():
             gr.set_world_float(world, gr.Z_ORIGIN, file_origin[2])
     if is_local:
-        return tuple(float(c) for c in file_origin), default_srs
+        return tuple(float(c) for c in file_origin)
     return (float(world[gr.X_ORIGIN]), float(world[gr.Y_ORIGIN]),
-            float(world.get(gr.Z_ORIGIN, file_origin[2]))), default_srs
+            float(world.get(gr.Z_ORIGIN, file_origin[2])))
 
 
 class _Collections:
@@ -152,7 +157,8 @@ def build_feature(payload: bp.FeaturePayload, ctx: "_BuildContext"):
     """One city object -> one mesh object (plus the surface objects of a Building)."""
     geom = payload.geometry
     if not geom.faces:
-        if payload.feature_type == "Building" and payload.gml_id in getattr(ctx, "part_owners", ()):
+        if (payload.feature_type in ("Building", *bp.TRANSPORT_TOP_TYPES)
+                and payload.gml_id in getattr(ctx, "part_owners", ())):
             return _build_part_container(payload, ctx)
         return None
     v = ctx.v
@@ -255,8 +261,9 @@ def _apply_payload_attributes(obj, payload):
 
 
 def _build_part_container(payload, ctx):
-    """A Building whose geometry is all in its BuildingParts (B09): an empty
-    object that keeps its id and attributes and becomes the parts' parent."""
+    """A Building whose geometry is all in its BuildingParts (B09), or a Road / Railway / Track /
+    Square whose geometry is all in its children: an empty object that keeps its id and attributes
+    and becomes the children's parent."""
     feat_id = payload.gml_id
     obj = bpy.data.objects.new(feat_id, bpy.data.meshes.new(feat_id))
     ctx.collections.of(payload.feature_type).objects.link(obj)
@@ -345,6 +352,54 @@ def import_with_builder(filepath: str, context, *, schema: str, import_appearanc
     warnings, report = [], []
     roots = read_document(root, warnings=warnings, report=report, upgrade=False,
                           envelopes=bool(filters.bbox))
+
+    def set_appearance(ctx):
+        app = v.app
+        has_appearance = False
+        if import_appearance:
+            has_appearance = any(isinstance(el.tag, str) and el.tag.endswith("Appearance")
+                                 for el in root.iter())
+        if import_appearance and has_appearance:
+            ctx.matcolor_by_surface_id = app.parse_x3d_materials(root)
+            textures = app.parse_parameterized_textures(root, filepath)
+            ctx.ptex_by_ring, ctx.poly_to_image, ctx.ptex_by_poly = textures[:3]
+            ctx.uv_start_by_ring = textures[3] if len(textures) > 3 else {}
+            ctx.gtex_by_poly = app.parse_georeferenced_textures(root, filepath)
+        if import_appearance:
+            try:
+                (Path(filepath).parent / "Appearance").mkdir(parents=True, exist_ok=True)
+            except Exception:
+                pass
+
+    def feature_crs_factory():
+        from ..shared.citygml_reader import document_ids
+        elements = document_ids(root)
+
+        def feature_crs(feat_id):
+            el = elements.get(feat_id)
+            if el is None:
+                return "Unknown CRS"
+            try:
+                return v.imp._infer_feature_crs(el)
+            except Exception:
+                return "Unknown CRS"
+        return feature_crs
+
+    return _build_roots(
+        roots, filepath, context, v, opts, filters, notices, import_appearance=import_appearance,
+        max_features=max_features,
+        file_crs=lambda: v.imp._determine_file_origin_and_crs(root)[1],
+        set_appearance=set_appearance,
+        prepare_world=lambda: _prepare_world(v, context, root),
+        feature_crs_factory=feature_crs_factory,
+        shell_ids=lambda: shell_polygon_ids(root) if schema == "3.0" else None)
+
+
+def _build_roots(roots, filepath, context, v, opts, filters, notices, *, import_appearance, max_features,
+                 file_crs, set_appearance, prepare_world, feature_crs_factory, shell_ids) -> list:
+    """The scene from IR ``roots``, whatever reader made them (CityGML or CityJSON, CJ-02). The
+    callables give what only the source knows; they run in the order the GML builder always used."""
+    schema = v.schema
     skip, reasons = bp.skipped_features(roots, schema, filters)
     # before the scene changes (world, collections); a child kept below a filtered-out root is not counted
     check_feature_count(sum(1 for r in roots if id(r) not in skip and filters.passes(r)),
@@ -355,7 +410,7 @@ def import_with_builder(filepath: str, context, *, schema: str, import_appearanc
         notices.append(notice)
     sc = context.scene if not isinstance(context, dict) else bpy.context.scene
     if not getattr(sc.cgml3, "import_local", False):
-        gr.check_crs(v.imp._determine_file_origin_and_crs(root)[1])
+        gr.check_crs(file_crs())
 
     ctx = _BuildContext()
     ctx.v, ctx.context, ctx.options, ctx.path = v, context, opts, filepath
@@ -365,50 +420,21 @@ def import_with_builder(filepath: str, context, *, schema: str, import_appearanc
     ctx.diag_totals = AppearanceDiagnosticsCounters()
     ctx.diag_warnings = DeduplicatedWarnings()
     ctx.unknown_subtypes = new_unknown_subtype_summary()
-
-    app = v.app
-    has_appearance = False
-    if import_appearance:
-        has_appearance = any(isinstance(el.tag, str) and el.tag.endswith("Appearance")
-                             for el in root.iter())
-    if import_appearance and has_appearance:
-        ctx.matcolor_by_surface_id = app.parse_x3d_materials(root)
-        textures = app.parse_parameterized_textures(root, filepath)
-        ctx.ptex_by_ring, ctx.poly_to_image, ctx.ptex_by_poly = textures[:3]
-        ctx.uv_start_by_ring = textures[3] if len(textures) > 3 else {}
-        ctx.gtex_by_poly = app.parse_georeferenced_textures(root, filepath)
-    else:
-        ctx.matcolor_by_surface_id, ctx.ptex_by_ring, ctx.poly_to_image = {}, {}, {}
-        ctx.ptex_by_poly, ctx.uv_start_by_ring, ctx.gtex_by_poly = {}, {}, {}
-    if import_appearance:
-        try:
-            (Path(filepath).parent / "Appearance").mkdir(parents=True, exist_ok=True)
-        except Exception:
-            pass
+    ctx.matcolor_by_surface_id, ctx.ptex_by_ring, ctx.poly_to_image = {}, {}, {}
+    ctx.ptex_by_poly, ctx.uv_start_by_ring, ctx.gtex_by_poly = {}, {}, {}
+    set_appearance(ctx)
 
     ctx.collections = _Collections(v.imp, context, f"{v.collection_prefix}:{Path(filepath).stem}")
-    ref_origin, default_srs = _prepare_world(v, context, root)
-
-    from ..shared.citygml_reader import document_ids
-    elements = document_ids(root)
-
-    def feature_crs(feat_id):
-        el = elements.get(feat_id)
-        if el is None:
-            return "Unknown CRS"
-        try:
-            return v.imp._infer_feature_crs(el)
-        except Exception:
-            return "Unknown CRS"
-
-    ctx.feature_crs = feature_crs
+    ref_origin, default_srs = prepare_world()
+    ctx.feature_crs = feature_crs_factory()
 
     plan = bp.plan_document(roots, ref_origin, default_srs or "", schema=schema,
-                            filters=filters,
-                            shell_ids=shell_polygon_ids(root) if schema == "3.0" else None,
-                            skip=skip)
+                            filters=filters, shell_ids=shell_ids(), skip=skip)
     types = {p.gml_id: p.feature_type for p in plan.features}
-    ctx.part_owners = {parent for parent, child, _kind in plan.edges if types.get(child) == "BuildingPart"}
+    # an empty owner object keeps the id of a Building made of parts and of a Road (Railway, ...) whose
+    # geometry is all in its TrafficAreas / Sections (CityGML 2.0, CityJSON)
+    ctx.part_owners = {parent for parent, child, _kind in plan.edges
+                       if types.get(child) == "BuildingPart" or types.get(parent) in bp.TRANSPORT_TOP_TYPES}
     built = 0
     for payload in plan.features:
         if build_feature(payload, ctx) is not None:
@@ -437,3 +463,91 @@ def import_with_builder(filepath: str, context, *, schema: str, import_appearanc
     if not built and skip:
         raise ImportNotSupported(bp.scope_notice(reasons))
     return notices
+
+
+def import_cityjson_with_builder(filepath: str, context, *, lod: str | None = None,
+                                 max_mb: float | None = None, max_features: int | None = None,
+                                 doc: dict | None = None, origin=None):
+    """Build a CityJSON 2.0/1.1 file (CJ-02): ``cityjson_reader`` -> IR (a CityGML 3.0 document) ->
+    the same builder as GML. ``lod``: the LoD text to load ("2.2"); a building without it is left out
+    and counted. ``doc`` (CJ-05, Browse first): the document to build, already in memory; ``filepath``
+    then only names the collection. ``origin``: the session origin of the whole file instead of one
+    computed from ``doc``. Returns ``(notices, not_loaded)`` (``ImportSummary.not_loaded`` texts);
+    raises like ``import_with_builder``."""
+    import json
+    from ..shared import cityjson_open as co
+    from ..shared import cityjson_reader as cj
+
+    browsed = doc is not None   # Browse first hands over the picked part of the file
+    v = _Versioned("3.0")
+    opts = _scene_options(context)
+    filters = import_filters(v, opts)
+    try:
+        threshold = float(opts.import_streaming_threshold_mb)
+    except Exception:
+        threshold = 30.0
+    notices = []
+    size_text = "" if doc is not None else size_notice(
+        os.path.getsize(filepath) / (1024 * 1024), threshold, LOAD_ALL_MAX_MB if max_mb is None else max_mb)
+    if size_text:
+        notices.append(size_text)
+    try:
+        if doc is None:
+            doc = cj.load(filepath)
+        warnings, skipped = [], []
+        roots = cj.read_document(doc, warnings, skipped, lod=lod)
+    except (UnicodeDecodeError, json.JSONDecodeError, cj.CityJSONError) as exc:
+        raise ImportNotSupported(f"Not a readable CityJSON file: {exc}") from exc
+    for w in warnings:
+        print("[CityJSON Reader] " + w)
+    roots, missing = co.with_geometry(roots)
+    if missing:
+        notices.append(co.missing_lod_notice(lod, missing))
+    counts = co.skipped_counts(skipped)
+    if counts:
+        notices.append(bp.scope_notice([f"{n} {kind}" for kind, n in counts.items()]))
+
+    reference_system, doc_origin = co.georeference(doc)
+    origin = doc_origin if origin is None else tuple(float(c) for c in origin)
+    crs = v.imp._normalize_epsg(reference_system) if reference_system else "Unknown CRS"
+    try:
+        z_epsg = v.imp._extract_vertical_epsg(reference_system)
+    except Exception:
+        z_epsg = ""
+
+    before = {o.as_pointer() for o in context.scene.objects}
+    notices = _build_roots(
+        roots, filepath, context, v, opts, filters, notices, import_appearance=False,
+        max_features=max_features, file_crs=lambda: crs, set_appearance=lambda _ctx: None,
+        prepare_world=lambda: (_set_world(context, origin, crs, z_epsg), ""),
+        # CityJSON has no per-feature CRS: the World holds it (a GML feature without srsName gets none either)
+        feature_crs_factory=lambda: (lambda _feat_id: "Unknown CRS"), shell_ids=lambda: None)
+    world = gr.georef_world()
+    world[co.SOURCE_FORMAT_KEY] = "CityJSON"
+    unloaded = co.unloaded_lods(doc, lod)
+    # CJ-06: which buildings came from this file, as built (save into the source finds the changed ones)
+    from ..shared.cityjson_merge import file_stat
+    # (buildings only: roads and furniture, CJ-07, are not merged into the source file)
+    loaded = _stamp_cityjson_roots(context, os.path.abspath(filepath), before,
+                                   {r.gml_id: str(r.extra.get("cgml3_cityjson_id") or r.gml_id) for r in roots
+                                    if r.feature_type in cj.BUILDING_TYPES})
+    # CJ-03: a CityJSON export never overwrites its source; it notes when only part of it was loaded
+    co.remember_source(world, filepath, partial=browsed or bool(unloaded or missing or counts),
+                       loaded=loaded, stat=file_stat(filepath))
+    return notices, co.not_loaded_items(counts, unloaded, lod, missing)
+
+
+def _stamp_cityjson_roots(context, filepath: str, before: set, ids: dict) -> dict:
+    """Tag the top-level buildings built now (``ids``: gml_id -> CityJSON id) with their source file and
+    fingerprint (CJ-06); returns the tagged ``{gml_id: CityJSON id}``."""
+    from ..ops.commit_citydb import cityjson_fingerprint
+    from ..shared import cityjson_open as co
+    from ..shared.export_scope import top_level_feature_objects
+    context.view_layer.update()   # matrix_world of the new objects
+    out = {}
+    for gid, obj in top_level_feature_objects(context.scene).items():
+        if gid in ids and obj.as_pointer() not in before:
+            obj[co.SOURCE_PROP] = filepath
+            obj[co.FINGERPRINT_PROP] = cityjson_fingerprint(obj)
+            out[gid] = ids[gid]
+    return out
